@@ -1,0 +1,133 @@
+{
+  "typography": {
+    "fonts": {
+      "heading": "Cormorant Garamond, serif",
+      "body": "Manrope, sans-serif"
+    },
+    "hierarchy": {
+      "h1": "text-5xl md:text-6xl lg:text-[4rem] font-medium tracking-tight leading-none",
+      "h2": "text-4xl md:text-5xl font-medium tracking-tight leading-tight",
+      "h3": "text-2xl md:text-3xl font-medium tracking-tight",
+      "h4": "text-xl font-semibold tracking-wide",
+      "body": "text-base md:text-lg leading-relaxed font-light",
+      "overline": "text-sm font-bold tracking-[0.2em] uppercase text-accent"
+    },
+    "import_instructions": "Import Google fonts in index.css: @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap'); Apply these to Tailwind config theme."
+  },
+  "colors": {
+    "light": {
+      "background": "#FAFAFA",
+      "foreground": "#0A0F1C",
+      "primary": "#0D3B66",
+      "primary-foreground": "#FFFFFF",
+      "secondary": "#20B2AA",
+      "secondary-foreground": "#FFFFFF",
+      "accent": "#D4AF37",
+      "accent-foreground": "#0A0F1C",
+      "card": "#FFFFFF",
+      "card-foreground": "#0A0F1C",
+      "muted": "#F1F5F9",
+      "muted-foreground": "#64748B",
+      "border": "#E2E8F0"
+    },
+    "dark": {
+      "background": "#0A0F1C",
+      "foreground": "#F8FAFC",
+      "primary": "#1A5F99",
+      "primary-foreground": "#FFFFFF",
+      "secondary": "#20B2AA",
+      "secondary-foreground": "#FFFFFF",
+      "accent": "#E5C158",
+      "accent-foreground": "#0A0F1C",
+      "card": "#111827",
+      "card-foreground": "#F8FAFC",
+      "muted": "#1E293B",
+      "muted-foreground": "#94A3B8",
+      "border": "#1E293B"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": {
+      "header": "backdrop-blur-xl bg-white/70 dark:bg-black/60 border-b border-white/20 dark:border-white/10 shadow-sm",
+      "cards": "backdrop-blur-lg bg-white/80 dark:bg-slate-900/80 border border-white/40 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.04)]"
+    },
+    "shadows": {
+      "soft": "shadow-[0_4px_20px_rgba(13,59,102,0.08)]",
+      "hover": "shadow-[0_12px_32px_rgba(13,59,102,0.12)]"
+    },
+    "borders": {
+      "radius": "rounded-2xl",
+      "buttons": "rounded-full"
+    },
+    "gradients": {
+      "luxury_overlay": "bg-gradient-to-r from-background via-background/80 to-transparent",
+      "gold_text": "bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] bg-clip-text text-transparent"
+    }
+  },
+  "component_name": {
+    "Button": "Use pill-shaped buttons (rounded-full). Primary buttons: bg-primary text-white hover:bg-primary/90. Accent buttons: bg-accent text-accent-foreground hover:brightness-110. Add micro-interactions: active:scale-95 transition-transform duration-200.",
+    "Card": "Use subtle padding (p-8). Add 'The Tracing Beam' or delicate 1px border. Hover effect: -translate-y-1 transition-all duration-300.",
+    "Inputs": "Shadcn Form/Input components but customized with rounded-xl, soft bg (bg-muted/50), focus:ring-2 focus:ring-accent/50."
+  },
+  "grids": {
+    "services_grid": "High Density Bento Grid. grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6. Make key services span 2 columns.",
+    "layout_spacing": "Generous spacing. Use py-24 or py-32 for sections. Container padding px-4 md:px-8 lg:px-12."
+  },
+  "layouts": {
+    "home_page": {
+      "hero": "Full height (min-h-[85vh]). Left-aligned content with 'luxury_overlay' over background image. Huge Serif H1. Floating appointment card on the right.",
+      "services": "22-card Bento Grid. Filterable or categorized. Icons for each.",
+      "testimonials": "Carousel of patient stories. Large Serif quotes. High trust signals."
+    },
+    "navigation": "Sticky Mega-Menu. Use glassmorphism. Include emergency call CTA button prominently.",
+    "appointment_flow": "Multi-step form wizard (Shadcn + Framer Motion). Clear progress indicator. Use earthy, trustworthy tones.",
+    "location_page": "City-specific hero. Map integration. Local doctors/nurses showcase."
+  },
+  "motion": {
+    "scroll": "MANDATORY: Use `lenis` for smooth scrolling.",
+    "animations": {
+      "entrance": "Framer Motion. Fade in and slide up (y: 20, opacity: 0). Stagger children in grids.",
+      "hover": "Scale 1.02 on cards, icon slight bounce or rotation."
+    }
+  },
+  "accessibility": {
+    "contrast": "Ensure APCA/WCAG AA contrast. Never use text over image without a sufficient overlay (black/50 or primary/80).",
+    "interactive": "Include data-testid on all interactive elements (buttons, forms, links). Explicit focus states with focus:ring-2.",
+    "semantic": "Use proper HTML5 elements (<header>, <nav>, <section>, <main>, <footer>)."
+  },
+  "media": {
+    "handling": "All images must have alt text. Use object-cover for backgrounds. Max mobile height for decorative images: max-h-[60vh]."
+  },
+  "3d_libraries": {
+    "recommendation": "Use framer-motion for UI transitions. For background, keep it clean with CSS noise textures rather than heavy 3D to maintain 95+ Lighthouse score. Use Lucide-react for all icons."
+  },
+  "image_urls": {
+    "logo": {
+      "url": "https://customer-assets-m6fa6gv7.emergentagent.net/job_c28788d7-d073-4d2e-a96d-a080590d0883/artifacts/tookqz5m_IMG-20260701-WA0052.jpg",
+      "description": "Java Home Health Care logo",
+      "category": "header, footer"
+    },
+    "hero_nurse": {
+      "url": "https://images.pexels.com/photos/9893525/pexels-photo-9893525.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Indian nurse caring for elderly patient",
+      "category": "home_hero"
+    },
+    "doctor_consultation": {
+      "url": "https://images.unsplash.com/photo-1758691463198-dc663b8a64e4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHwyfHxJbmRpYW4lMjBkb2N0b3IlMjBjb25zdWx0aW5nJTIwcGF0aWVudHxlbnwwfHx8fDE3ODI0NjIzOTR8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Indian doctor consulting patient at home",
+      "category": "services, about"
+    },
+    "physiotherapy": {
+      "url": "https://images.pexels.com/photos/20860592/pexels-photo-20860592.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Physiotherapy patient recovery",
+      "category": "services, physiotherapy"
+    },
+    "luxury_texture": {
+      "url": "https://images.pexels.com/photos/3882464/pexels-photo-3882464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Gold accent medical background",
+      "category": "cta_background"
+    }
+  },
+  "instructions_to_main_agent": "1. MUST setup Light/Dark theme toggle. 2. NEVER use Inter or Space Grotesk. ALWAYS use Cormorant Garamond for headings and Manrope for body. 3. DO NOT use generic Vercel/Shadcn looks. Wrap Shadcn components in the luxury design system colors and typography. 4. Header MUST have glassmorphism and sticky behavior. 5. Create a 22-card service grid using the high-density bento pattern. 6. Optimize everything for 95+ Lighthouse score (lazy load images, clean HTML). 7. Add floating WhatsApp/Emergency call buttons.",
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": "You tend to converge toward generic, 'on distribution' outputs. In frontend design, this creates what users call the 'AI slop' aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients. Don't make generic centered layouts, simplistic gradients, and uniform styling. Create depth through layered design elements with z-index hierarchy. Use glass-morphism effects with backdrop filters (12-24px blur). You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms. You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text. Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style. NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 etc for icons. Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead. Use 2-3x more spacing than feels comfortable. Cramped designs look cheap. Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary. Main agent relies on these image URLs. Missing categories (especially sponsor logos) = main agent will use placeholder text which is FORBIDDEN. Component Reuse: Prioritize using pre-existing components from src/components/ui when applicable. Create new components that match the style and conventions of existing components when needed. Examine existing components to understand the project's component patterns before creating new ones. Toasts: Use 'sonner' for toasts. Sonner component are located in /app/src/components/ui/sonner.tsx"
+}
