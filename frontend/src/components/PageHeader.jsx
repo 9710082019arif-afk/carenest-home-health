@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PageHeader = ({ eyebrow, title, subtitle, image, crumbs = [] }) => (
+const PageHeader = ({ eyebrow, title, subtitle, image, imageAlt, crumbs = [] }) => (
   <section className="relative overflow-hidden">
     <div className="absolute inset-0 -z-10">
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-secondary/5" />
@@ -30,7 +30,7 @@ const PageHeader = ({ eyebrow, title, subtitle, image, crumbs = [] }) => (
         {image && (
           <div className="lg:col-span-4">
             <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lux">
-              <img src={image} alt={title} className="h-full w-full object-cover" />
+              <img src={image} alt={imageAlt || (typeof title === "string" ? title : "Java Home Health Care")} className="h-full w-full object-cover" />
             </div>
           </div>
         )}
