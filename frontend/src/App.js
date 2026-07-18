@@ -1,55 +1,55 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { ThemeProvider } from "@/lib/theme";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Services from "@/pages/Services";
+import ServiceDetail from "@/pages/ServiceDetail";
+import BookAppointment from "@/pages/BookAppointment";
+import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
+import Gallery from "@/pages/Gallery";
+import Testimonials from "@/pages/Testimonials";
+import Blog from "@/pages/Blog";
+import Careers from "@/pages/Careers";
+import LocationDetail from "@/pages/LocationDetail";
+import Legal from "@/pages/Legal";
+import NotFound from "@/pages/NotFound";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [pathname]);
+  return null;
 };
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/locations/:slug" element={<LocationDetail />} />
+          <Route path="/book-appointment" element={<BookAppointment />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/privacy-policy" element={<Legal slug="privacy-policy" />} />
+          <Route path="/terms" element={<Legal slug="terms" />} />
+          <Route path="/refund-policy" element={<Legal slug="refund-policy" />} />
+          <Route path="/cancellation-policy" element={<Legal slug="cancellation-policy" />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </ThemeProvider>
   );
 }
 
