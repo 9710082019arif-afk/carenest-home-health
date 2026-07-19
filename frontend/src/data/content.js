@@ -63,6 +63,7 @@ export const LOCATIONS = [
   { slug: "thane", name: "Thane", state: "Maharashtra" },
   { slug: "bengaluru", name: "Bengaluru", state: "Karnataka", featured: true },
   { slug: "hyderabad", name: "Hyderabad", state: "Telangana", featured: true },
+  { slug: "delhi-ncr", name: "Delhi NCR", state: "Delhi", featured: true },
   { slug: "ranchi", name: "Ranchi", state: "Jharkhand" },
   { slug: "bhubaneswar", name: "Bhubaneswar", state: "Odisha" },
   { slug: "kolkata", name: "Kolkata", state: "West Bengal" },

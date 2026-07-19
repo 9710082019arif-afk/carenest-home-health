@@ -44,6 +44,7 @@
   <url><loc>https://carenesthomehealth.in/locations/thane</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/bengaluru</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/hyderabad</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/ranchi</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/bhubaneswar</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/kolkata</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
@@ -202,6 +203,28 @@
   <url><loc>https://carenesthomehealth.in/locations/hyderabad/elder-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/hyderabad/24x7-nursing-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/hyderabad/critical-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/home-nursing</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/caregiver-services</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/doctor-at-home</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/icu-at-home</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/physiotherapy-at-home</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/medical-equipment-rental</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/bedridden-patient-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/stroke-rehabilitation</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/paralysis-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/cancer-patient-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/palliative-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/mother-baby-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/dementia-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/alzheimer-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/post-operative-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/tracheostomy-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/ventilator-support</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/injection-dressing</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/attendant-services</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/elder-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/24x7-nursing-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://carenesthomehealth.in/locations/delhi-ncr/critical-care</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/ranchi/home-nursing</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/ranchi/caregiver-services</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
   <url><loc>https://carenesthomehealth.in/locations/ranchi/doctor-at-home</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
