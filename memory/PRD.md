@@ -56,3 +56,13 @@ Build India's most premium, luxurious, high-converting, SEO-optimized Home Healt
 - **Combinatorial city×service SEO landing pages** at `/locations/:city/:slug` (all 11×22 = 242 pages, unique H1, meta title, MedicalBusiness JSON-LD, breadcrumbs, embedded map, lead form, internal links)
 - **AnalyticsLoader** component that auto-injects GA4 / GTM / Meta Pixel scripts based on `/api/config/public` — drop IDs in `/app/backend/.env` (GA_MEASUREMENT_ID, GTM_ID, META_PIXEL_ID) to activate
 - **DNS cutover guide** at `/app/DEPLOYMENT_DNS.md` (preserves Titan MX / SPF / DKIM)
+
+## Rebrand (2026-07-19)
+- **Brand**: Java Home Health Care → **CareNest Home Health**
+- **Domain**: javahomecare.in → **carenesthomehealth.in** (owned by user on Hostinger, active till 2027-07-19)
+- **Email**: info@javahomecare.in → **info@carenesthomehealth.in** (user needs to set up Titan mailbox on new domain via Hostinger hPanel)
+- **Social handles**: @javahomecare → **@carenesthomehealth** (Instagram / Facebook / LinkedIn / YouTube — user needs to secure handles)
+- **Custom SVG logo** created (nest + medical cross in royal blue/teal/gold) at `/logo.svg` and full wordmark at `/logo-wordmark.svg`
+- All 290 sitemap URLs, JSON-LD schemas, meta tags, OG/Twitter cards, canonical URLs, favicon, and legal pages updated
+- **Hostinger-specific DNS + Titan email setup guide** at `/app/DEPLOYMENT_DNS.md`
+- **No GST** callout added to pricing page + FAQ + AI chat system prompt

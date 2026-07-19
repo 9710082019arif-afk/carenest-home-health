@@ -1,60 +1,96 @@
-# DNS Cutover — `javahomecare.in` → Emergent-hosted site
+# DNS Cutover — `carenesthomehealth.in` (Hostinger)
 
-**Goal**: point `javahomecare.in` (and `www.javahomecare.in`) to the new site **without breaking Titan Email**.
+**Registrar**: Hostinger  ·  **hPanel** → `Domains` → `carenesthomehealth.in` → `DNS / Nameservers`
 
-## 1) DO NOT TOUCH (email keeps working)
-Leave these MX + related records exactly as they are:
-
-- `MX` records (Titan): usually `mx1.titan.email`, `mx2.titan.email` (priority 10, 20)
-- `TXT` for SPF: `v=spf1 include:spf.titan.email ~all`
-- `TXT` for DKIM: `titan1._domainkey.javahomecare.in` (and similar Titan DKIM CNAMEs)
-- `TXT` for DMARC: `_dmarc.javahomecare.in` (if configured)
-- Any `CNAME` under `mail.` / `webmail.` etc.
-
-> Rule of thumb: **do not change any record whose host is `@`, `mail`, `webmail`, `_dmarc`, `_domainkey`, or which has type `MX`/`TXT` referring to Titan.**
-
-## 2) CHANGE / ADD (website)
-
-You'll get the exact IP / host from the Emergent deploy dashboard after we deploy. Two common patterns:
-
-### Option A — A record (if you get an IPv4)
-```
-Type   Host   Value                 TTL
-A      @      <EMERGENT_PUBLIC_IP>  300
-```
-
-### Option B — CNAME apex flattening / ALIAS (preferred if the provider supports it)
-```
-Type              Host   Value                             TTL
-ALIAS / ANAME     @      <emergent-app>.preview.emergentagent.com   300
-```
-
-### `www` subdomain
-```
-Type   Host   Value                                       TTL
-CNAME  www    <emergent-app>.preview.emergentagent.com    300
-```
-
-## 3) TLS / HTTPS
-Emergent auto-provisions Let's Encrypt certificates once DNS resolves to us. No manual cert action required.
-
-## 4) Verification checklist (after DNS change)
-1. `dig +short A javahomecare.in`      → Emergent IP (or CNAME chain)
-2. `dig +short MX javahomecare.in`     → **still Titan MX** (unchanged)
-3. `dig +short TXT javahomecare.in`    → **SPF still present**
-4. Send a test email to `info@javahomecare.in` and reply from it — both must work.
-5. Visit `https://javahomecare.in` — new site loads with padlock.
-
-## 5) Rollback (safety)
-Registrar keeps DNS history. If anything breaks, restore the previous `A` / `CNAME` record. Because we never touched MX/TXT/DKIM, email is unaffected in either state.
-
-## 6) What Emergent will provide before you cut over
-- The exact `A` or `CNAME` target
-- A pre-deploy dry-run URL so you can preview
-- Support during the 60-minute propagation window
+**Goal**: point `carenesthomehealth.in` and `www.carenesthomehealth.in` to the new CareNest Home Health site — and set up Titan Email on the new domain.
 
 ---
 
-**Contacts**
-- Emergent deployment: through your Emergent dashboard
-- Java Home Care ops: info@javahomecare.in · +91 9175724546
+## Step 1 — Website (A / CNAME)
+After Emergent deployment, you will get one of:
+
+### If Emergent gives you an IP (A record):
+```
+Type   Host   Value              TTL
+A      @      <EMERGENT_IP>      300
+CNAME  www    carenesthomehealth.in    300
+```
+
+### If Emergent gives you a hostname (CNAME / ALIAS — preferred):
+```
+Type              Host   Value                                       TTL
+CNAME (or ALIAS)  @      <emergent-app>.preview.emergentagent.com    300
+CNAME             www    <emergent-app>.preview.emergentagent.com    300
+```
+> Note: Hostinger's DNS editor supports CNAME on the apex (`@`) via their "CNAME flattening" — this works out of the box.
+
+**Currently on Hostinger the domain shows nameservers**:
+- `horizon.dns-parking.com`
+- `orbit.dns-parking.com`
+
+**No action needed on nameservers** — keep them as-is. Just edit the DNS records under those nameservers.
+
+---
+
+## Step 2 — Titan Email on new domain
+
+Since the old `javahomecare.in` had Titan email, you'll need to set up Titan on the new domain too.
+
+**Option A (Recommended) — Fresh Titan mailbox at carenesthomehealth.in**
+1. In Hostinger hPanel → `Emails` → `Add mailbox` → Titan Business Email
+2. Create `info@carenesthomehealth.in`
+3. Hostinger will auto-add the required MX / SPF / DKIM records — accept them
+4. Test by sending a mail to yourself
+
+**Option B — Migrate existing Titan mailbox from javahomecare.in**
+1. From Hostinger support / Titan support, request domain change for the existing mailbox
+2. Existing emails/contacts are preserved
+
+**MX records that will be added (auto by Titan/Hostinger)**:
+```
+MX   @   mx1.titan.email   priority 10
+MX   @   mx2.titan.email   priority 20
+TXT  @   v=spf1 include:spf.titan.email ~all
+```
+Plus DKIM CNAMEs (`titan1._domainkey`, `titan2._domainkey`).
+
+**⚠️ DO NOT delete these records** once added — email won't work.
+
+---
+
+## Step 3 — Redirect old domain (optional but recommended for SEO)
+If you still hold `javahomecare.in`:
+- Set up a **301 permanent redirect** from all `javahomecare.in/*` → `https://carenesthomehealth.in/*`
+- Hostinger hPanel → `Domains` → `javahomecare.in` → `Redirects` (or use a `.htaccess` rule if the domain is with another provider)
+- This preserves your SEO equity (backlinks, existing rankings)
+
+---
+
+## Step 4 — After DNS change (verification)
+```bash
+dig +short A carenesthomehealth.in       # should show Emergent IP / CNAME chain
+dig +short MX carenesthomehealth.in      # should show mx1.titan.email
+dig +short TXT carenesthomehealth.in     # should show v=spf1 include:spf.titan.email
+```
+- Send + receive test email at `info@carenesthomehealth.in`
+- Visit `https://carenesthomehealth.in` — new site loads with padlock (TLS auto-provisioned by Emergent)
+
+---
+
+## Step 5 — Submit sitemap to Google
+Once live:
+1. Google Search Console → Add property → `carenesthomehealth.in`
+2. Verify ownership (TXT record method — Hostinger DNS)
+3. Submit sitemap: `https://carenesthomehealth.in/sitemap.xml` (290 URLs waiting)
+4. Repeat in Bing Webmaster Tools
+
+---
+
+## Rollback safety
+Hostinger keeps DNS history for 30 days. If anything breaks, restore the previous record. Since MX/TXT/DKIM are separate from A/CNAME, changing one does not affect the other.
+
+---
+
+**Contact during cutover**
+- Hostinger 24×7 chat (fastest): hPanel top-right chat icon
+- CareNest ops: info@carenesthomehealth.in · +91 9175724546

@@ -27,7 +27,7 @@ db = mongo_client[os.environ["DB_NAME"]]
 EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
 EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY", "")
 EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "CareNest Home Health")
-LEAD_NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "info@javahomecare.in")
+LEAD_NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "info@carenesthomehealth.in")
 EMAIL_BASE_URL = "https://integrations.emergentagent.com"
 
 # Logging
@@ -151,7 +151,7 @@ def render_lead_email_html(payload: dict, kind: str = "Lead") -> str:
         <table style="width:100%;border-collapse:collapse;font-size:14px">{rows}</table>
       </td></tr>
       <tr><td style="padding:14px 24px;background:#F1F5F9;font-size:12px;color:#64748B">
-        Received {datetime.now(timezone.utc).strftime('%d %b %Y, %H:%M UTC')} · javahomecare.in
+        Received {datetime.now(timezone.utc).strftime('%d %b %Y, %H:%M UTC')} · carenesthomehealth.in
       </td></tr>
     </table>
     """
@@ -261,7 +261,7 @@ CHAT_SYSTEM_PROMPT = """You are 'Care Concierge' — a warm, precise virtual ass
 About the company:
 - 24x7 professional home healthcare across Pune, Pimpri-Chinchwad, Mumbai, Navi Mumbai, Thane, Bengaluru, Hyderabad, Ranchi, Bhubaneswar, Kolkata, Goa and expanding.
 - Services: Home Nursing, Caregiver, Doctor-at-Home, ICU-at-Home, Physiotherapy, Medical Equipment Rental, Bedridden / Stroke / Paralysis / Cancer / Palliative / Dementia / Alzheimer / Post-op / Tracheostomy / Ventilator care, Mother & Baby Care, Attendant, Elder Care.
-- Phone/WhatsApp: +91 9175724546  ·  Email: info@javahomecare.in
+- Phone/WhatsApp: +91 9175724546  ·  Email: info@carenesthomehealth.in
 
 Indicative starting rates (share only when the user asks about pricing; always clarify the final plan is personalised):
 - Home Nursing / 24x7 Nursing Care: ₹2,800 – ₹3,000 per day (varies by patient condition)

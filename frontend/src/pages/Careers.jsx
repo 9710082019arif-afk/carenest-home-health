@@ -23,7 +23,7 @@ const Careers = () => {
     if (!f.name || !f.phone || !f.role) return toast.error("Name, phone and role are required.");
     setLoading(true);
     try { await applyCareer({ ...f, experience_years: f.experience_years ? Number(f.experience_years) : undefined }); toast.success("Application received. We'll reach out shortly."); setF({ name: "", phone: "", email: "", role: "", experience_years: "", city: "", cover_letter: "" }); }
-    catch { toast.error("Could not submit — please email info@javahomecare.in"); }
+    catch { toast.error("Could not submit — please email info@carenesthomehealth.in"); }
     finally { setLoading(false); }
   };
 

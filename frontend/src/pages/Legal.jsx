@@ -12,8 +12,8 @@ const CONTENT = {
       { h: "How we use it", p: "To respond to enquiries, deliver care, coordinate with clinicians and insurers, improve our services, and comply with law." },
       { h: "Sharing", p: "We share your data only with our vetted care team, insurance partners (on your instruction), payment processors and law enforcement when legally required. We never sell your data." },
       { h: "Security", p: "Data is stored on encrypted infrastructure, access is role-limited and audited. Digital case notes are shared only with the family via authenticated links." },
-      { h: "Your rights", p: "You may request access, correction, portability or deletion of your data by writing to info@javahomecare.in." },
-      { h: "Contact", p: "For any privacy question, email info@javahomecare.in or call +91 9175724546." },
+      { h: "Your rights", p: "You may request access, correction, portability or deletion of your data by writing to info@carenesthomehealth.in." },
+      { h: "Contact", p: "For any privacy question, email info@carenesthomehealth.in or call +91 9175724546." },
     ],
   },
   "terms": {
@@ -34,7 +34,7 @@ const CONTENT = {
       { h: "Advance deposits", p: "Advance amounts are fully refundable if care is cancelled 24 hours before start of shift, minus any deployment/travel already incurred." },
       { h: "After deployment", p: "Refunds after deployment are prorated to hours delivered." },
       { h: "Equipment rental", p: "Refunds on rentals apply for unused whole-day periods, subject to sanitisation and pickup." },
-      { h: "How to request", p: "Email info@javahomecare.in with your case ID; refunds are processed within 7 business days to the original payment method." },
+      { h: "How to request", p: "Email info@carenesthomehealth.in with your case ID; refunds are processed within 7 business days to the original payment method." },
     ],
   },
   "cancellation-policy": {

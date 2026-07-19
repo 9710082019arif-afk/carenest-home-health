@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://javahomecare.in/sitemap.xml
+Sitemap: https://carenesthomehealth.in/sitemap.xml

@@ -6,17 +6,18 @@ export const COMPANY = {
   phone: "+91 9175724546",
   phoneDigits: "919175724546",
   whatsapp: "919175724546",
-  email: "info@javahomecare.in",
-  website: "https://javahomecare.in",
+  email: "info@carenesthomehealth.in",
+  website: "https://carenesthomehealth.in",
   tagline: "Premium home healthcare, delivered.",
   address: "Serving families across India · Head office · Pune",
   socials: {
-    instagram: "https://www.instagram.com/javahomecare",
-    facebook: "https://www.facebook.com/javahomecare",
-    linkedin: "https://www.linkedin.com/company/javahomecare",
-    youtube: "https://www.youtube.com/@javahomecare",
+    instagram: "https://www.instagram.com/carenesthomehealth",
+    facebook: "https://www.facebook.com/carenesthomehealth",
+    linkedin: "https://www.linkedin.com/company/carenesthomehealth",
+    youtube: "https://www.youtube.com/@carenesthomehealth",
   },
-  logo: "https://customer-assets-m6fa6gv7.emergentagent.net/job_c28788d7-d073-4d2e-a96d-a080590d0883/artifacts/tookqz5m_IMG-20260701-WA0052.jpg",
+  logo: "/logo.svg",
+  logoWordmark: "/logo-wordmark.svg",
 };
 
 export const SERVICES = [
