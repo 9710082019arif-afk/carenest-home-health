@@ -94,41 +94,38 @@ export const STATS = [
   { value: "12,400+", label: "Families cared for" },
   { value: "4.9/5", label: "Google rating" },
   { value: "24×7", label: "Care coordination" },
-  { value: "11", label: "Cities served" },
+  { value: "12", label: "Cities served" },
 ];
 
 export const TEAM = [
-  { name: "Dr. Anjali Kulkarni", role: "Medical Director", city: "Pune", img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=640&q=80" },
-  { name: "Nurse Sunita M.", role: "Head of Nursing", city: "Mumbai", img: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=640&q=80" },
-  { name: "Dr. Vivek Rao", role: "Consultant, Critical Care", city: "Bengaluru", img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=640&q=80" },
-  { name: "Ravi Prakash", role: "Physiotherapist Lead", city: "Hyderabad", img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=640&q=80" },
+  { name: "Riya Shaikh", role: "Founder & Managing Director", city: "India", img: "/brand-kit/team/riya-shaikh.svg", bio: "Riya founded CareNest Home Health to bring hospital-grade care into the warmth of the home — with dignity, punctuality and a genuinely human touch. She leads clinical partnerships, care standards and everyday operations across all cities we serve." },
 ];
 
 export const PARTNERS = [];
 
 export const BLOG_POSTS = [
-  { slug: "bedsore-prevention-guide", title: "A family's guide to preventing bedsores", excerpt: "Simple, evidence-based turns, cushions and skin-care every family can practise at home.", tag: "Care Guide", read: "6 min", img: "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=1200&q=80" },
-  { slug: "post-stroke-recovery-milestones", title: "Post-stroke recovery: what to expect in month 1", excerpt: "Neuro-rehab benchmarks and how to celebrate the small wins that add up.", tag: "Rehab", read: "8 min", img: "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80" },
-  { slug: "choosing-an-attendant", title: "How to choose a home attendant — 7 red flags", excerpt: "A checklist we wish more families used before signing on.", tag: "Hiring", read: "5 min", img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1200&q=80" },
+  { slug: "bedsore-prevention-guide", title: "A family's guide to preventing bedsores", excerpt: "Simple, evidence-based turns, cushions and skin-care every family can practise at home.", tag: "Care Guide", read: "6 min", img: "/brand-kit/images/patient-care.jpg" },
+  { slug: "post-stroke-recovery-milestones", title: "Post-stroke recovery: what to expect in month 1", excerpt: "Neuro-rehab benchmarks and how to celebrate the small wins that add up.", tag: "Rehab", read: "8 min", img: "/brand-kit/images/physiotherapy.jpg" },
+  { slug: "choosing-an-attendant", title: "How to choose a home attendant — 7 red flags", excerpt: "A checklist we wish more families used before signing on.", tag: "Hiring", read: "5 min", img: "/brand-kit/images/elder-care.jpg" },
 ];
 
 export const IMAGES = {
-  heroPrimary: "https://images.pexels.com/photos/9893525/pexels-photo-9893525.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900",
-  heroSecondary: "https://images.unsplash.com/photo-1666214277657-e0f3a75d5089?auto=format&fit=crop&w=1200&q=80",
-  doctorHome: "https://images.unsplash.com/photo-1666214280165-fdcaea25f4b7?auto=format&fit=crop&w=1600&q=80",
-  physioHome: "https://images.pexels.com/photos/20860592/pexels-photo-20860592.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900",
-  elderCare: "https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=1600&q=80",
-  nurseCare: "https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=1600&q=80",
-  goldTexture: "https://images.pexels.com/photos/3882464/pexels-photo-3882464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+  heroPrimary: "/brand-kit/social/hero-banner.jpg",
+  heroSecondary: "/brand-kit/images/nursing-care.jpg",
+  doctorHome: "/brand-kit/images/doctor-visit.jpg",
+  physioHome: "/brand-kit/images/physiotherapy.jpg",
+  elderCare: "/brand-kit/images/elder-care.jpg",
+  nurseCare: "/brand-kit/images/nursing-care.jpg",
+  goldTexture: "/brand-kit/social/gbp-cover.jpg",
   gallery: [
-    "https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1666214279154-2f24947c14e0?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=900&q=80",
-    "https://images.pexels.com/photos/20860592/pexels-photo-20860592.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=900",
-    "https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1666214277657-e0f3a75d5089?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1666214280165-fdcaea25f4b7?auto=format&fit=crop&w=900&q=80",
+    "/brand-kit/images/nursing-care.jpg",
+    "/brand-kit/images/elder-care.jpg",
+    "/brand-kit/images/icu-at-home.jpg",
+    "/brand-kit/images/physiotherapy.jpg",
+    "/brand-kit/images/patient-care.jpg",
+    "/brand-kit/images/doctor-visit.jpg",
+    "/brand-kit/images/medical-equipment.jpg",
+    "/brand-kit/images/home-care.jpg",
   ],
 };
 

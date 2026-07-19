@@ -33,7 +33,7 @@ const Home = () => {
               <br /> healthcare, <span className="text-gold italic">delivered.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg md:text-[19px] text-muted-foreground font-light leading-relaxed">
-              Trusted nurses, physicians, physiotherapists and caregivers — coordinated by a care manager, always at your doorstep. Available across 11 Indian cities.
+              Trusted nurses, physicians, physiotherapists and caregivers — coordinated by a care manager, always at your doorstep. Available across 12 Indian cities.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -70,11 +70,12 @@ const Home = () => {
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="glass-strong rounded-2xl p-4 flex items-center gap-3">
                   <div className="flex -space-x-2">
-                    {TEAM.slice(0,3).map((t) => (<img key={t.name} src={t.img} alt={t.name} className="h-9 w-9 rounded-full border-2 border-white object-cover" />))}
+                    {TEAM.map((t) => (<img key={t.name} src={t.img} alt={t.name} className="h-9 w-9 rounded-full border-2 border-white object-cover" />))}
+                    <div className="h-9 w-9 rounded-full border-2 border-white bg-secondary text-white grid place-items-center text-[11px] font-bold">+400</div>
                   </div>
                   <div className="text-xs">
                     <div className="font-semibold">Meet your care team</div>
-                    <div className="text-muted-foreground">400+ verified professionals</div>
+                    <div className="text-muted-foreground">Founder-led · 400+ verified professionals</div>
                   </div>
                 </div>
               </div>
@@ -181,21 +182,22 @@ const Home = () => {
       <section className="container-lux py-24 md:py-32 grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-7">
           <div className="overline text-accent">The team behind the care</div>
-          <h2 className="font-serif text-4xl md:text-5xl mt-3 tracking-tight">Physicians, nurses and physios who <span className="text-gold italic">truly listen.</span></h2>
+          <h2 className="font-serif text-4xl md:text-5xl mt-3 tracking-tight">Founded by someone who <span className="text-gold italic">truly listens.</span></h2>
           <p className="mt-4 text-muted-foreground max-w-2xl font-light text-lg">Every professional is credential-verified, trained in CareNest's home-care protocols and reviewed monthly. We match personalities as carefully as skills.</p>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
             {TEAM.map((t) => (
-              <div key={t.name} className="group">
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden">
-                  <img src={t.img} alt={t.name} className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/0 to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <div className="font-serif text-lg">{t.name}</div>
-                    <div className="text-[11px] opacity-85">{t.role} · {t.city}</div>
-                  </div>
-                </div>
+              <div key={t.name} className="rounded-3xl overflow-hidden border border-border/70 bg-card/60 shadow-lux">
+                <img src={t.img} alt={t.name} className="w-full aspect-[4/5] object-cover" />
               </div>
             ))}
+            <div className="rounded-3xl border border-border/70 bg-primary text-primary-foreground p-6 md:p-7">
+              <div className="overline text-gold-light">Founder's promise</div>
+              <p className="mt-3 font-serif text-xl leading-snug">"To bring hospital-grade care into the warmth of the home — with dignity, punctuality and a genuinely human touch."</p>
+              <div className="mt-5 pt-5 border-t border-white/15 text-sm">
+                <div className="font-semibold">Riya Shaikh</div>
+                <div className="text-white/70 text-xs mt-0.5">Founder & Managing Director</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -214,7 +216,7 @@ const Home = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div className="max-w-2xl">
             <div className="overline text-accent">Where we care</div>
-            <h2 className="font-serif text-4xl md:text-5xl mt-3 tracking-tight">Present in <span className="text-gold italic">11 Indian cities.</span></h2>
+            <h2 className="font-serif text-4xl md:text-5xl mt-3 tracking-tight">Present in <span className="text-gold italic">12 Indian cities.</span></h2>
             <p className="mt-4 text-muted-foreground text-lg font-light">Local care managers, background-verified staff and same-day deployment.</p>
           </div>
         </div>

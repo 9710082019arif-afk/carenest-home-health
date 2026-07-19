@@ -20,8 +20,8 @@ const About = () => (
         <div className="overline text-accent">Our story</div>
         <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">Home is where healing begins.</h2>
         <div className="mt-6 space-y-5 text-muted-foreground text-lg font-light leading-relaxed">
-          <p>We started with a simple frustration: families discharged from great hospitals often struggled at home. Nurses were hard to find. Physicians did not follow through. Equipment showed up broken.</p>
-          <p>CareNest Home Health was built to fix all of that — with a real care manager per family, background-verified professionals, clinical protocols and equipment that just works. We now serve <b>12,400+ families</b> across 11 Indian cities.</p>
+          <p><b className="text-foreground">Riya Shaikh</b> founded CareNest Home Health out of a simple frustration: families discharged from great hospitals often struggled at home. Nurses were hard to find. Physicians did not follow through. Equipment showed up broken.</p>
+          <p>CareNest Home Health was built to fix all of that — with a real care manager per family, background-verified professionals, clinical protocols and equipment that just works. We now serve <b>12,400+ families</b> across 12 Indian cities.</p>
           <p>Our promise remains simple: <b className="text-foreground">care with dignity, delivered on time</b>.</p>
         </div>
       </div>
@@ -58,21 +58,23 @@ const About = () => (
     </section>
 
     <section className="container-lux pb-24">
-      <div className="overline text-accent">Leadership team</div>
-      <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">Physicians, nurses & operators.</h2>
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-        {TEAM.map((t) => (
-          <div key={t.name} className="group">
-            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden">
-              <img src={t.img} alt={t.name} className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/0 to-transparent" />
-              <div className="absolute bottom-3 left-3 right-3 text-white">
-                <div className="font-serif text-lg">{t.name}</div>
-                <div className="text-[11px] opacity-85">{t.role} · {t.city}</div>
-              </div>
-            </div>
+      <div className="overline text-accent">Leadership</div>
+      <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">Founded with <span className="text-gold italic">purpose.</span></h2>
+      <div className="mt-10 grid lg:grid-cols-12 gap-10 items-start">
+        <div className="lg:col-span-4">
+          <div className="rounded-3xl overflow-hidden shadow-lux ring-1 ring-black/5">
+            <img src={TEAM[0].img} alt={TEAM[0].name} className="w-full aspect-[4/5] object-cover bg-primary" />
           </div>
-        ))}
+        </div>
+        <div className="lg:col-span-8">
+          <div className="overline text-accent">{TEAM[0].role}</div>
+          <h3 className="font-serif text-4xl md:text-5xl mt-2 tracking-tight">{TEAM[0].name}</h3>
+          <p className="mt-6 text-lg text-muted-foreground font-light leading-relaxed">{TEAM[0].bio}</p>
+          <blockquote className="mt-8 pl-5 border-l-2 border-accent">
+            <p className="font-serif text-2xl italic leading-snug">"To bring hospital-grade care into the warmth of the home — with dignity, punctuality and a genuinely human touch. That is why CareNest exists."</p>
+            <div className="mt-4 text-sm text-muted-foreground">— Riya Shaikh, Founder & Managing Director</div>
+          </blockquote>
+        </div>
       </div>
     </section>
 
