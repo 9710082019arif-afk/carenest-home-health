@@ -102,9 +102,7 @@ export const TEAM = [
   { name: "Ravi Prakash", role: "Physiotherapist Lead", city: "Hyderabad", img: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=640&q=80" },
 ];
 
-export const PARTNERS = [
-  "Apollo Hospitals","Fortis","Manipal","Ruby Hall Clinic","Kokilaben Ambani","Narayana Health","Max Healthcare","Star Health","Aditya Birla Health","HDFC Ergo",
-];
+export const PARTNERS = [];
 
 export const BLOG_POSTS = [
   { slug: "bedsore-prevention-guide", title: "A family's guide to preventing bedsores", excerpt: "Simple, evidence-based turns, cushions and skin-care every family can practise at home.", tag: "Care Guide", read: "6 min", img: "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=1200&q=80" },

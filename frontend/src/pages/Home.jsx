@@ -106,11 +106,29 @@ const Home = () => {
         </div>
       </section>
 
-      {/* MARQUEE partners */}
+      {/* MARQUEE trust strip */}
       <section className="py-10 border-y border-border/50 bg-muted/30 overflow-hidden">
         <div className="marquee-track gap-14 whitespace-nowrap">
-          {[...PARTNERS, ...PARTNERS].map((p, i) => (
-            <span key={i} className="font-serif text-2xl md:text-3xl text-muted-foreground/70 tracking-tight italic">{p}</span>
+          {[
+            "Background-verified professionals",
+            "24×7 care coordination",
+            "Insurance claim support",
+            "Same-day deployment",
+            "Consultant-supervised protocols",
+            "Digital case notes shared daily",
+            "Trained in home-care hygiene",
+            "Dedicated care manager per family",
+          ].concat([
+            "Background-verified professionals",
+            "24×7 care coordination",
+            "Insurance claim support",
+            "Same-day deployment",
+            "Consultant-supervised protocols",
+            "Digital case notes shared daily",
+            "Trained in home-care hygiene",
+            "Dedicated care manager per family",
+          ]).map((p, i) => (
+            <span key={i} className="font-serif text-2xl md:text-3xl text-muted-foreground/70 tracking-tight italic">{p} ·</span>
           ))}
         </div>
       </section>

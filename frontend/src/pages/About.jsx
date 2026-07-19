@@ -77,11 +77,19 @@ const About = () => (
     </section>
 
     <section className="container-lux pb-24">
-      <div className="overline text-accent">Partners & hospital network</div>
-      <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">Trusted alongside India's finest.</h2>
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-4">
-        {PARTNERS.map((p) => (
-          <div key={p} className="rounded-2xl border border-border/70 bg-card/50 h-24 grid place-items-center text-center px-4 font-serif text-[17px] text-muted-foreground">{p}</div>
+      <div className="overline text-accent">How we work</div>
+      <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">We work with <span className="text-gold italic">your</span> hospital, doctor & insurer.</h2>
+      <p className="mt-4 max-w-2xl text-muted-foreground font-light text-lg">Java Home Health Care is an independent home-care provider. We coordinate with whichever hospital, treating physician or insurer your family already trusts — carrying over discharge protocols, medication schedules and rehab plans so nothing is lost in the transition home.</p>
+      <div className="mt-8 grid md:grid-cols-3 gap-4">
+        {[
+          { t: "Hospital-agnostic", d: "We collaborate with whichever hospital your family already trusts. No exclusive tie-ups, no bias." },
+          { t: "Physician-led continuity", d: "Your treating consultant's plan is followed to the letter. We share daily digital case notes." },
+          { t: "Insurance-ready", d: "Detailed itemised invoices, claim-ready documentation and TPA coordination for cashless/reimbursement." },
+        ].map((v) => (
+          <div key={v.t} className="rounded-3xl border border-border/70 bg-card/60 p-6">
+            <div className="font-serif text-xl">{v.t}</div>
+            <p className="text-sm text-muted-foreground mt-2 font-light">{v.d}</p>
+          </div>
         ))}
       </div>
     </section>
