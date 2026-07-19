@@ -26,7 +26,7 @@ const FloatingActions = () => {
 
         <a
           data-testid="fab-whatsapp"
-          href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent("Hi Java Home Care, I need help with home healthcare.")}`}
+          href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent("Hi CareNest, I need help with home healthcare.")}`}
           target="_blank" rel="noreferrer"
           className="relative h-14 w-14 grid place-items-center rounded-full bg-[#25D366] text-white shadow-lux hover:shadow-lux-hover transition-shadow"
           aria-label="Chat on WhatsApp"

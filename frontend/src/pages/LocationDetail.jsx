@@ -31,7 +31,7 @@ const LocationDetail = () => {
       <section className="container-lux pb-16 grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-8 space-y-10">
           <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-8">
-            <h2 className="font-serif text-3xl md:text-4xl tracking-tight">Why families in {loc.name} choose Java</h2>
+            <h2 className="font-serif text-3xl md:text-4xl tracking-tight">Why families in {loc.name} choose CareNest</h2>
             <div className="mt-6 grid md:grid-cols-2 gap-3">
               {[
                 `Local care manager based in ${loc.name}`,

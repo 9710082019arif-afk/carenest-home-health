@@ -44,9 +44,9 @@ const Header = () => {
       <div className="glass hairline">
         <div className="container-lux flex items-center justify-between h-[68px] md:h-[76px]">
           <Link to="/" data-testid="header-logo" className="flex items-center gap-3 group">
-            <img src={COMPANY.logo} alt="Java Home Health Care logo" className="h-11 w-11 rounded-xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
+            <img src={COMPANY.logo} alt="CareNest Home Health logo" className="h-11 w-11 rounded-xl object-cover ring-1 ring-black/5 dark:ring-white/10" />
             <div className="leading-tight">
-              <div className="font-serif text-[19px] md:text-[21px] font-medium tracking-tight text-primary">Java <span className="text-gold">Home</span> Care</div>
+              <div className="font-serif text-[19px] md:text-[21px] font-medium tracking-tight text-primary">Care<span className="text-gold">Nest</span></div>
               <div className="overline text-muted-foreground mt-0.5 hidden md:block">Premium home healthcare</div>
             </div>
           </Link>

@@ -12,7 +12,7 @@ const ChatWidget = ({ open, onClose }) => {
     return v;
   });
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Namaste — I'm Care Concierge from Java Home Health Care. How can we help you or your loved one today?" },
+    { role: "assistant", content: "Namaste — I'm Care Concierge from CareNest Home Health. How can we help you or your loved one today?" },
   ]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -60,7 +60,7 @@ const ChatWidget = ({ open, onClose }) => {
             </div>
             <div>
               <div className="font-serif text-lg leading-none">Care Concierge</div>
-              <div className="text-[11px] text-muted-foreground mt-1">Powered by Java · replies in seconds</div>
+              <div className="text-[11px] text-muted-foreground mt-1">Powered by CareNest · replies in seconds</div>
             </div>
           </div>
           <button data-testid="chat-close" onClick={onClose} className="btn-ghost h-9 w-9 p-0"><X size={16} /></button>

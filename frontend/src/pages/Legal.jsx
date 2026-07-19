@@ -7,7 +7,7 @@ const CONTENT = {
     title: "Privacy policy",
     eyebrow: "Legal",
     body: [
-      { h: "Overview", p: "Java Home Health Care ('Java', 'we', 'us') respects your privacy. This policy explains what we collect, why we collect it and how we protect it." },
+      { h: "Overview", p: "CareNest Home Health ('CareNest', 'we', 'us') respects your privacy. This policy explains what we collect, why we collect it and how we protect it." },
       { h: "Information we collect", p: "Contact information you share (name, phone, email, city), care-related information shared voluntarily during booking, and technical information (device, browser, IP) collected automatically." },
       { h: "How we use it", p: "To respond to enquiries, deliver care, coordinate with clinicians and insurers, improve our services, and comply with law." },
       { h: "Sharing", p: "We share your data only with our vetted care team, insurance partners (on your instruction), payment processors and law enforcement when legally required. We never sell your data." },
@@ -20,10 +20,10 @@ const CONTENT = {
     title: "Terms & conditions",
     eyebrow: "Legal",
     body: [
-      { h: "Acceptance", p: "By engaging Java Home Health Care, you accept these terms and any care-plan-specific addenda." },
+      { h: "Acceptance", p: "By engaging CareNest Home Health, you accept these terms and any care-plan-specific addenda." },
       { h: "Services", p: "We provide non-emergency home healthcare through verified professionals. Clinical decisions remain with treating physicians." },
       { h: "Payments", p: "Invoices are due as per the agreed plan. Delay may result in service suspension after due notice." },
-      { h: "Limitations", p: "Java is not liable for outcomes outside its reasonable control, including patient non-compliance or third-party equipment malfunction." },
+      { h: "Limitations", p: "CareNest is not liable for outcomes outside its reasonable control, including patient non-compliance or third-party equipment malfunction." },
       { h: "Governing law", p: "Disputes are governed by Indian law with jurisdiction in the courts of Pune." },
     ],
   },

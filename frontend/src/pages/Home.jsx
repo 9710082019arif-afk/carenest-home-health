@@ -182,7 +182,7 @@ const Home = () => {
         <div className="lg:col-span-7">
           <div className="overline text-accent">The team behind the care</div>
           <h2 className="font-serif text-4xl md:text-5xl mt-3 tracking-tight">Physicians, nurses and physios who <span className="text-gold italic">truly listen.</span></h2>
-          <p className="mt-4 text-muted-foreground max-w-2xl font-light text-lg">Every professional is credential-verified, trained in Java's home-care protocols and reviewed monthly. We match personalities as carefully as skills.</p>
+          <p className="mt-4 text-muted-foreground max-w-2xl font-light text-lg">Every professional is credential-verified, trained in CareNest's home-care protocols and reviewed monthly. We match personalities as carefully as skills.</p>
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
             {TEAM.map((t) => (
               <div key={t.name} className="group">

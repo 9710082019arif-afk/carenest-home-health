@@ -18,7 +18,7 @@ const CityService = () => {
   React.useEffect(() => {
     if (!title) return;
     const prev = document.title;
-    document.title = `${title} · Java Home Health Care`;
+    document.title = `${title} · CareNest Home Health`;
     return () => { document.title = prev; };
   }, [title]);
 
@@ -56,7 +56,7 @@ const CityService = () => {
         <div className="lg:col-span-8 space-y-10">
           <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-8">
             <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary grid place-items-center"><Icon size={22}/></div>
-            <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">Why families in {loc.name} choose Java for {svc.name.toLowerCase()}</h2>
+            <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">Why families in {loc.name} choose CareNest for {svc.name.toLowerCase()}</h2>
             <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
               {svc.short} Our {loc.name} team designs a personalised plan around your loved one — hours, clinical scope, equipment and family preferences. A dedicated care manager coordinates every visit and adjusts the plan as recovery evolves.
             </p>

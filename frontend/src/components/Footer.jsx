@@ -27,7 +27,7 @@ const Footer = () => {
             <div className="flex items-center gap-3">
               <img src={COMPANY.logo} alt="logo" className="h-12 w-12 rounded-xl bg-white/95 p-1" />
               <div>
-                <div className="font-serif text-2xl font-medium">Java <span className="text-gold">Home</span> Care</div>
+                <div className="font-serif text-2xl font-medium">Care<span className="text-gold">Nest</span></div>
                 <div className="overline text-white/60 mt-1">Est. India</div>
               </div>
             </div>
@@ -107,7 +107,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-16 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/55">
-          <div>© {year} Java Home Health Care. All rights reserved.</div>
+          <div>© {year} CareNest Home Health. All rights reserved.</div>
           <div>Crafted with care · India</div>
         </div>
       </div>

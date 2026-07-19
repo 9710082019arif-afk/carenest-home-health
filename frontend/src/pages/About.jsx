@@ -13,7 +13,7 @@ const values = [
 
 const About = () => (
   <Layout>
-    <PageHeader eyebrow="About us" title="A promise: to bring the hospital home — humanely." subtitle="Java Home Health Care was founded to make skilled medical care available at home, without the coldness of institutional healthcare." image={IMAGES.doctorHome} crumbs={[{ label: "About" }]} />
+    <PageHeader eyebrow="About us" title="A promise: to bring the hospital home — humanely." subtitle="CareNest Home Health was founded to make skilled medical care available at home, without the coldness of institutional healthcare." image={IMAGES.doctorHome} crumbs={[{ label: "About" }]} />
 
     <section className="container-lux pb-16 grid lg:grid-cols-12 gap-10">
       <div className="lg:col-span-7">
@@ -21,7 +21,7 @@ const About = () => (
         <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">Home is where healing begins.</h2>
         <div className="mt-6 space-y-5 text-muted-foreground text-lg font-light leading-relaxed">
           <p>We started with a simple frustration: families discharged from great hospitals often struggled at home. Nurses were hard to find. Physicians did not follow through. Equipment showed up broken.</p>
-          <p>Java Home Health Care was built to fix all of that — with a real care manager per family, background-verified professionals, clinical protocols and equipment that just works. We now serve <b>12,400+ families</b> across 11 Indian cities.</p>
+          <p>CareNest Home Health was built to fix all of that — with a real care manager per family, background-verified professionals, clinical protocols and equipment that just works. We now serve <b>12,400+ families</b> across 11 Indian cities.</p>
           <p>Our promise remains simple: <b className="text-foreground">care with dignity, delivered on time</b>.</p>
         </div>
       </div>
@@ -79,7 +79,7 @@ const About = () => (
     <section className="container-lux pb-24">
       <div className="overline text-accent">How we work</div>
       <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">We work with <span className="text-gold italic">your</span> hospital, doctor & insurer.</h2>
-      <p className="mt-4 max-w-2xl text-muted-foreground font-light text-lg">Java Home Health Care is an independent home-care provider. We coordinate with whichever hospital, treating physician or insurer your family already trusts — carrying over discharge protocols, medication schedules and rehab plans so nothing is lost in the transition home.</p>
+      <p className="mt-4 max-w-2xl text-muted-foreground font-light text-lg">CareNest Home Health is an independent home-care provider. We coordinate with whichever hospital, treating physician or insurer your family already trusts — carrying over discharge protocols, medication schedules and rehab plans so nothing is lost in the transition home.</p>
       <div className="mt-8 grid md:grid-cols-3 gap-4">
         {[
           { t: "Hospital-agnostic", d: "We collaborate with whichever hospital your family already trusts. No exclusive tie-ups, no bias." },

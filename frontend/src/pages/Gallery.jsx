@@ -10,7 +10,7 @@ const Gallery = () => (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {IMAGES.gallery.map((src, i) => (
           <div key={i} className={`rounded-2xl overflow-hidden shadow-lux ${i % 5 === 0 ? "row-span-2" : ""}`}>
-            <img src={src} alt={`Java Home Care visit ${i+1}`} loading="lazy" className="h-full w-full object-cover hover:scale-105 transition-transform duration-700" />
+            <img src={src} alt={`CareNest visit ${i+1}`} loading="lazy" className="h-full w-full object-cover hover:scale-105 transition-transform duration-700" />
           </div>
         ))}
       </div>

@@ -26,7 +26,7 @@ db = mongo_client[os.environ["DB_NAME"]]
 # Integrations
 EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
 EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY", "")
-EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "Java Home Health Care")
+EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "CareNest Home Health")
 LEAD_NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "info@javahomecare.in")
 EMAIL_BASE_URL = "https://integrations.emergentagent.com"
 
@@ -34,7 +34,7 @@ EMAIL_BASE_URL = "https://integrations.emergentagent.com"
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Java Home Health Care API")
+app = FastAPI(title="CareNest Home Health API")
 api = APIRouter(prefix="/api")
 
 
@@ -145,7 +145,7 @@ def render_lead_email_html(payload: dict, kind: str = "Lead") -> str:
     <table cellpadding="0" cellspacing="0" style="width:100%;max-width:640px;margin:0 auto;font-family:Arial,sans-serif;background:#FAFAFA;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden">
       <tr><td style="background:#0D3B66;padding:22px 24px;color:#fff">
         <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#D4AF37">New {kind}</div>
-        <div style="font-size:22px;font-weight:600;margin-top:4px">Java Home Health Care</div>
+        <div style="font-size:22px;font-weight:600;margin-top:4px">CareNest Home Health</div>
       </td></tr>
       <tr><td style="padding:20px 24px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">{rows}</table>
@@ -160,7 +160,7 @@ def render_lead_email_html(payload: dict, kind: str = "Lead") -> str:
 # ------------------------- Routes -------------------------
 @api.get("/")
 async def root():
-    return {"service": "Java Home Health Care API", "status": "ok", "timestamp": now_iso()}
+    return {"service": "CareNest Home Health API", "status": "ok", "timestamp": now_iso()}
 
 
 @api.get("/health")
@@ -256,7 +256,7 @@ async def apply_career(data: CareerApplication):
 
 
 # ------------------------- AI Chat (SSE stream) -------------------------
-CHAT_SYSTEM_PROMPT = """You are 'Care Concierge' — a warm, precise virtual assistant for Java Home Health Care Services in India.
+CHAT_SYSTEM_PROMPT = """You are 'Care Concierge' — a warm, precise virtual assistant for CareNest Home Health in India.
 
 About the company:
 - 24x7 professional home healthcare across Pune, Pimpri-Chinchwad, Mumbai, Navi Mumbai, Thane, Bengaluru, Hyderabad, Ranchi, Bhubaneswar, Kolkata, Goa and expanding.
@@ -270,6 +270,7 @@ Indicative starting rates (share only when the user asks about pricing; always c
 - Physiotherapy at Home: ₹800 per session
 - Injection: ₹600 per injection · Dressing: ₹600 per visit
 - All other services (Doctor-at-Home, ICU-at-Home, Ventilator, Caregiver, Mother & Baby, etc.): custom plan shared after a free 10-minute consultation.
+- IMPORTANT: We do NOT charge GST. Rates are all-inclusive of taxes.
 
 Guidelines:
 1. Speak like an empathetic care coordinator — never robotic, never clinical.
@@ -344,7 +345,7 @@ async def chat_history(session_id: str):
 @api.get("/config/public")
 async def public_config():
     return {
-        "company": "Java Home Health Care",
+        "company": "CareNest Home Health",
         "phone": "+919175724546",
         "whatsapp": "+919175724546",
         "email": LEAD_NOTIFY_EMAIL,

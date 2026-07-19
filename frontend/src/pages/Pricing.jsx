@@ -22,8 +22,9 @@ const Pricing = () => {
     <Layout>
       <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Pricing" }])} />
       <JsonLd data={faqPageSchema([
+        { q: "Do you charge GST?", a: "No. CareNest Home Health does not charge GST on services. Rates shown are all-inclusive." },
         { q: "Do rates include equipment?", a: "No. Medical equipment (oxygen, BiPAP, hospital bed, monitors) is billed separately at our sanitised rental rates. Consumables are billed at actual cost." },
-        { q: "Are there hidden charges?", a: "None. You receive an itemised written plan before care begins, with taxes and any add-ons clearly listed." },
+        { q: "Are there hidden charges?", a: "None. You receive an itemised written plan before care begins, with any add-ons clearly listed." },
         { q: "How do I get a personalised quote?", a: "Call or WhatsApp us at +91 9175724546 for a free 10-minute consult. We share a written plan the same day." },
         ...FAQS.slice(0, 3),
       ])} />
@@ -69,6 +70,12 @@ const Pricing = () => {
                 <div className="text-sm">{it}</div>
               </div>
             ))}
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm">
+            <span className="inline-flex items-center gap-2 rounded-full bg-secondary/10 text-secondary border border-secondary/30 px-4 py-1.5 font-semibold" data-testid="pricing-no-gst-badge">
+              <CheckCircle2 size={14}/> No GST · No hidden charges
+            </span>
+            <span className="text-muted-foreground">All rates shown are all-inclusive. A written plan is shared before care begins.</span>
           </div>
         </div>
       </section>

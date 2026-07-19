@@ -1,5 +1,5 @@
 """
-Backend API tests for Java Home Health Care.
+Backend API tests for CareNest Home Health.
 Covers: root, leads, appointments, contact, newsletter, careers, chat SSE, config/public.
 """
 import os

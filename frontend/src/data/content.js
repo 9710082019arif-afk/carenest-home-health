@@ -1,8 +1,8 @@
 // Central data source for services, locations, testimonials, faqs, team.
 
 export const COMPANY = {
-  name: "Java Home Health Care",
-  short: "Java Home Care",
+  name: "CareNest Home Health",
+  short: "CareNest",
   phone: "+91 9175724546",
   phoneDigits: "919175724546",
   whatsapp: "919175724546",
@@ -69,10 +69,10 @@ export const LOCATIONS = [
 ];
 
 export const TESTIMONIALS = [
-  { id: 1, name: "Aarti Deshpande", city: "Pune", relation: "Daughter of patient", rating: 5, text: "Java's team looked after my father after his stroke — the physiotherapist and the night nurse were exceptional. He is walking with a stick again, at 78." },
+  { id: 1, name: "Aarti Deshpande", city: "Pune", relation: "Daughter of patient", rating: 5, text: "CareNest's team looked after my father after his stroke — the physiotherapist and the night nurse were exceptional. He is walking with a stick again, at 78." },
   { id: 2, name: "Rohit Menon", city: "Mumbai", relation: "Son of patient", rating: 5, text: "We set up ICU-at-home in under 4 hours for my mother post-cardiac surgery. Consultants and monitors — everything was ready. Deeply grateful." },
   { id: 3, name: "Kavya R.", city: "Bengaluru", relation: "New mother", rating: 5, text: "My postnatal caregiver was a genuine godsend. Kind, calm and skilled. I wish we had known about them with my first baby." },
-  { id: 4, name: "Dr. Suresh Iyer", city: "Hyderabad", relation: "Referring physician", rating: 5, text: "I have referred many of my post-op patients to Java. Consistent hand-hygiene, careful charting, and a nurse who actually listens. Rare in home care." },
+  { id: 4, name: "Dr. Suresh Iyer", city: "Hyderabad", relation: "Referring physician", rating: 5, text: "I have referred many of my post-op patients to CareNest. Consistent hand-hygiene, careful charting, and a nurse who actually listens. Rare in home care." },
   { id: 5, name: "Meera Patil", city: "Thane", relation: "Wife of patient", rating: 5, text: "Palliative care for my husband was handled with such dignity. They didn't rush, they cared. That is worth more than I can say." },
   { id: 6, name: "Anup Sharma", city: "Ranchi", relation: "Son of patient", rating: 5, text: "Equipment rental delivered the same evening. The team even trained my sister to use the BiPAP. Punctual and professional." },
 ];

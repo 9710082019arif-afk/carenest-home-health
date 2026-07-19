@@ -33,7 +33,7 @@ export const serviceSchema = ({ name, description, path, rating = 4.9, reviewCou
   url: `${SITE}${path}`,
   provider: {
     "@type": "MedicalBusiness",
-    name: "Java Home Health Care",
+    name: "CareNest Home Health",
     telephone: "+91 9175724546",
     email: "info@javahomecare.in",
     url: SITE,
@@ -48,7 +48,7 @@ export const serviceSchema = ({ name, description, path, rating = 4.9, reviewCou
 export const cityServiceSchema = ({ svc, loc }) => jsonLd({
   "@context": "https://schema.org",
   "@type": "MedicalBusiness",
-  name: `Java Home Health Care — ${svc.name} in ${loc.name}`,
+  name: `CareNest Home Health — ${svc.name} in ${loc.name}`,
   description: `${svc.name} at home in ${loc.name}. ${svc.short}`,
   areaServed: { "@type": "City", name: loc.name, containedInPlace: loc.state },
   telephone: "+91 9175724546",
