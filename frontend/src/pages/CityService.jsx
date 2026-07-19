@@ -6,6 +6,7 @@ import LeadForm from "@/components/LeadForm";
 import { SERVICES, LOCATIONS, COMPANY, FAQS, IMAGES } from "@/data/content";
 import * as Icons from "lucide-react";
 import { Phone, MessageCircle, CheckCircle2 } from "lucide-react";
+import { JsonLd, cityServiceSchema, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 
 const CityService = () => {
   const { city, slug } = useParams();
@@ -39,6 +40,9 @@ const CityService = () => {
 
   return (
     <Layout>
+      <JsonLd data={cityServiceSchema({ svc, loc })} />
+      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Locations" }, { label: loc.name, to: `/locations/${loc.slug}` }, { label: svc.name }])} />
       <PageHeader
         eyebrow={`${loc.name} · ${loc.state}`}
         title={title}
@@ -112,19 +116,6 @@ const CityService = () => {
           </div>
         </aside>
       </section>
-
-      {/* Structured data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "MedicalBusiness",
-        name: `Java Home Health Care — ${svc.name} in ${loc.name}`,
-        description: `${svc.name} at home in ${loc.name}. ${svc.short}`,
-        areaServed: { "@type": "City", name: loc.name },
-        telephone: COMPANY.phone,
-        email: COMPANY.email,
-        url: `https://javahomecare.in/locations/${loc.slug}/${svc.slug}`,
-        medicalSpecialty: svc.name,
-      }) }} />
     </Layout>
   );
 };

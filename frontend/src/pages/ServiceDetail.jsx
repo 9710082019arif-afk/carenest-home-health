@@ -6,6 +6,7 @@ import LeadForm from "@/components/LeadForm";
 import { SERVICES, IMAGES, FAQS, COMPANY, LOCATIONS } from "@/data/content";
 import * as Icons from "lucide-react";
 import { CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import { JsonLd, faqPageSchema, breadcrumbSchema, serviceSchema } from "@/lib/schema";
 
 const ServiceDetail = () => {
   const { slug } = useParams();
@@ -24,6 +25,9 @@ const ServiceDetail = () => {
 
   return (
     <Layout>
+      <JsonLd data={serviceSchema({ name: svc.name, description: svc.short, path: `/services/${svc.slug}` })} />
+      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Services", to: "/services" }, { label: svc.name }])} />
       <PageHeader
         eyebrow={svc.category}
         title={svc.name}

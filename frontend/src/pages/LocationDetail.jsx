@@ -5,6 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
 import { LOCATIONS, SERVICES, COMPANY, TESTIMONIALS, FAQS, IMAGES } from "@/data/content";
 import { Phone, MessageCircle, Ambulance, MapPin, CheckCircle2, Star } from "lucide-react";
+import { JsonLd, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 
 const featuredServices = ["home-nursing","icu-at-home","doctor-at-home","physiotherapy-at-home","medical-equipment-rental","bedridden-patient-care","post-operative-care","elder-care","caregiver-services"];
 
@@ -17,6 +18,8 @@ const LocationDetail = () => {
 
   return (
     <Layout>
+      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Locations" }, { label: loc.name }])} />
       <PageHeader
         eyebrow={loc.state}
         title={<>Home healthcare in <span className="text-gold italic">{loc.name}</span></>}

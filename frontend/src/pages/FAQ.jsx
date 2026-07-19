@@ -3,9 +3,12 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { FAQS } from "@/data/content";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { JsonLd, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 
 const FAQ = () => (
   <Layout>
+    <JsonLd data={faqPageSchema(FAQS)} />
+    <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "FAQ" }])} />
     <PageHeader eyebrow="Frequently asked" title="Answers, honestly." subtitle="Still not sure? WhatsApp us and a real human will reply within minutes." crumbs={[{ label: "FAQ" }]} />
     <section className="container-lux pb-24 max-w-4xl">
       <Accordion type="single" collapsible className="space-y-3">
