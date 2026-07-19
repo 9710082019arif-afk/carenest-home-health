@@ -49,3 +49,10 @@ Build India's most premium, luxurious, high-converting, SEO-optimized Home Healt
 - Google Analytics + Meta Pixel snippet insertion
 - Insurance partner logos + certification imagery
 - DNS records advisory doc for javahomecare.in cutover (A / CNAME) while keeping Titan MX intact
+
+## Phase 2 additions (2026-07-19)
+- **SEO sitemap.xml** with 289 URLs (14 static + 22 services + 11 locations + 242 city×service combinations) at `/sitemap.xml`
+- **robots.txt** at `/robots.txt` referencing sitemap
+- **Combinatorial city×service SEO landing pages** at `/locations/:city/:slug` (all 11×22 = 242 pages, unique H1, meta title, MedicalBusiness JSON-LD, breadcrumbs, embedded map, lead form, internal links)
+- **AnalyticsLoader** component that auto-injects GA4 / GTM / Meta Pixel scripts based on `/api/config/public` — drop IDs in `/app/backend/.env` (GA_MEASUREMENT_ID, GTM_ID, META_PIXEL_ID) to activate
+- **DNS cutover guide** at `/app/DEPLOYMENT_DNS.md` (preserves Titan MX / SPF / DKIM)
