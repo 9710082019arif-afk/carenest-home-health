@@ -70,7 +70,7 @@ const Home = () => {
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="glass-strong rounded-2xl p-4 flex items-center gap-3">
                   <div className="flex -space-x-2">
-                    {TEAM.slice(0,3).map((t,i) => (<img key={i} src={t.img} alt={t.name} className="h-9 w-9 rounded-full border-2 border-white object-cover" />))}
+                    {TEAM.slice(0,3).map((t) => (<img key={t.name} src={t.img} alt={t.name} className="h-9 w-9 rounded-full border-2 border-white object-cover" />))}
                   </div>
                   <div className="text-xs">
                     <div className="font-semibold">Meet your care team</div>
@@ -128,7 +128,7 @@ const Home = () => {
             "Trained in home-care hygiene",
             "Dedicated care manager per family",
           ]).map((p, i) => (
-            <span key={i} className="font-serif text-2xl md:text-3xl text-muted-foreground/70 tracking-tight italic">{p} ·</span>
+            <span key={`${p}-${i}`} className="font-serif text-2xl md:text-3xl text-muted-foreground/70 tracking-tight italic">{p} ·</span>
           ))}
         </div>
       </section>
@@ -245,7 +245,7 @@ const Home = () => {
         <div className="lg:col-span-8">
           <Accordion type="single" collapsible className="space-y-3">
             {FAQS.slice(0, 6).map((f, i) => (
-              <AccordionItem key={i} value={`q${i}`} className="rounded-2xl border border-border/70 bg-card/60 px-5">
+              <AccordionItem key={f.q} value={`q${i}`} className="rounded-2xl border border-border/70 bg-card/60 px-5">
                 <AccordionTrigger data-testid={`faq-q-${i}`} className="text-left font-serif text-lg md:text-xl py-5 hover:no-underline">{f.q}</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground text-[15px] leading-relaxed pb-5 font-light">{f.a}</AccordionContent>
               </AccordionItem>

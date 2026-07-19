@@ -11,6 +11,7 @@ import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://elite-homecare-ui.preview.emergentagent.com").rstrip("/")
 API = f"{BASE_URL}/api"
+ADMIN_TOKEN = "4kZH6CqjGvw-x0q8ezt_48NAeQU7Zo36"
 
 
 # ------------------------- Fixtures -------------------------
@@ -18,6 +19,13 @@ API = f"{BASE_URL}/api"
 def client():
     s = requests.Session()
     s.headers.update({"Content-Type": "application/json"})
+    return s
+
+
+@pytest.fixture(scope="module")
+def admin_client():
+    s = requests.Session()
+    s.headers.update({"Content-Type": "application/json", "x-admin-token": ADMIN_TOKEN})
     return s
 
 
@@ -63,9 +71,9 @@ def test_create_lead_and_persist(client):
     assert lead["status"] == "new"
     assert lead["name"] == payload["name"]
 
-    # Verify via GET /api/leads
+    # Verify via GET /api/leads (admin protected)
     time.sleep(0.5)
-    r2 = client.get(f"{API}/leads?limit=200")
+    r2 = client.get(f"{API}/leads?limit=200", headers={"x-admin-token": ADMIN_TOKEN})
     assert r2.status_code == 200
     leads = r2.json()
     assert any(l["id"] == lead["id"] for l in leads)
@@ -95,10 +103,51 @@ def test_create_appointment(client):
     assert appt["patient_name"] == payload["patient_name"]
 
     time.sleep(0.5)
-    r2 = client.get(f"{API}/appointments?limit=200")
+    r2 = client.get(f"{API}/appointments?limit=200", headers={"x-admin-token": ADMIN_TOKEN})
     assert r2.status_code == 200
     appts = r2.json()
     assert any(a["id"] == appt["id"] for a in appts)
+
+
+# ------------------------- Admin Endpoints -------------------------
+def test_admin_verify_requires_token(client):
+    # No token
+    r = client.get(f"{API}/admin/verify")
+    assert r.status_code == 401
+    # Wrong token
+    r2 = client.get(f"{API}/admin/verify", headers={"x-admin-token": "wrong"})
+    assert r2.status_code == 401
+    # Correct token
+    r3 = client.get(f"{API}/admin/verify", headers={"x-admin-token": ADMIN_TOKEN})
+    assert r3.status_code == 200
+    assert r3.json()["ok"] is True
+
+
+def test_admin_leads_appointments_require_auth(client, admin_client):
+    for path in ("/leads", "/appointments"):
+        assert client.get(f"{API}{path}").status_code == 401
+        r = admin_client.get(f"{API}{path}?limit=5")
+        assert r.status_code == 200
+        assert isinstance(r.json(), list)
+
+
+def test_admin_stats(admin_client):
+    r = admin_client.get(f"{API}/admin/stats")
+    assert r.status_code == 200
+    d = r.json()
+    for k in ("leads_total", "leads_last_7d", "appointments_total",
+              "appointments_last_7d", "contacts_total", "careers_total", "newsletter_total"):
+        assert k in d
+        assert isinstance(d[k], int)
+
+
+def test_admin_contacts_careers_newsletter(client, admin_client):
+    for path in ("/admin/contacts", "/admin/careers", "/admin/newsletter"):
+        # 401 without token
+        assert client.get(f"{API}{path}").status_code == 401
+        r = admin_client.get(f"{API}{path}?limit=10")
+        assert r.status_code == 200
+        assert isinstance(r.json(), list)
 
 
 # ------------------------- Contact -------------------------

@@ -2,7 +2,17 @@
 
 const SITE = "https://carenesthomehealth.in";
 
-const jsonLd = (obj) => JSON.stringify(obj, null, 0);
+// Escape sequences that could break out of a <script type="application/ld+json"> block.
+// This prevents any accidental </script> or other XSS-adjacent breakouts.
+const safeJsonForScript = (obj) =>
+  JSON.stringify(obj)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+
+const jsonLd = (obj) => safeJsonForScript(obj);
 
 export const faqPageSchema = (faqs) => jsonLd({
   "@context": "https://schema.org",

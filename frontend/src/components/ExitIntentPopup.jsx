@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { X, HeartPulse } from "lucide-react";
 import LeadForm from "./LeadForm";
 
@@ -6,16 +6,15 @@ const KEY = "carenest_exit_intent_shown_v1";
 
 const ExitIntentPopup = () => {
   const [open, setOpen] = useState(false);
+  const armedRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const shown = sessionStorage.getItem(KEY);
-    if (shown) return;
-    let armed = false;
-    const arm = setTimeout(() => { armed = true; }, 15000); // arm after 15s on site
+    if (sessionStorage.getItem(KEY)) return;
+
+    const armTimer = setTimeout(() => { armedRef.current = true; }, 15000);
     const onMouseOut = (e) => {
-      if (!armed) return;
-      // when cursor leaves top of the viewport
+      if (!armedRef.current) return;
       if (e.clientY < 8 && !e.relatedTarget && !e.toElement) {
         setOpen(true);
         sessionStorage.setItem(KEY, "1");
@@ -23,7 +22,10 @@ const ExitIntentPopup = () => {
       }
     };
     document.addEventListener("mouseout", onMouseOut);
-    return () => { clearTimeout(arm); document.removeEventListener("mouseout", onMouseOut); };
+    return () => {
+      clearTimeout(armTimer);
+      document.removeEventListener("mouseout", onMouseOut);
+    };
   }, []);
 
   if (!open) return null;

@@ -1,0 +1,39 @@
+{
+  "summary": "Regression + fix-verification pass for CareNest Home Health after code-quality/security fixes (JSON-LD escaping, AnalyticsLoader console.error, ChatWidget stable keys, Home.jsx stable keys, ExitIntentPopup useRef). Backend: 14/14 pytest tests pass (root, health, config, leads CRUD, appointments CRUD, contact, newsletter dedupe, careers, chat SSE + history, and new admin coverage: verify/stats/leads/appointments/contacts/careers/newsletter with 401 without and 200 with token). Frontend: Home hero, 4 CTAs (hero-book-appointment, hero-call-now, hero-whatsapp, hero-emergency), FAQ accordion, city grid, pricing page (No GST + No hidden charges badges, 25+ rows), admin login/dashboard/all 5 tabs/sign-out, chat widget open + 2 back-and-forth Claude streams + close all working. Fix verifications: (a) JSON-LD on /faq, /services/icu-at-home, /locations/delhi-ncr, /locations/delhi-ncr/icu-at-home, /pricing — all scripts parse as valid JSON and contain zero literal < or > characters. (b) ChatWidget produced ZERO React 'unique key' warnings across multiple message sends. (c) AnalyticsLoader console.error observed firing (empty catch replaced).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "AnalyticsLoader /api/config/public fetch", "issue": "In headless Playwright run, fetch occasionally fails with 'TypeError: Failed to fetch' before route hydration (backend endpoint itself returns 200 in pytest). Fix #2 works as intended — console.error now surfaces this, previously it was silently swallowed. Not a regression; verifies the fix.", "affected_selectors": []}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "None blocking. Prior LOW-priority PageHeader alt={JSX} a11y note from iteration_1 still applicable if untouched.",
+    "Optional: AnalyticsLoader could pre-check response.ok before .json() and skip logging when running in preview iframe where the initial fetch is racing hydration."
+  ],
+  "critical_code_review_comments": [
+    "schema.js safeJsonForScript correctly escapes <, >, &, U+2028, U+2029 — prevents </script> breakout in JSON-LD. Verified across 5 pages, 17 JSON-LD blocks total, all valid JSON, zero literal < or > characters.",
+    "ChatWidget uid() gives cryptographically-weak but adequate collision-resistant keys for local list rendering. Confirmed stable — no React key warnings after 2 send/receive cycles.",
+    "Home.jsx marquee key=`${p}-${i}` still uses index as a suffix; safe because marquee list is static but not fully content-derived. Acceptable.",
+    "ExitIntentPopup armedRef pattern is correct — avoids stale closure. Not directly exercised in this run (requires 15s wait + mouseleave gesture); code review shows correct implementation.",
+    "AnalyticsLoader empty catch replaced with console.error — verified firing in browser."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py (added admin-endpoint auth coverage: verify/stats/leads/appointments/contacts/careers/newsletter; updated existing leads/appointments GETs to send x-admin-token)"
+  ],
+  "success_rate": {"backend": "100% (14/14)", "frontend": "100% (all critical flows)"},
+  "test_credentials": "Admin token: 4kZH6CqjGvw-x0q8ezt_48NAeQU7Zo36 (header x-admin-token). No user auth in app.",
+  "seed_data_creation": "Created TEST_-prefixed leads/appointments/contacts/careers/newsletter records via pytest suite (~7 new rows).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Admin endpoints require header 'x-admin-token' (not Bearer). Chat widget testids: fab-chat/chat-widget/chat-input/chat-send/chat-close. Emergency banner testid: emergency-banner (+ emergency-banner-dismiss). To bypass banner during automation: localStorage.setItem('carenest_banner_dismissed_v1', Date.now()). Hero CTA testids: hero-book-appointment, hero-call-now, hero-whatsapp, hero-emergency (NOT hero-book/hero-call). JSON-LD injected client-side via <JsonLd data={...}/>; verify via document.querySelectorAll('script[type=\"application/ld+json\"]') after DOM ready.",
+  "rca of the issue": "N/A — all fixes verified working. No functional regressions detected."
+}

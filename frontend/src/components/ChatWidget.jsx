@@ -12,21 +12,26 @@ const ChatWidget = ({ open, onClose }) => {
     return v;
   });
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Namaste — I'm Care Concierge from CareNest Home Health. How can we help you or your loved one today?" },
+    { id: uid(), role: "assistant", content: "Namaste — I'm Care Concierge from CareNest Home Health. How can we help you or your loved one today?" },
   ]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const listRef = useRef(null);
 
   useEffect(() => {
-    if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
+    const el = listRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages, open]);
 
   const submit = async (e) => {
     e?.preventDefault();
     const text = input.trim();
     if (!text || streaming) return;
-    setMessages((m) => [...m, { role: "user", content: text }, { role: "assistant", content: "" }]);
+    setMessages((m) => [
+      ...m,
+      { id: uid(), role: "user", content: text },
+      { id: uid(), role: "assistant", content: "" },
+    ]);
     setInput("");
     setStreaming(true);
     try {
@@ -39,9 +44,11 @@ const ChatWidget = ({ open, onClose }) => {
         });
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error("ChatWidget: stream failed", err);
       setMessages((m) => {
         const copy = [...m];
-        copy[copy.length - 1] = { role: "assistant", content: "Sorry — I couldn't reach our AI just now. Please WhatsApp us on +91 9175724546 and we'll respond immediately." };
+        copy[copy.length - 1] = { ...copy[copy.length - 1], role: "assistant", content: "Sorry — I couldn't reach our AI just now. Please WhatsApp us on +91 9175724546 and we'll respond immediately." };
         return copy;
       });
     } finally { setStreaming(false); }
@@ -68,7 +75,7 @@ const ChatWidget = ({ open, onClose }) => {
 
         <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
           {messages.map((m, i) => (
-            <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+            <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                   m.role === "user"
