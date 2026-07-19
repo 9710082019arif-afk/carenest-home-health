@@ -2,6 +2,8 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import FloatingActions from "./FloatingActions";
+import EmergencyBanner from "./EmergencyBanner";
+import ExitIntentPopup from "./ExitIntentPopup";
 import { Toaster } from "sonner";
 
 const Layout = ({ children }) => {
@@ -11,6 +13,8 @@ const Layout = ({ children }) => {
       <main className="pt-[100px] md:pt-[112px]">{children}</main>
       <Footer />
       <FloatingActions />
+      <EmergencyBanner />
+      <ExitIntentPopup />
       <Toaster position="top-center" richColors closeButton theme="system" />
     </div>
   );

@@ -18,6 +18,7 @@ import LocationDetail from "@/pages/LocationDetail";
 import CityService from "@/pages/CityService";
 import Pricing from "@/pages/Pricing";
 import Legal from "@/pages/Legal";
+import { AdminLogin, AdminDashboard } from "@/pages/Admin";
 import NotFound from "@/pages/NotFound";
 import AnalyticsLoader from "@/components/AnalyticsLoader";
 
@@ -52,6 +53,8 @@ function App() {
           <Route path="/terms" element={<Legal slug="terms" />} />
           <Route path="/refund-policy" element={<Legal slug="refund-policy" />} />
           <Route path="/cancellation-policy" element={<Legal slug="cancellation-policy" />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

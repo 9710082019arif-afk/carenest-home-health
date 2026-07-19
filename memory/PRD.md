@@ -66,3 +66,14 @@ Build India's most premium, luxurious, high-converting, SEO-optimized Home Healt
 - All 290 sitemap URLs, JSON-LD schemas, meta tags, OG/Twitter cards, canonical URLs, favicon, and legal pages updated
 - **Hostinger-specific DNS + Titan email setup guide** at `/app/DEPLOYMENT_DNS.md`
 - **No GST** callout added to pricing page + FAQ + AI chat system prompt
+
+## Phase 3 additions (2026-07-19)
+- **Admin dashboard** at `/admin` (token-gated via ADMIN_TOKEN in .env)
+  - Sign-in flow with browser-persisted token
+  - Stats cards (leads / appointments / contacts / newsletter totals + last-7-day)
+  - Tabbed tables: Leads / Appointments / Contacts / Careers / Newsletter
+  - All protected `/api/admin/*`, `/api/leads`, `/api/appointments` require `X-Admin-Token` header (401 without)
+- **Emergency banner** (bottom-right, glass, dismissible with 6h cooldown, `data-testid=emergency-banner`)
+- **Exit-intent popup** (mouseleave-top detection after 15s, one-per-session, lead form inside)
+- **Starting rates for all 22 services** — no more "custom plan" placeholders. Explicit ranges shown on pricing page, service cards and detail pages.
+- **Delhi NCR ad copy playbook** at `/app/AD_COPY_DELHI_NCR.md` — 5 Google RSA + 5 Meta creative variants + budget/targeting plan

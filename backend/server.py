@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Header, Depends
 from fastapi.responses import StreamingResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -29,6 +29,13 @@ EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY", "")
 EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "CareNest Home Health")
 LEAD_NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "info@carenesthomehealth.in")
 EMAIL_BASE_URL = "https://integrations.emergentagent.com"
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+
+
+def require_admin(x_admin_token: str = Header(default="")):
+    if not ADMIN_TOKEN or x_admin_token != ADMIN_TOKEN:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return True
 
 # Logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -186,7 +193,7 @@ async def create_lead(data: LeadCreate):
 
 
 @api.get("/leads", response_model=List[Lead])
-async def list_leads(limit: int = Query(100, ge=1, le=500)):
+async def list_leads(limit: int = Query(100, ge=1, le=500), _: bool = Depends(require_admin)):
     docs = await db.leads.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
     return docs
 
@@ -208,8 +215,47 @@ async def create_appointment(data: AppointmentCreate):
 
 
 @api.get("/appointments", response_model=List[Appointment])
-async def list_appointments(limit: int = Query(100, ge=1, le=500)):
+async def list_appointments(limit: int = Query(100, ge=1, le=500), _: bool = Depends(require_admin)):
     docs = await db.appointments.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
+    return docs
+
+
+@api.get("/admin/verify")
+async def admin_verify(_: bool = Depends(require_admin)):
+    return {"ok": True}
+
+
+@api.get("/admin/stats")
+async def admin_stats(_: bool = Depends(require_admin)):
+    from datetime import timedelta
+    now = datetime.now(timezone.utc)
+    since = (now - timedelta(days=7)).isoformat()
+    return {
+        "leads_total": await db.leads.count_documents({}),
+        "leads_last_7d": await db.leads.count_documents({"created_at": {"$gte": since}}),
+        "appointments_total": await db.appointments.count_documents({}),
+        "appointments_last_7d": await db.appointments.count_documents({"created_at": {"$gte": since}}),
+        "contacts_total": await db.contacts.count_documents({}),
+        "careers_total": await db.careers.count_documents({}),
+        "newsletter_total": await db.newsletter.count_documents({}),
+    }
+
+
+@api.get("/admin/contacts")
+async def list_contacts(limit: int = Query(100, ge=1, le=500), _: bool = Depends(require_admin)):
+    docs = await db.contacts.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
+    return docs
+
+
+@api.get("/admin/careers")
+async def list_careers(limit: int = Query(100, ge=1, le=500), _: bool = Depends(require_admin)):
+    docs = await db.careers.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
+    return docs
+
+
+@api.get("/admin/newsletter")
+async def list_newsletter(limit: int = Query(500, ge=1, le=2000), _: bool = Depends(require_admin)):
+    docs = await db.newsletter.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
     return docs
 
 
