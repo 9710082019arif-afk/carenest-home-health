@@ -9,7 +9,7 @@ import asyncio
 import httpx
 import uuid
 from pathlib import Path
-from pydantic import BaseModel, Field, EmailStr, ConfigDict
+from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 from typing import List, Optional, Literal
 from datetime import datetime, timezone
 
@@ -17,6 +17,18 @@ from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, Strea
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
+
+
+def _blank_str_to_none(v):
+    """Coerce empty strings from web forms into None for optional Pydantic fields.
+
+    Frontend forms serialise unfilled optional inputs as '' rather than omitting
+    them; Pydantic v2 EmailStr rejects '' as invalid. This validator normalises
+    the common '' case for any optional field that uses it via `mode='before'`.
+    """
+    if isinstance(v, str) and v.strip() == "":
+        return None
+    return v
 
 # MongoDB
 mongo_url = os.environ["MONGO_URL"]
@@ -60,6 +72,8 @@ class LeadCreate(BaseModel):
     source: Optional[str] = "website"
     urgency: Optional[Literal["standard", "urgent", "emergency"]] = "standard"
 
+    _norm_email = field_validator("email", mode="before")(_blank_str_to_none)
+
 
 class Lead(LeadCreate):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -79,6 +93,8 @@ class AppointmentCreate(BaseModel):
     patient_condition: Optional[str] = None
     address: Optional[str] = None
     notes: Optional[str] = None
+
+    _norm_email = field_validator("email", mode="before")(_blank_str_to_none)
 
 
 class Appointment(AppointmentCreate):
@@ -108,6 +124,8 @@ class CareerApplication(BaseModel):
     city: Optional[str] = None
     resume_url: Optional[str] = None
     cover_letter: Optional[str] = None
+
+    _norm_email = field_validator("email", mode="before")(_blank_str_to_none)
 
 
 class ChatMessage(BaseModel):

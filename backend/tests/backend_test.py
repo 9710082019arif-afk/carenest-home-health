@@ -85,6 +85,86 @@ def test_lead_validation_error(client):
     assert r.status_code == 422
 
 
+# ------------------------- Bug fix regression: empty-string email -------------------------
+def test_lead_empty_email_coerced_to_none(client):
+    """Iteration_3 HIGH bug fix: '' on optional email must coerce to None (200), not 422."""
+    payload = {
+        "name": f"TEST_Lead_Empty_{uuid.uuid4().hex[:6]}",
+        "phone": "9999999999",
+        "email": "",
+        "city": "Pune",
+        "service": "Home Nursing",
+    }
+    r = client.post(f"{API}/leads", json=payload)
+    assert r.status_code == 200, f"Expected 200, got {r.status_code}: {r.text}"
+    lead = r.json()
+    assert lead["email"] is None, f"Expected email=None, got {lead.get('email')!r}"
+    assert lead["name"] == payload["name"]
+
+
+def test_lead_email_omitted_works(client):
+    """Omitting email entirely should still work → 200."""
+    payload = {
+        "name": f"TEST_Lead_NoEmail_{uuid.uuid4().hex[:6]}",
+        "phone": "9999999999",
+        "city": "Pune",
+    }
+    r = client.post(f"{API}/leads", json=payload)
+    assert r.status_code == 200, r.text
+    assert r.json()["email"] is None
+
+
+def test_lead_malformed_email_still_rejected(client):
+    """Regression: real invalid email (non-empty, no @) must still be rejected with 422."""
+    payload = {
+        "name": "Test",
+        "phone": "9999999999",
+        "email": "not-an-email",
+        "city": "Pune",
+    }
+    r = client.post(f"{API}/leads", json=payload)
+    assert r.status_code == 422, f"Expected 422, got {r.status_code}: {r.text}"
+
+
+def test_lead_valid_email_still_works(client):
+    """Regression: valid email is still accepted → 200 and echoed back."""
+    payload = {
+        "name": f"TEST_Lead_Valid_{uuid.uuid4().hex[:6]}",
+        "phone": "9999999999",
+        "email": "test@example.com",
+        "city": "Pune",
+    }
+    r = client.post(f"{API}/leads", json=payload)
+    assert r.status_code == 200, r.text
+    assert r.json()["email"] == "test@example.com"
+
+
+def test_appointment_empty_email_coerced_to_none(client):
+    payload = {
+        "patient_name": f"TEST_Appt_Empty_{uuid.uuid4().hex[:6]}",
+        "phone": "9999999999",
+        "email": "",
+        "city": "Pune",
+        "service": "Home Nursing",
+    }
+    r = client.post(f"{API}/appointments", json=payload)
+    assert r.status_code == 200, f"Expected 200, got {r.status_code}: {r.text}"
+    appt = r.json()
+    assert appt["email"] is None
+
+
+def test_careers_empty_email_coerced_to_none(client):
+    payload = {
+        "name": f"TEST_Career_Empty_{uuid.uuid4().hex[:6]}",
+        "phone": "9999999999",
+        "email": "",
+        "role": "Registered Nurse (GNM/B.Sc)",
+    }
+    r = client.post(f"{API}/careers/apply", json=payload)
+    assert r.status_code == 200, f"Expected 200, got {r.status_code}: {r.text}"
+    assert r.json()["ok"] is True
+
+
 # ------------------------- Appointments -------------------------
 def test_create_appointment(client):
     payload = {
