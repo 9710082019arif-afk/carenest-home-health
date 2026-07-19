@@ -1,0 +1,52 @@
+{
+  "summary": "PRODUCTION smoke test on custom domain https://carenesthomehealth.in. All 14/14 backend pytest tests pass against the production domain (root, health, config, leads CRUD, appointments CRUD, admin (verify/stats/leads/appointments/contacts/careers/newsletter with 401 without and 200 with X-Admin-Token), contact, newsletter dedupe, careers, chat SSE + history). TLS is valid (Cloudflare, HSTS + preload, no cert warnings). Sitemap has exactly 313 URLs — all under https://carenesthomehealth.in (zero references to old javahomecare.in). robots.txt lists the new sitemap URL. Server-side JSON-LD in index.html is present with @type=[MedicalBusiness, LocalBusiness], name='CareNest Home Health', url=https://carenesthomehealth.in, +91 9175724546, info@carenesthomehealth.in. Frontend UI verified: home hero 'Professional home healthcare, delivered.', 4 hero CTAs (hero-book-appointment / hero-call-now / hero-whatsapp / hero-emergency), /pricing page shows 'No GST' + 'no hidden charges' badges and 49 ₹ occurrences (22 services), /services/icu-at-home shows ₹4,500/day + lead-form, /locations/delhi-ncr shows map iframe + lead-form, combinatorial /locations/delhi-ncr/icu-at-home returns 200 with ICU+Delhi content, /admin login accepts token 4kZH6CqjGvw-x0q8ezt_48NAeQU7Zo36 and renders Enquiries dashboard with 4 stat cards + all 5 tabs (Leads/Appointments/Contacts/Careers/Newsletter), dark-mode theme-toggle toggles html.dark class, AI chat FAB streams Claude Sonnet 4.5 reply mentioning ₹800 per session for physiotherapy, 4-step /book-appointment flow (Service → Patient → Schedule → Confirm) posts /api/appointments 200 + sonner 'Appointment received. We'll confirm within 15 minutes.'. One PRODUCTION BUG uncovered — see backend_issues.critical.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "POST /api/leads",
+        "issue": "Home lead form (data-testid=lead-form-home) sends `email: \"\"` (empty string) when the user leaves the OPTIONAL email field blank. Backend Pydantic rejects empty string with 422 `value is not a valid email address: An email address must have an @-sign.` Sonner shows RED error toast 'Could not submit — please call +91 9175724546.' — real users skipping the optional email will fail to submit a lead. This is a revenue-affecting bug that was missed by backend pytest (which always sends a valid email). Reproduced twice with different names; POSTing the same payload but with a valid email returns 200 + green success toast.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Home lead form submission when email left blank",
+        "issue": "Frontend serialises optional email as '' rather than omitting or null-ing it, causing 422 from backend. Fix either (a) in ChatWidget/Home lead form: `const payload = {name, phone, city, service, message, urgency, source:'home'}; if (email) payload.email = email;`  OR  (b) in backend Pydantic model: coerce empty string → None with a validator on the `email` field (`@field_validator('email', mode='before') def blank_to_none(cls,v): return v or None`).",
+        "affected_selectors": ["[data-testid=\"lead-form-home\"]", "[data-testid=\"home-lead-email\"]", "[data-testid=\"home-lead-submit\"]"]
+      },
+      {
+        "flow": "AnalyticsLoader /api/config/public prefetch",
+        "issue": "Non-blocking: still logs 'AnalyticsLoader: failed to load config TypeError: Failed to fetch' once at startup in headless Playwright — same benign race observed in iteration_2. Backend endpoint itself returns 200 in curl and pytest. No functional impact."
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_prod_iter3.xml"
+  ],
+  "action_items": [
+    "HIGH: Fix home lead form empty-email 422 bug. Preferred fix is backend-side (Pydantic pre-validator turning '' into None on `email` for /api/leads, /api/contact, /api/appointments and any other model using EmailStr | None) because the same anti-pattern likely exists in every lead/contact form using the same schema. Verify by POST /api/leads {name, phone, city:'Pune', service:'Home Nursing', email:''} — must return 200, not 422.",
+    "LOW: Optional — AnalyticsLoader console.error at startup (benign, previously reviewed in iter_2). Consider gating with response.ok check to silence."
+  ],
+  "critical_code_review_comments": [
+    "TLS: Cloudflare-terminated, HSTS max-age=63072000 with preload + includeSubDomains + nosniff + strict-origin — good.",
+    "DNS/routing: `/api/*` correctly routes to backend on new domain; no CORS issues observed (access-control-allow-origin: *).",
+    "SEO: sitemap.xml contains exactly 313 URLs, ALL under carenesthomehealth.in — the domain migration flushed old javahomecare.in URLs successfully.",
+    "SEO: server-side JSON-LD (LocalBusiness + MedicalBusiness) rendered in index.html <head> with correct domain, phone, email, priceRange — good for indexing on Day 1 of the domain switch.",
+    "Admin token enforcement: 401 without/with-wrong-token, 200 with correct token — verified on /admin/verify, /admin/stats, /admin/contacts, /admin/careers, /admin/newsletter, /leads, /appointments.",
+    "Lead form empty-string-email regression is the ONLY production issue found — worth patching before publicising the new domain."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (14/14 pytest)", "frontend": "94% (16/17 flows — home lead form fails on empty optional email)"},
+  "test_credentials": "Admin token: 4kZH6CqjGvw-x0q8ezt_48NAeQU7Zo36 sent as header X-Admin-Token (works case-insensitively).",
+  "seed_data_creation": "Created ~4 TEST_-prefixed leads + 1 TEST_ appointment + 1 newsletter subscriber on PRODUCTION mongo during this run. Safe to leave (all prefixed with TEST_).",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Production URL: https://carenesthomehealth.in (Cloudflare-fronted). /api/* is healthy. Home lead form has an empty-email 422 bug (fix required). Book appointment testids: book-service-<slug>, book-city, book-name, book-phone, book-email, book-age, book-condition, book-address, book-date, book-time, book-notes, book-back, book-next, book-confirm. Home lead form testids: home-lead-name, home-lead-phone, home-lead-email, home-lead-city, home-lead-service, home-lead-message, home-lead-urgency-{standard,urgent,emergency}, home-lead-submit. Emergency banner: localStorage.setItem('carenest_banner_dismissed_v1', String(Date.now())) then reload to dismiss for automation.",
+  "rca of the issue": "Home lead form (Home.jsx <QuickEnquiry/> or similar): on submit, the payload always contains `email` regardless of whether the user typed anything. The backend Pydantic model for /api/leads uses `email: EmailStr | None = None` (or similar), which via pydantic-v2 rejects '' as an invalid email (v2 no longer treats '' as None). Reproduction: (1) Open https://carenesthomehealth.in/, dismiss banner, scroll to 'Quick enquiry' block, (2) fill Full name + Phone + City=Pune + Service=Home Nursing, LEAVE EMAIL BLANK, click Request callback. Observed: POST /api/leads → 422 with detail 'value is not a valid email address'. Toast: 'Could not submit — please call +91 9175724546.' Mitigation options: (A) Front-end guard: strip empty strings from optional fields before posting, or (B) Back-end validator: coerce '' → None on all EmailStr | None fields (recommended — applies to all forms globally). Confirmed the same request with email='test@example.com' returns 200."
+}
