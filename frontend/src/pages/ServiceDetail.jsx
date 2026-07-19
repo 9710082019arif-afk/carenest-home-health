@@ -82,6 +82,23 @@ const ServiceDetail = () => {
 
         <aside className="lg:col-span-4 space-y-4">
           <div className="sticky top-32">
+            {svc.rate ? (
+              <div className="rounded-3xl border border-accent/40 bg-gradient-to-br from-accent/10 via-background to-background p-6 mb-4 shadow-lux">
+                <div className="overline text-accent">Indicative rate</div>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="font-serif text-4xl font-medium text-foreground">{svc.rate}</span>
+                  <span className="text-sm text-muted-foreground">{svc.rateUnit}</span>
+                </div>
+                {svc.rateNote && <p className="text-xs text-muted-foreground mt-2 font-light">{svc.rateNote}</p>}
+                <p className="text-[11px] text-muted-foreground mt-3">Final plan shared after a free 10-minute consultation.</p>
+              </div>
+            ) : (
+              <div className="rounded-3xl border border-border/70 bg-card/60 p-6 mb-4">
+                <div className="overline text-accent">Pricing</div>
+                <div className="mt-3 font-serif text-2xl">Personalised plan</div>
+                <p className="text-sm text-muted-foreground mt-2 font-light">Rates depend on hours, clinical scope and equipment. Free 10-minute consult · we share a written plan the same day.</p>
+              </div>
+            )}
             <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-sm p-6 shadow-lux">
               <LeadForm variant={`service-${svc.slug}`} defaultService={svc.name} title={`Enquire about ${svc.name}`} />
             </div>

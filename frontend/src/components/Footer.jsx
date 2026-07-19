@@ -84,6 +84,7 @@ const Footer = () => {
             <div className="overline text-gold-light">Company</div>
             <ul className="mt-5 space-y-2.5 text-sm text-white/80">
               <li><Link to="/about" className="hover:text-white">About us</Link></li>
+              <li><Link to="/pricing" className="hover:text-white">Pricing</Link></li>
               <li><Link to="/careers" className="hover:text-white">Careers</Link></li>
               <li><Link to="/gallery" className="hover:text-white">Gallery</Link></li>
               <li><Link to="/faq" className="hover:text-white">FAQ</Link></li>

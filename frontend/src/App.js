@@ -16,6 +16,7 @@ import Blog from "@/pages/Blog";
 import Careers from "@/pages/Careers";
 import LocationDetail from "@/pages/LocationDetail";
 import CityService from "@/pages/CityService";
+import Pricing from "@/pages/Pricing";
 import Legal from "@/pages/Legal";
 import NotFound from "@/pages/NotFound";
 import AnalyticsLoader from "@/components/AnalyticsLoader";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/locations/:slug" element={<LocationDetail />} />
           <Route path="/locations/:city/:slug" element={<CityService />} />
           <Route path="/book-appointment" element={<BookAppointment />} />

@@ -22,6 +22,17 @@ const ServiceCard = ({ service, span = false }) => {
         <div className="overline text-accent">{service.category}</div>
         <h3 className="font-serif text-[22px] md:text-[24px] mt-2 leading-tight font-medium">{service.name}</h3>
         <p className="text-sm text-muted-foreground mt-2 leading-relaxed line-clamp-3">{service.short}</p>
+        {service.rate ? (
+          <div className="mt-4 inline-flex items-baseline gap-1.5 rounded-full bg-accent/10 text-foreground px-3 py-1 border border-accent/30">
+            <span className="text-[11px] text-muted-foreground uppercase tracking-wide">From</span>
+            <span className="font-serif text-base font-medium">{service.rate}</span>
+            <span className="text-[11px] text-muted-foreground">{service.rateUnit}</span>
+          </div>
+        ) : (
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-muted text-muted-foreground px-3 py-1 border border-border">
+            <span className="text-[11px] uppercase tracking-wide">Personalised plan</span>
+          </div>
+        )}
       </div>
     </Link>
   );

@@ -20,11 +20,11 @@ export const COMPANY = {
 };
 
 export const SERVICES = [
-  { slug: "home-nursing", name: "Home Nursing", icon: "Stethoscope", tagline: "Skilled nurses, round-the-clock.", short: "Wound care, IV, injections, monitoring at home by trained RNs.", category: "nursing" },
+  { slug: "home-nursing", name: "Home Nursing", icon: "Stethoscope", tagline: "Skilled nurses, round-the-clock.", short: "Wound care, IV, injections, monitoring at home by trained RNs.", category: "nursing", rate: "₹2,800 – ₹3,000", rateUnit: "per day", rateNote: "24-hour skilled nursing, rate varies by patient condition" },
   { slug: "caregiver-services", name: "Caregiver Services", icon: "HeartHandshake", tagline: "Compassion. Consistency. Care.", short: "Trained caregivers for daily living, mobility and companionship.", category: "care" },
   { slug: "doctor-at-home", name: "Doctor At Home", icon: "Stethoscope", tagline: "A physician at your doorstep.", short: "GP and specialist visits with prescription & follow-up.", category: "clinical" },
   { slug: "icu-at-home", name: "ICU At Home", icon: "Activity", tagline: "Hospital-grade critical care at home.", short: "Ventilators, monitors, trained ICU nurses & consultants.", category: "critical" },
-  { slug: "physiotherapy-at-home", name: "Physiotherapy At Home", icon: "Dumbbell", tagline: "Recover in the comfort of home.", short: "Neuro, ortho, cardio-pulmonary rehab by licensed physios.", category: "rehab" },
+  { slug: "physiotherapy-at-home", name: "Physiotherapy At Home", icon: "Dumbbell", tagline: "Recover in the comfort of home.", short: "Neuro, ortho, cardio-pulmonary rehab by licensed physios.", category: "rehab", rate: "₹800", rateUnit: "per session", rateNote: "45–60 minute physio session at home" },
   { slug: "medical-equipment-rental", name: "Medical Equipment Rental", icon: "Package", tagline: "Same-day delivery, sanitised & serviced.", short: "Beds, oxygen concentrators, BiPAP/CPAP, wheelchairs & more.", category: "equipment" },
   { slug: "bedridden-patient-care", name: "Bedridden Patient Care", icon: "BedDouble", tagline: "Dignified care that prevents bedsores.", short: "Positioning, hygiene, feeding, catheter & bedsore protocols.", category: "care" },
   { slug: "stroke-rehabilitation", name: "Stroke Rehabilitation", icon: "Brain", tagline: "Reclaim mobility, one milestone at a time.", short: "Physio, speech, occupational therapy & caregiver support.", category: "rehab" },
@@ -37,11 +37,11 @@ export const SERVICES = [
   { slug: "post-operative-care", name: "Post Operative Care", icon: "Bandage", tagline: "A smoother recovery, at home.", short: "Wound care, mobilisation, medication & recovery tracking.", category: "clinical" },
   { slug: "tracheostomy-care", name: "Tracheostomy Care", icon: "Wind", tagline: "Specialised airway management.", short: "Suctioning, tube care, humidification & emergency protocols.", category: "critical" },
   { slug: "ventilator-support", name: "Ventilator Support", icon: "Waves", tagline: "24×7 ventilator & ICU nurses.", short: "Invasive/non-invasive ventilation with consultant oversight.", category: "critical" },
-  { slug: "injection-dressing", name: "Injection & Dressing", icon: "Syringe", tagline: "Sterile, punctual, professional.", short: "IV/IM injections and wound dressing at your convenience.", category: "clinical" },
+  { slug: "injection-dressing", name: "Injection & Dressing", icon: "Syringe", tagline: "Sterile, punctual, professional.", short: "IV/IM injections and wound dressing at your convenience.", category: "clinical", rate: "₹600", rateUnit: "per visit", rateNote: "₹600 per injection · ₹600 per dressing" },
   { slug: "attendant-services", name: "Attendant Services", icon: "UserRound", tagline: "Round-the-clock personal help.", short: "12h or 24h attendants trained in patient handling.", category: "care" },
-  { slug: "elder-care", name: "Elder Care", icon: "Users", tagline: "Because they cared for us first.", short: "Full-spectrum senior care from meals to medical.", category: "care" },
-  { slug: "24x7-nursing-care", name: "24×7 Nursing Care", icon: "Clock", tagline: "Uninterrupted, always on.", short: "Continuous shift-based nursing with structured handover.", category: "nursing" },
-  { slug: "critical-care", name: "Critical Care", icon: "Activity", tagline: "Advanced life-support, at home.", short: "Multi-parameter monitoring & consultant-led interventions.", category: "critical" },
+  { slug: "elder-care", name: "Elder Care", icon: "Users", tagline: "Because they cared for us first.", short: "Full-spectrum senior care from meals to medical.", category: "care", rate: "₹850 – ₹900", rateUnit: "per shift", rateNote: "₹850 for 12-hour shift · ₹900 for 24-hour" },
+  { slug: "24x7-nursing-care", name: "24×7 Nursing Care", icon: "Clock", tagline: "Uninterrupted, always on.", short: "Continuous shift-based nursing with structured handover.", category: "nursing", rate: "₹2,800 – ₹3,000", rateUnit: "per day", rateNote: "Rate depends on patient condition and clinical scope" },
+  { slug: "critical-care", name: "Critical Care", icon: "Activity", tagline: "Advanced life-support, at home.", short: "Multi-parameter monitoring & consultant-led interventions.", category: "critical", rate: "₹1,200", rateUnit: "per day", rateNote: "Starting rate — final plan depends on equipment & clinical support" },
 ];
 
 export const SERVICE_CATEGORIES = [
