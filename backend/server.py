@@ -1,6 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Query, Header, Depends
 from fastapi.responses import StreamingResponse
-from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
@@ -15,8 +14,10 @@ from datetime import datetime, timezone
 
 from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
 
+from env_utils import env_str, load_environment
+
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / ".env")
+load_environment(ROOT_DIR)
 
 
 def _blank_str_to_none(v):
@@ -36,12 +37,12 @@ mongo_client = AsyncIOMotorClient(mongo_url)
 db = mongo_client[os.environ["DB_NAME"]]
 
 # Integrations
-EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
-EMERGENT_EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY", "")
-EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "CareNest Home Health")
-LEAD_NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "info@carenesthomehealth.in")
+EMERGENT_LLM_KEY = env_str("EMERGENT_LLM_KEY")
+EMERGENT_EMAIL_KEY = env_str("EMERGENT_EMAIL_KEY")
+EMAIL_FROM_NAME = env_str("EMAIL_FROM_NAME", "CareNest Home Health")
+LEAD_NOTIFY_EMAIL = env_str("LEAD_NOTIFY_EMAIL", "info@carenesthomehealth.in")
 EMAIL_BASE_URL = "https://integrations.emergentagent.com"
-ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+ADMIN_TOKEN = env_str("ADMIN_TOKEN")
 
 
 def require_admin(x_admin_token: str = Header(default="")):
@@ -408,14 +409,18 @@ async def chat_history(session_id: str):
 # ------------------------- SEO helpers -------------------------
 @api.get("/config/public")
 async def public_config():
+    # Re-apply .env on each request so preview/workspace edits to analytics IDs
+    # show up without a full process restart. Blank process-env placeholders are
+    # overwritten by non-empty file values (see env_utils.apply_dotenv_file).
+    load_environment(ROOT_DIR)
     return {
         "company": "CareNest Home Health",
         "phone": "+919175724546",
         "whatsapp": "+919175724546",
         "email": LEAD_NOTIFY_EMAIL,
-        "ga_id": os.environ.get("GA_MEASUREMENT_ID", ""),
-        "gtm_id": os.environ.get("GTM_ID", ""),
-        "meta_pixel_id": os.environ.get("META_PIXEL_ID", ""),
+        "ga_id": env_str("GA_MEASUREMENT_ID"),
+        "gtm_id": env_str("GTM_ID"),
+        "meta_pixel_id": env_str("META_PIXEL_ID"),
     }
 
 
@@ -424,7 +429,7 @@ app.include_router(api)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
+    allow_origins=env_str("CORS_ORIGINS", "*").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )

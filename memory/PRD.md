@@ -54,7 +54,7 @@ Build India's most premium, luxurious, high-converting, SEO-optimized Home Healt
 - **SEO sitemap.xml** with 289 URLs (14 static + 22 services + 11 locations + 242 city×service combinations) at `/sitemap.xml`
 - **robots.txt** at `/robots.txt` referencing sitemap
 - **Combinatorial city×service SEO landing pages** at `/locations/:city/:slug` (all 11×22 = 242 pages, unique H1, meta title, MedicalBusiness JSON-LD, breadcrumbs, embedded map, lead form, internal links)
-- **AnalyticsLoader** component that auto-injects GA4 / GTM / Meta Pixel scripts based on `/api/config/public` — drop IDs in `/app/backend/.env` (GA_MEASUREMENT_ID, GTM_ID, META_PIXEL_ID) to activate
+- **AnalyticsLoader** component that auto-injects GA4 / GTM / Meta Pixel scripts based on `/api/config/public` — drop IDs in `/app/backend/.env` (GA_MEASUREMENT_ID, GTM_ID, META_PIXEL_ID) to activate. On Emergent **production** (`carenesthomehealth.in`), update those keys in Deployment → Secrets too — redeploy does not overwrite existing (including empty) production secrets. Optional frontend fallbacks: `REACT_APP_GA_MEASUREMENT_ID`, `REACT_APP_GTM_ID`, `REACT_APP_META_PIXEL_ID`.
 - **DNS cutover guide** at `/app/DEPLOYMENT_DNS.md` (preserves Titan MX / SPF / DKIM)
 
 ## Rebrand (2026-07-19)
