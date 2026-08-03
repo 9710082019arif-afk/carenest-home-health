@@ -1,0 +1,33 @@
+[Unit]
+Description=CareNest Home Health FastAPI (uvicorn)
+After=network.target mongod.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=carenest
+Group=carenest
+WorkingDirectory=/opt/carenest/app/backend
+EnvironmentFile=/opt/carenest/app/backend/.env
+ExecStart=/opt/carenest/app/backend/.venv/bin/uvicorn server:app --host 127.0.0.1 --port 8000 --workers 2 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/carenest/app/backend /var/log/carenest
+
+# Logs
+StandardOutput=append:/var/log/carenest/api.log
+StandardError=append:/var/log/carenest/api.err.log
+
+# Resource caps (tune for instance size)
+LimitNOFILE=65535
+MemoryMax=768M
+
+[Install]
+WantedBy=multi-user.target
