@@ -9,7 +9,7 @@ import { Phone, MessageCircle, Ambulance, ArrowRight, ShieldCheck, Star, MapPin,
 import { COMPANY, SERVICES, STATS, TEAM, LOCATIONS, TRUST_BADGES, PARTNERS, IMAGES, FAQS } from "@/data/content";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PAGE_SEO } from "@/lib/seo";
-import { JsonLd, organizationSchema, websiteSchema, offerCatalogSchema, faqPageSchema } from "@/lib/schema";
+import { JsonLd, offerCatalogSchema, faqPageSchema } from "@/lib/schema";
 
 const featuredServices = ["home-nursing","icu-at-home","doctor-at-home","physiotherapy-at-home","elder-care","post-operative-care","medical-equipment-rental","24x7-nursing-care"];
 
@@ -17,8 +17,7 @@ const Home = () => {
   return (
     <Layout>
       <SEOHead seo={PAGE_SEO.home} />
-      <JsonLd data={organizationSchema()} />
-      <JsonLd data={websiteSchema()} />
+      {/* Org + WebSite JSON-LD live in public/index.html to avoid duplicate @id graphs after JS render */}
       <JsonLd data={offerCatalogSchema()} />
       <JsonLd data={faqPageSchema(FAQS.slice(0, 6))} />
       {/* HERO */}

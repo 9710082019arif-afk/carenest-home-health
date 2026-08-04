@@ -56,8 +56,8 @@ const SEOHead = ({ seo }) => {
       <meta name="geo.region" content="IN" />
       <meta name="geo.placename" content="Pune" />
       <meta name="author" content={SITE_NAME} />
-      <link rel="alternate" hrefLang="en-IN" href={canonical || SITE_URL} />
-      <link rel="alternate" hrefLang="x-default" href={canonical || SITE_URL} />
+      {canonical && <link rel="alternate" hrefLang="en-IN" href={canonical} />}
+      {canonical && <link rel="alternate" hrefLang="x-default" href={canonical} />}
     </Helmet>
   );
 };

@@ -167,12 +167,16 @@ export const PAGE_SEO = {
     description: "How to cancel a CareNest booking and the timing rules for shift and long-term plan cancellations.",
     path: "/cancellation-policy",
   }),
-  notFound: buildPageSeo({
-    title: "Page Not Found",
-    description: "This CareNest page does not exist. Return home or browse our home healthcare services.",
-    path: "/",
-    noindex: true,
-  }),
+  notFound: (() => {
+    const base = buildPageSeo({
+      title: "Page Not Found",
+      description: "This CareNest page does not exist. Return home or browse our home healthcare services.",
+      path: "/404",
+      noindex: true,
+    });
+    // Omit canonical/og:url so unknown URLs are not marked as homepage duplicates.
+    return { ...base, canonical: undefined, og: { ...base.og, url: undefined } };
+  })(),
   admin: buildPageSeo({
     title: "Admin",
     description: "CareNest admin area.",

@@ -1,2 +1,2 @@
-/* SPA fallback for Netlify / similar hosts */
-/*  /index.html  200
+# SPA fallback — Netlify / compatible static hosts serve index.html for client routes
+/*    /index.html   200

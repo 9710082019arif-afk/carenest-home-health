@@ -155,7 +155,7 @@ export const organizationSchema = () =>
     ],
   });
 
-/** WebSite + SearchAction for sitelinks search box eligibility */
+/** WebSite schema (no SearchAction — site has no on-site search UI) */
 export const websiteSchema = () =>
   jsonLd({
     "@context": "https://schema.org",
@@ -166,14 +166,6 @@ export const websiteSchema = () =>
     description: COMPANY.tagline,
     publisher: { "@id": `${SITE}/#organization` },
     inLanguage: "en-IN",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE}/services?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   });
 
 /** ItemList of all services for the services index page */
