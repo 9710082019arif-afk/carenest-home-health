@@ -5,6 +5,9 @@ import { COMPANY } from "@/data/content";
 import { createContact } from "@/lib/api";
 import { toast } from "sonner";
 import { Phone, Mail, MapPin, MessageCircle, Ambulance } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
+import { JsonLd, contactPageSchema, breadcrumbSchema, organizationSchema } from "@/lib/schema";
 
 const Contact = () => {
   const [f, setF] = React.useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -21,6 +24,10 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.contact} />
+      <JsonLd data={organizationSchema()} />
+      <JsonLd data={contactPageSchema()} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Contact", to: "/contact" }])} />
       <PageHeader eyebrow="Contact" title="A care coordinator is one call away." subtitle="Prefer WhatsApp, email or a form? We answer them all — 24×7." crumbs={[{ label: "Contact" }]} />
 
       <section className="container-lux pb-24 grid lg:grid-cols-12 gap-10">

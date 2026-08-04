@@ -3,9 +3,14 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { BLOG_POSTS } from "@/data/content";
 import { Clock } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
+import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 const Blog = () => (
   <Layout>
+    <SEOHead seo={PAGE_SEO.blog} />
+    <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Blog", to: "/blog" }])} />
     <PageHeader eyebrow="Health blog" title="Notes from the field." subtitle="Practical, human, evidence-informed guides written by our care team." crumbs={[{ label: "Blog" }]} />
     <section className="container-lux pb-24">
       <div className="grid md:grid-cols-3 gap-5">

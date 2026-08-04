@@ -5,6 +5,8 @@ import PageHeader from "@/components/PageHeader";
 import { SERVICES, COMPANY, FAQS } from "@/data/content";
 import { Phone, MessageCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { JsonLd, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
 
 const inclusions = [
   "Background-verified professional",
@@ -20,6 +22,7 @@ const Pricing = () => {
 
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.pricing} />
       <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Pricing" }])} />
       <JsonLd data={faqPageSchema([
         { q: "Do you charge GST?", a: "No. CareNest Home Health does not charge GST on services. Rates shown are all-inclusive." },

@@ -1,6 +1,9 @@
 import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEOHead from "@/components/SEOHead";
+import { LEGAL_SEO } from "@/lib/seo";
+import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 const CONTENT = {
   "privacy-policy": {
@@ -51,8 +54,11 @@ const CONTENT = {
 const Legal = ({ slug }) => {
   const c = CONTENT[slug];
   if (!c) return null;
+  const seo = LEGAL_SEO[slug];
   return (
     <Layout>
+      {seo && <SEOHead seo={seo} />}
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: c.title, to: `/${slug}` }])} />
       <PageHeader eyebrow={c.eyebrow} title={c.title} crumbs={[{ label: c.title }]} />
       <section className="container-lux pb-24 max-w-3xl">
         <div className="rounded-3xl border border-border/70 bg-card/60 p-8 md:p-10 space-y-8">

@@ -3,6 +3,9 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { STATS, TEAM, IMAGES, COMPANY, PARTNERS } from "@/data/content";
 import { Award, ShieldCheck, HeartHandshake, Clock } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
+import { JsonLd, aboutPageSchema, breadcrumbSchema, organizationSchema } from "@/lib/schema";
 
 const values = [
   { icon: HeartHandshake, t: "Care with dignity", d: "Every patient is treated the way we'd want our own parents treated. Always." },
@@ -13,6 +16,10 @@ const values = [
 
 const About = () => (
   <Layout>
+    <SEOHead seo={PAGE_SEO.about} />
+    <JsonLd data={organizationSchema()} />
+    <JsonLd data={aboutPageSchema()} />
+    <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "About", to: "/about" }])} />
     <PageHeader eyebrow="About us" title="A promise: to bring the hospital home — humanely." subtitle="CareNest Home Health was founded to make skilled medical care available at home, without the coldness of institutional healthcare." image={IMAGES.doctorHome} crumbs={[{ label: "About" }]} />
 
     <section className="container-lux pb-16 grid lg:grid-cols-12 gap-10">
@@ -27,7 +34,7 @@ const About = () => (
       </div>
       <div className="lg:col-span-5">
         <div className="rounded-3xl overflow-hidden aspect-square shadow-lux ring-1 ring-black/5">
-          <img src={IMAGES.elderCare} alt="Elder care" className="h-full w-full object-cover" />
+          <img src={IMAGES.elderCare} alt="Elderly patient receiving compassionate home care from CareNest" className="h-full w-full object-cover" />
         </div>
       </div>
     </section>

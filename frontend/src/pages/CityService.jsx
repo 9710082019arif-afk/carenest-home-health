@@ -3,28 +3,21 @@ import { useParams, Navigate, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
+import SEOHead from "@/components/SEOHead";
 import { SERVICES, LOCATIONS, COMPANY, FAQS, IMAGES } from "@/data/content";
 import * as Icons from "lucide-react";
 import { Phone, MessageCircle, CheckCircle2 } from "lucide-react";
 import { JsonLd, cityServiceSchema, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
+import { cityServiceSeo } from "@/lib/seo";
 
 const CityService = () => {
   const { city, slug } = useParams();
   const loc = LOCATIONS.find((l) => l.slug === city);
   const svc = SERVICES.find((s) => s.slug === slug);
 
-  const title = loc && svc ? `${svc.name} in ${loc.name}` : "";
-
-  React.useEffect(() => {
-    if (!title) return;
-    const prev = document.title;
-    document.title = `${title} · CareNest Home Health`;
-    return () => { document.title = prev; };
-  }, [title]);
-
   if (!loc || !svc) return <Navigate to="/services" replace />;
   const Icon = Icons[svc.icon] || Icons.HeartPulse;
-
+  const title = `${svc.name} in ${loc.name}`;
   const subtitle = `${svc.tagline} Delivered at your doorstep across ${loc.name} and its suburbs by verified professionals — with a dedicated care manager on call.`;
 
   const includes = [
@@ -40,16 +33,22 @@ const CityService = () => {
 
   return (
     <Layout>
+      <SEOHead seo={cityServiceSeo(svc, loc)} />
       <JsonLd data={cityServiceSchema({ svc, loc })} />
       <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
-      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Locations" }, { label: loc.name, to: `/locations/${loc.slug}` }, { label: svc.name }])} />
+      <JsonLd data={breadcrumbSchema([
+        { label: "Home", to: "/" },
+        { label: "Locations", to: "/locations" },
+        { label: loc.name, to: `/locations/${loc.slug}` },
+        { label: svc.name, to: `/locations/${loc.slug}/${svc.slug}` },
+      ])} />
       <PageHeader
         eyebrow={`${loc.name} · ${loc.state}`}
         title={title}
         subtitle={subtitle}
         image={IMAGES.nurseCare}
-        imageAlt={`${svc.name} in ${loc.name}`}
-        crumbs={[{ label: "Locations" }, { label: loc.name, to: `/locations/${loc.slug}` }, { label: svc.name }]}
+        imageAlt={`${svc.name} in ${loc.name} by CareNest Home Health`}
+        crumbs={[{ label: "Locations", to: "/locations" }, { label: loc.name, to: `/locations/${loc.slug}` }, { label: svc.name }]}
       />
 
       <section className="container-lux pb-24 grid lg:grid-cols-12 gap-10">
@@ -60,6 +59,10 @@ const CityService = () => {
             <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
               {svc.short} Our {loc.name} team designs a personalised plan around your loved one — hours, clinical scope, equipment and family preferences. A dedicated care manager coordinates every visit and adjusts the plan as recovery evolves.
             </p>
+            <div className="mt-4 flex flex-wrap gap-3 text-sm">
+              <Link to={`/services/${svc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">About {svc.name} nationwide →</Link>
+              <Link to={`/locations/${loc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">All care in {loc.name} →</Link>
+            </div>
           </div>
 
           <div>
@@ -75,7 +78,7 @@ const CityService = () => {
           </div>
 
           <div className="rounded-3xl overflow-hidden border border-border/70 h-[320px]">
-            <iframe title="map" src={`https://www.google.com/maps?q=${encodeURIComponent(loc.name + ', India')}&output=embed`} className="w-full h-full" loading="lazy" />
+            <iframe title={`Map of ${svc.name} coverage in ${loc.name}, India`} src={`https://www.google.com/maps?q=${encodeURIComponent(loc.name + ', India')}&output=embed`} className="w-full h-full" loading="lazy" />
           </div>
 
           <div>
@@ -111,7 +114,7 @@ const CityService = () => {
             <div className="rounded-3xl bg-primary text-primary-foreground p-5">
               <div className="overline text-gold-light">{loc.name} team</div>
               <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} className="btn-gold w-full mt-4"><Phone size={15}/> {COMPANY.phone}</a>
-              <a href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(`Hi, I need ${svc.name} in ${loc.name}`)}`} target="_blank" rel="noreferrer" className="btn-outline w-full mt-3 border-white/30 text-white hover:bg-white/10"><MessageCircle size={15}/> WhatsApp</a>
+              <a href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(`Hi, I need ${svc.name} in ${loc.name}`)}`} target="_blank" rel="noopener noreferrer" className="btn-outline w-full mt-3 border-white/30 text-white hover:bg-white/10"><MessageCircle size={15}/> WhatsApp</a>
             </div>
           </div>
         </aside>

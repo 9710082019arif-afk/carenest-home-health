@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
 import { API_BASE } from "@/lib/api";
 import { toast } from "sonner";
 import { Lock, LogOut, RefreshCw, Users, CalendarCheck, Mail, Briefcase, Newspaper } from "lucide-react";
@@ -33,6 +35,7 @@ export const AdminLogin = () => {
 
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.admin} />
       <PageHeader eyebrow="Admin" title="Sign in" subtitle="Enter your admin token to view enquiries." crumbs={[{ label: "Admin" }]} />
       <section className="container-lux pb-24 max-w-md">
         <form onSubmit={submit} className="rounded-3xl border border-border/70 bg-card/70 p-8 shadow-lux space-y-4">

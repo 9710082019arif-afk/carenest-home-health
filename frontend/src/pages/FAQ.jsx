@@ -4,11 +4,14 @@ import PageHeader from "@/components/PageHeader";
 import { FAQS } from "@/data/content";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { JsonLd, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
 
 const FAQ = () => (
   <Layout>
+    <SEOHead seo={PAGE_SEO.faq} />
     <JsonLd data={faqPageSchema(FAQS)} />
-    <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "FAQ" }])} />
+    <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "FAQ", to: "/faq" }])} />
     <PageHeader eyebrow="Frequently asked" title="Answers, honestly." subtitle="Still not sure? WhatsApp us and a real human will reply within minutes." crumbs={[{ label: "FAQ" }]} />
     <section className="container-lux pb-24 max-w-4xl">
       <Accordion type="single" collapsible className="space-y-3">

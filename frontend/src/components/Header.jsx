@@ -10,7 +10,7 @@ const NAV = [
   { label: "About", to: "/about" },
   { label: "Services", to: "/services", mega: "services" },
   { label: "Pricing", to: "/pricing" },
-  { label: "Locations", to: "/#locations", mega: "locations" },
+  { label: "Locations", to: "/locations", mega: "locations" },
   { label: "Testimonials", to: "/testimonials" },
   { label: "Blog", to: "/blog" },
   { label: "Careers", to: "/careers" },
@@ -100,12 +100,19 @@ const Header = () => {
         )}
         {mega === "locations" && (
           <div className="hidden lg:block border-t border-border/60 glass-strong" onMouseEnter={() => setMega("locations")} onMouseLeave={() => setMega(null)}>
-            <div className="container-lux py-8 grid grid-cols-4 gap-x-8 gap-y-3">
-              {LOCATIONS.map((l) => (
-                <Link key={l.slug} to={`/locations/${l.slug}`} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
-                  {l.name} <span className="text-xs text-muted-foreground">· {l.state}</span>
+            <div className="container-lux py-8">
+              <div className="grid grid-cols-4 gap-x-8 gap-y-3">
+                {LOCATIONS.map((l) => (
+                  <Link key={l.slug} to={`/locations/${l.slug}`} className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
+                    {l.name} <span className="text-xs text-muted-foreground">· {l.state}</span>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-6 pt-4 border-t border-border/50">
+                <Link to="/locations" className="text-sm font-semibold text-primary hover:underline underline-offset-4">
+                  View all locations →
                 </Link>
-              ))}
+              </div>
             </div>
           </div>
         )}

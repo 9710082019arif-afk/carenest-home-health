@@ -1,52 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <link rel="apple-touch-icon" href="/logo.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/logo-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0D3B66" />
-    <meta name="description" content="CareNest Home Health — premium home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care across India. 24x7 professional support at your doorstep." />
-    <meta name="keywords" content="home nursing, home healthcare, doctor at home, ICU at home, physiotherapy at home, caregivers, elder care, Pune, Mumbai, Bengaluru, Hyderabad" />
+    <meta name="description" content="CareNest Home Health — premium home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care across India. 24×7 professional support at your doorstep." />
+    <meta name="keywords" content="home nursing, home healthcare, doctor at home, ICU at home, physiotherapy at home, caregivers, elder care, Pune, Mumbai, Bengaluru, Hyderabad, Delhi NCR" />
     <meta name="author" content="CareNest Home Health" />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="canonical" href="https://carenesthomehealth.in/" />
+    <link rel="alternate" hreflang="en-IN" href="https://carenesthomehealth.in/" />
+    <link rel="alternate" hreflang="x-default" href="https://carenesthomehealth.in/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="CareNest Home Health" />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:title" content="CareNest Home Health — Premium Home Healthcare, Delivered." />
-    <meta property="og:description" content="Trusted home nursing, caregiver, ICU setup, physiotherapy, elder care and medical support by experienced professionals." />
+    <meta property="og:description" content="Trusted home nursing, caregiver, ICU setup, physiotherapy, elder care and medical support by experienced professionals across 12 Indian cities." />
     <meta property="og:image" content="https://carenesthomehealth.in/brand-kit/social/hero-banner.jpg" />
+    <meta property="og:image:secure_url" content="https://carenesthomehealth.in/brand-kit/social/hero-banner.jpg" />
+    <meta property="og:image:alt" content="CareNest Home Health — premium home nursing and elder care across India" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:url" content="https://carenesthomehealth.in/" />
 
-    <!-- Twitter -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="CareNest Home Health" />
+    <meta name="twitter:site" content="@carenesthomehealth" />
+    <meta name="twitter:title" content="CareNest Home Health — Premium Home Healthcare" />
     <meta name="twitter:description" content="Premium home healthcare services at your doorstep, across India." />
     <meta name="twitter:image" content="https://carenesthomehealth.in/brand-kit/social/hero-banner.jpg" />
+    <meta name="twitter:image:alt" content="CareNest Home Health — premium home nursing and elder care across India" />
+
+    <!-- Local / geo hints -->
+    <meta name="geo.region" content="IN-MH" />
+    <meta name="geo.placename" content="Pune" />
+    <meta name="geo.position" content="18.5204;73.8567" />
+    <meta name="ICBM" content="18.5204, 73.8567" />
 
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
-    <!-- Structured data: LocalBusiness / MedicalBusiness -->
+    <!-- Structured data: HomeHealthCareService + LocalBusiness + MedicalBusiness -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": ["MedicalBusiness","LocalBusiness"],
+        "@type": ["HomeHealthCareService", "MedicalBusiness", "LocalBusiness"],
+        "@id": "https://carenesthomehealth.in/#organization",
         "name": "CareNest Home Health",
+        "alternateName": "CareNest",
+        "description": "Premium home healthcare across India — home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care with 24×7 care coordination.",
         "image": "https://carenesthomehealth.in/brand-kit/social/hero-banner.jpg",
-        "logo": "https://carenesthomehealth.in/brand-kit/logo/logo-icon-512.png",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://carenesthomehealth.in/brand-kit/logo/logo-icon-512.png",
+          "width": 512,
+          "height": 512
+        },
         "url": "https://carenesthomehealth.in",
         "telephone": "+91 9175724546",
         "email": "info@carenesthomehealth.in",
         "priceRange": "₹₹",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Head Office",
+          "addressLocality": "Pune",
+          "addressRegion": "Maharashtra",
+          "postalCode": "411001",
           "addressCountry": "IN"
         },
-        "areaServed": ["Pune","Pimpri-Chinchwad","Mumbai","Navi Mumbai","Thane","Bengaluru","Hyderabad","Delhi NCR","Ranchi","Bhubaneswar","Kolkata","Goa"],
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 18.5204,
+          "longitude": 73.8567
+        },
+        "areaServed": [
+          {"@type":"City","name":"Pune"},
+          {"@type":"City","name":"Pimpri-Chinchwad"},
+          {"@type":"City","name":"Mumbai"},
+          {"@type":"City","name":"Navi Mumbai"},
+          {"@type":"City","name":"Thane"},
+          {"@type":"City","name":"Bengaluru"},
+          {"@type":"City","name":"Hyderabad"},
+          {"@type":"City","name":"Delhi NCR"},
+          {"@type":"City","name":"Ranchi"},
+          {"@type":"City","name":"Bhubaneswar"},
+          {"@type":"City","name":"Kolkata"},
+          {"@type":"City","name":"Goa"}
+        ],
         "sameAs": [
           "https://www.instagram.com/carenesthomehealth",
           "https://www.facebook.com/carenesthomehealth",
@@ -62,15 +112,60 @@
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.9",
+          "bestRating": "5",
+          "worstRating": "1",
           "reviewCount": "612"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91 9175724546",
+            "contactType": "customer service",
+            "areaServed": "IN",
+            "availableLanguage": ["English","Hindi","Marathi"]
+          },
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91 9175724546",
+            "contactType": "emergency",
+            "areaServed": "IN",
+            "availableLanguage": ["English","Hindi"]
+          }
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "CareNest Home Healthcare Services",
+          "itemListElement": [
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Home Nursing","url":"https://carenesthomehealth.in/services/home-nursing"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"ICU At Home","url":"https://carenesthomehealth.in/services/icu-at-home"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Doctor At Home","url":"https://carenesthomehealth.in/services/doctor-at-home"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Physiotherapy At Home","url":"https://carenesthomehealth.in/services/physiotherapy-at-home"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Elder Care","url":"https://carenesthomehealth.in/services/elder-care"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Caregiver Services","url":"https://carenesthomehealth.in/services/caregiver-services"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Medical Equipment Rental","url":"https://carenesthomehealth.in/services/medical-equipment-rental"}},
+            {"@type":"Offer","itemOffered":{"@type":"Service","name":"Palliative Care","url":"https://carenesthomehealth.in/services/palliative-care"}}
+          ]
         }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://carenesthomehealth.in/#website",
+        "url": "https://carenesthomehealth.in",
+        "name": "CareNest Home Health",
+        "publisher": {"@id": "https://carenesthomehealth.in/#organization"},
+        "inLanguage": "en-IN"
       }
     </script>
 
     <title>CareNest Home Health · Premium Home Healthcare Services</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <p>CareNest Home Health provides premium home nursing, doctor-at-home, ICU-at-home, physiotherapy and elder care across India. Call +91 9175724546 or visit <a href="https://carenesthomehealth.in/">carenesthomehealth.in</a>. Please enable JavaScript for the full site experience.</p>
+    </noscript>
     <div id="root"></div>
   </body>
 </html>

@@ -3,10 +3,12 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
+import SEOHead from "@/components/SEOHead";
 import { SERVICES, IMAGES, FAQS, COMPANY, LOCATIONS } from "@/data/content";
 import * as Icons from "lucide-react";
 import { CheckCircle2, Phone, MessageCircle } from "lucide-react";
 import { JsonLd, faqPageSchema, breadcrumbSchema, serviceSchema } from "@/lib/schema";
+import { serviceSeo } from "@/lib/seo";
 
 const ServiceDetail = () => {
   const { slug } = useParams();
@@ -25,14 +27,16 @@ const ServiceDetail = () => {
 
   return (
     <Layout>
-      <JsonLd data={serviceSchema({ name: svc.name, description: svc.short, path: `/services/${svc.slug}` })} />
+      <SEOHead seo={serviceSeo(svc)} />
+      <JsonLd data={serviceSchema({ name: svc.name, description: svc.short, path: `/services/${svc.slug}`, rate: svc.rate, rateUnit: svc.rateUnit })} />
       <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
-      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Services", to: "/services" }, { label: svc.name }])} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Services", to: "/services" }, { label: svc.name, to: `/services/${svc.slug}` }])} />
       <PageHeader
         eyebrow={svc.category}
         title={svc.name}
         subtitle={svc.tagline}
         image={IMAGES.nurseCare}
+        imageAlt={`${svc.name} at home by CareNest Home Health`}
         crumbs={[{ label: "Services", to: "/services" }, { label: svc.name }]}
       />
 
@@ -72,10 +76,14 @@ const ServiceDetail = () => {
 
           <div>
             <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Available in</h3>
+            <p className="mt-2 text-sm text-muted-foreground font-light">Book {svc.name.toLowerCase()} in your city — each link opens the local CareNest page.</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {LOCATIONS.map((l) => (
-                <Link key={l.slug} to={`/locations/${l.slug}`} className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-primary hover:text-primary-foreground transition-colors">{l.name}</Link>
+                <Link key={l.slug} to={`/locations/${l.slug}/${svc.slug}`} className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-primary hover:text-primary-foreground transition-colors">{svc.name} in {l.name}</Link>
               ))}
+            </div>
+            <div className="mt-4">
+              <Link to="/locations" className="text-sm font-medium text-primary hover:underline underline-offset-4">Browse all locations →</Link>
             </div>
           </div>
         </div>
@@ -106,7 +114,7 @@ const ServiceDetail = () => {
               <div className="overline text-gold-light">Prefer to talk?</div>
               <div className="mt-3 flex flex-col gap-2">
                 <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} className="btn-gold w-full"><Phone size={15}/> {COMPANY.phone}</a>
-                <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noreferrer" className="btn-outline w-full border-white/30 text-white hover:bg-white/10"><MessageCircle size={15}/> WhatsApp us</a>
+                <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn-outline w-full border-white/30 text-white hover:bg-white/10"><MessageCircle size={15}/> WhatsApp us</a>
               </div>
             </div>
           </div>
