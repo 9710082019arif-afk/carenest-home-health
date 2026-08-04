@@ -15,6 +15,7 @@ import Testimonials from "@/pages/Testimonials";
 import Blog from "@/pages/Blog";
 import Careers from "@/pages/Careers";
 import LocationDetail from "@/pages/LocationDetail";
+import Locations from "@/pages/Locations";
 import CityService from "@/pages/CityService";
 import Pricing from "@/pages/Pricing";
 import Legal from "@/pages/Legal";
@@ -40,6 +41,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/locations" element={<Locations />} />
           <Route path="/locations/:slug" element={<LocationDetail />} />
           <Route path="/locations/:city/:slug" element={<CityService />} />
           <Route path="/book-appointment" element={<BookAppointment />} />

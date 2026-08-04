@@ -5,6 +5,9 @@ import { createAppointment } from "@/lib/api";
 import { toast } from "sonner";
 import { SERVICES, LOCATIONS, COMPANY } from "@/data/content";
 import { ArrowRight, ArrowLeft, CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
+import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 const steps = ["Service", "Patient", "Schedule", "Confirm"];
 
@@ -35,6 +38,8 @@ const BookAppointment = () => {
 
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.book} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Book appointment", to: "/book-appointment" }])} />
       <PageHeader eyebrow="Book appointment" title="A care coordinator will confirm within 15 minutes." subtitle="Tell us about the patient and preferred timing. We'll design a plan and confirm your care team." crumbs={[{ label: "Book appointment" }]} />
 
       <section className="container-lux pb-24 grid lg:grid-cols-12 gap-8">

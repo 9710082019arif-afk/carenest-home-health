@@ -1,5 +1,22 @@
+# CareNest Home Health — robots.txt (Google Search Console ready)
+# https://carenesthomehealth.in/robots.txt
+
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /admin/
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /admin/
 
 Sitemap: https://carenesthomehealth.in/sitemap.xml

@@ -3,16 +3,23 @@ import Layout from "@/components/Layout";
 import LeadForm from "@/components/LeadForm";
 import ServiceCard from "@/components/ServiceCard";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { Phone, MessageCircle, Ambulance, ArrowRight, ShieldCheck, Star, MapPin, Clock, HeartPulse } from "lucide-react";
 import { COMPANY, SERVICES, STATS, TEAM, LOCATIONS, TRUST_BADGES, PARTNERS, IMAGES, FAQS } from "@/data/content";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { PAGE_SEO } from "@/lib/seo";
+import { JsonLd, offerCatalogSchema, faqPageSchema } from "@/lib/schema";
 
 const featuredServices = ["home-nursing","icu-at-home","doctor-at-home","physiotherapy-at-home","elder-care","post-operative-care","medical-equipment-rental","24x7-nursing-care"];
 
 const Home = () => {
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.home} />
+      {/* Org + WebSite JSON-LD live in public/index.html to avoid duplicate @id graphs after JS render */}
+      <JsonLd data={offerCatalogSchema()} />
+      <JsonLd data={faqPageSchema(FAQS.slice(0, 6))} />
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 -z-10">
@@ -65,12 +72,12 @@ const Home = () => {
           {/* Hero visual + floating card */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-[36px] overflow-hidden shadow-lux-hover ring-1 ring-black/5">
-              <img src={IMAGES.heroPrimary} loading="eager" alt="Indian nurse caring for elderly patient at home" className="w-full h-[520px] md:h-[600px] object-cover" />
+              <img src={IMAGES.heroPrimary} loading="eager" alt="Indian nurse caring for elderly patient at home — CareNest Home Health" className="w-full h-[520px] md:h-[600px] object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/10 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="glass-strong rounded-2xl p-4 flex items-center gap-3">
                   <div className="flex -space-x-2">
-                    {TEAM.map((t) => (<img key={t.name} src={t.img} alt={t.name} className="h-9 w-9 rounded-full border-2 border-white object-cover" />))}
+                    {TEAM.map((t) => (<img key={t.name} src={t.img} alt={`${t.name}, ${t.role}`} className="h-9 w-9 rounded-full border-2 border-white object-cover" />))}
                     <div className="h-9 w-9 rounded-full border-2 border-white bg-secondary text-white grid place-items-center text-[11px] font-bold">+400</div>
                   </div>
                   <div className="text-xs">
@@ -187,7 +194,7 @@ const Home = () => {
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
             {TEAM.map((t) => (
               <div key={t.name} className="rounded-3xl overflow-hidden border border-border/70 bg-card/60 shadow-lux">
-                <img src={t.img} alt={t.name} className="w-full aspect-[4/5] object-cover" />
+                <img src={t.img} alt={`${t.name}, ${t.role} at CareNest Home Health`} className="w-full aspect-[4/5] object-cover" />
               </div>
             ))}
             <div className="rounded-3xl border border-border/70 bg-primary text-primary-foreground p-6 md:p-7">
@@ -219,6 +226,7 @@ const Home = () => {
             <h2 className="font-serif text-4xl md:text-5xl mt-3 tracking-tight">Present in <span className="text-gold italic">12 Indian cities.</span></h2>
             <p className="mt-4 text-muted-foreground text-lg font-light">Local care managers, background-verified staff and same-day deployment.</p>
           </div>
+          <Link to="/locations" className="btn-outline shrink-0">All locations <ArrowRight size={16}/></Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {LOCATIONS.map((l) => (
@@ -259,7 +267,7 @@ const Home = () => {
       {/* CTA */}
       <section className="container-lux pb-24">
         <div className="relative overflow-hidden rounded-[40px] p-10 md:p-16 border border-border/70">
-          <img src={IMAGES.goldTexture} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
+          <img src={IMAGES.goldTexture} alt="" role="presentation" className="absolute inset-0 h-full w-full object-cover opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/60" />
           <div className="relative text-white grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8">

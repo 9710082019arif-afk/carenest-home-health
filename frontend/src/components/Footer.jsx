@@ -25,7 +25,7 @@ const Footer = () => {
         <div className="grid lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3">
-              <img src={COMPANY.logo} alt="logo" className="h-12 w-12 rounded-xl bg-white/95 p-1" />
+              <img src={COMPANY.logo} alt="CareNest Home Health logo" className="h-12 w-12 rounded-xl bg-white/95 p-1" />
               <div>
                 <div className="font-serif text-2xl font-medium">Care<span className="text-gold">Nest</span></div>
                 <div className="overline text-white/60 mt-1">Est. India</div>
@@ -50,12 +50,12 @@ const Footer = () => {
 
             <div className="mt-8 flex items-center gap-3">
               {[
-                { icon: Instagram, url: COMPANY.socials.instagram },
-                { icon: Facebook, url: COMPANY.socials.facebook },
-                { icon: Linkedin, url: COMPANY.socials.linkedin },
-                { icon: Youtube, url: COMPANY.socials.youtube },
-              ].map(({ icon: Icon, url }, i) => (
-                <a key={i} href={url} target="_blank" rel="noreferrer" className="h-10 w-10 grid place-items-center rounded-full bg-white/10 hover:bg-gold hover:text-royal transition-colors">
+                { icon: Instagram, url: COMPANY.socials.instagram, label: "Instagram" },
+                { icon: Facebook, url: COMPANY.socials.facebook, label: "Facebook" },
+                { icon: Linkedin, url: COMPANY.socials.linkedin, label: "LinkedIn" },
+                { icon: Youtube, url: COMPANY.socials.youtube, label: "YouTube" },
+              ].map(({ icon: Icon, url, label }) => (
+                <a key={label} href={url} target="_blank" rel="noopener noreferrer" aria-label={`CareNest on ${label}`} className="h-10 w-10 grid place-items-center rounded-full bg-white/10 hover:bg-gold hover:text-royal transition-colors">
                   <Icon size={16} />
                 </a>
               ))}
@@ -68,6 +68,7 @@ const Footer = () => {
               {SERVICES.slice(0, 8).map((s) => (
                 <li key={s.slug}><Link to={`/services/${s.slug}`} className="text-sm text-white/80 hover:text-white link-underline">{s.name}</Link></li>
               ))}
+              <li><Link to="/services" className="text-sm text-gold-light hover:text-gold link-underline">All 22 services →</Link></li>
             </ul>
           </div>
 
@@ -77,6 +78,7 @@ const Footer = () => {
               {LOCATIONS.slice(0, 8).map((l) => (
                 <li key={l.slug}><Link to={`/locations/${l.slug}`} className="text-sm text-white/80 hover:text-white link-underline">{l.name}</Link></li>
               ))}
+              <li><Link to="/locations" className="text-sm text-gold-light hover:text-gold link-underline">All cities →</Link></li>
             </ul>
           </div>
 
@@ -85,9 +87,11 @@ const Footer = () => {
             <ul className="mt-5 space-y-2.5 text-sm text-white/80">
               <li><Link to="/about" className="hover:text-white">About us</Link></li>
               <li><Link to="/pricing" className="hover:text-white">Pricing</Link></li>
+              <li><Link to="/locations" className="hover:text-white">Locations</Link></li>
               <li><Link to="/careers" className="hover:text-white">Careers</Link></li>
               <li><Link to="/gallery" className="hover:text-white">Gallery</Link></li>
               <li><Link to="/faq" className="hover:text-white">FAQ</Link></li>
+              <li><Link to="/testimonials" className="hover:text-white">Testimonials</Link></li>
               <li><Link to="/blog" className="hover:text-white">Blog</Link></li>
               <li><Link to="/privacy-policy" className="hover:text-white">Privacy policy</Link></li>
               <li><Link to="/terms" className="hover:text-white">Terms</Link></li>

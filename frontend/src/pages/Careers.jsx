@@ -5,6 +5,9 @@ import { applyCareer } from "@/lib/api";
 import { toast } from "sonner";
 import { LOCATIONS } from "@/data/content";
 import { CheckCircle2, HeartHandshake, Stethoscope, Users } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import { PAGE_SEO } from "@/lib/seo";
+import { JsonLd, breadcrumbSchema } from "@/lib/schema";
 
 const roles = ["Registered Nurse (GNM/B.Sc)", "ICU Nurse", "Caregiver / Attendant", "Physiotherapist", "Doctor (MBBS/MD)", "Care Manager"];
 const perks = [
@@ -29,6 +32,8 @@ const Careers = () => {
 
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.careers} />
+      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Careers", to: "/careers" }])} />
       <PageHeader eyebrow="Careers" title="Do meaningful work, with a great team." subtitle="We're hiring across nursing, physiotherapy, medicine and operations. If you care deeply and work rigorously, we'd love to hear from you." crumbs={[{ label: "Careers" }]} />
 
       <section className="container-lux pb-16">
