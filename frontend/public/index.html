@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html lang="en-IN">
   <head>
+    <script id="carenest-seo-bootstrap">
+(function(){
+  try {
+    var SITE="https://carenesthomehealth.in";
+    var MAP={"/":{"title":"CareNest Home Health · Premium Home Healthcare Services","description":"CareNest Home Health delivers premium home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care across 12 Indian cities. 24×7 professional support at your doorstep.","canonical":"https://carenesthomehealth.in/"},"/locations":{"title":"Home Healthcare Locations Across India · CareNest Home Health","description":"CareNest Home Health serves Pune, Mumbai, Bengaluru, Hyderabad, Delhi NCR, Kolkata, Goa and more. Find local home nursing, ICU-at-home and elder care in your city.","canonical":"https://carenesthomehealth.in/locations","keywords":"home healthcare near me, home nursing Pune, home care Mumbai, elder care Bengaluru, CareNest locations"},"/services":{"title":"Home Healthcare Services — Nursing, ICU, Physio & More · CareNest Home Health","description":"Explore 22 CareNest home healthcare services: home nursing, ICU-at-home, doctor visits, physiotherapy, elder care, palliative care, equipment rental and more across India.","canonical":"https://carenesthomehealth.in/services"},"/about":{"title":"About CareNest Home Health · CareNest Home Health","description":"Founded by Riya Shaikh, CareNest Home Health brings hospital-grade nursing, physicians and caregivers into Indian homes — with dignity, punctuality and a dedicated care manager per family.","canonical":"https://carenesthomehealth.in/about"},"/contact":{"title":"Contact CareNest Home Health · CareNest Home Health","description":"Call, WhatsApp or email CareNest Home Health 24×7. Reach our care coordinators for home nursing, ICU setup, physiotherapy and elder care across India.","canonical":"https://carenesthomehealth.in/contact"},"/faq":{"title":"Home Healthcare FAQ — CareNest Answers · CareNest Home Health","description":"Answers to common questions about CareNest home nursing, pricing, insurance, emergencies, nurse qualifications and same-day deployment across India.","canonical":"https://carenesthomehealth.in/faq"}};
+    var path=(location.pathname||"/").replace(/\/+$/,"")||"/";
+    var seo=MAP[path];
+    function setMeta(attr,key,val){
+      if(!val) return;
+      var el=document.head.querySelector("meta["+attr+"=\""+key+"\"]");
+      if(!el){el=document.createElement("meta");el.setAttribute(attr,key);document.head.appendChild(el);}
+      el.setAttribute("content",val);
+    }
+    function setCanonical(url){
+      var el=document.head.querySelector('link[rel="canonical"]');
+      if(!el){el=document.createElement("link");el.setAttribute("rel","canonical");document.head.appendChild(el);}
+      el.setAttribute("href",url);
+      document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach(function(a){a.setAttribute("href",url);});
+    }
+    if(seo){
+      if(seo.title) document.title=seo.title;
+      setMeta("name","description",seo.description);
+      if(seo.keywords) setMeta("name","keywords",seo.keywords);
+      setCanonical(seo.canonical);
+      setMeta("property","og:url",seo.canonical);
+      setMeta("property","og:title",seo.title);
+      setMeta("property","og:description",seo.description);
+      setMeta("name","twitter:title",seo.title);
+      setMeta("name","twitter:description",seo.description);
+    } else if(path!=="/"){
+      var url=SITE+path;
+      setCanonical(url);
+      setMeta("property","og:url",url);
+    }
+  } catch(e){}
+})();
+</script>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="icon" type="image/png" sizes="192x192" href="/logo-192.png" />

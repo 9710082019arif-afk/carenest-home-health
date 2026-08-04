@@ -64,9 +64,10 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "node scripts/generate-sitemap.js && craco build",
+    "build": "node scripts/generate-sitemap.js && craco build && node scripts/prerender-seo.js",
     "test": "craco test",
-    "sitemap": "node scripts/generate-sitemap.js"
+    "sitemap": "node scripts/generate-sitemap.js",
+    "prerender": "node scripts/prerender-seo.js"
   },
   "browserslist": {
     "production": [

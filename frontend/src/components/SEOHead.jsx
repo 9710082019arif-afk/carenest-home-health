@@ -1,25 +1,71 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+const upsertMeta = (attr, key, value) => {
+  if (!value || typeof document === "undefined") return;
+  let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", value);
+};
+
+const upsertCanonical = (url) => {
+  if (!url || typeof document === "undefined") return;
+  let el = document.head.querySelector('link[rel="canonical"]');
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", "canonical");
+    document.head.appendChild(el);
+  }
+  el.setAttribute("href", url);
+  document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((a) => {
+    a.setAttribute("href", url);
+  });
+};
 
 /**
  * Per-page document head: title, description, canonical, robots,
  * Open Graph and Twitter Card tags.
+ *
+ * Also forces canonical/og:url via useLayoutEffect so SPA shells that ship
+ * with homepage canonical in index.html cannot Soft-404 deep URLs.
  */
 const SEOHead = ({ seo }) => {
-  if (!seo) return null;
-  const {
-    title,
-    description,
-    canonical,
-    keywords,
-    robots,
-    og = {},
-    twitter = {},
-  } = seo;
+  const title = seo?.title;
+  const description = seo?.description;
+  const canonical = seo?.canonical;
+  const keywords = seo?.keywords;
+  const robots = seo?.robots;
+  const og = seo?.og || {};
+  const twitter = seo?.twitter || {};
 
   const ogImage = og.image || DEFAULT_OG_IMAGE;
   const ogImageAlt = og.imageAlt || DEFAULT_OG_IMAGE_ALT;
+
+  useLayoutEffect(() => {
+    if (!seo) return;
+    if (title) document.title = title;
+    if (description) upsertMeta("name", "description", description);
+    if (keywords) upsertMeta("name", "keywords", keywords);
+    if (robots) {
+      upsertMeta("name", "robots", robots);
+      upsertMeta("name", "googlebot", robots);
+    }
+    if (canonical) {
+      upsertCanonical(canonical);
+      upsertMeta("property", "og:url", og.url || canonical);
+    }
+    if (og.title) upsertMeta("property", "og:title", og.title);
+    if (og.description) upsertMeta("property", "og:description", og.description);
+    if (twitter.title) upsertMeta("name", "twitter:title", twitter.title);
+    if (twitter.description) upsertMeta("name", "twitter:description", twitter.description);
+  }, [seo, title, description, canonical, keywords, robots, og.url, og.title, og.description, twitter.title, twitter.description]);
+
+  if (!seo) return null;
 
   return (
     <Helmet prioritizeSeoTags>
@@ -58,6 +104,8 @@ const SEOHead = ({ seo }) => {
       <meta name="author" content={SITE_NAME} />
       {canonical && <link rel="alternate" hrefLang="en-IN" href={canonical} />}
       {canonical && <link rel="alternate" hrefLang="x-default" href={canonical} />}
+      {/* Helpful for debugging Soft 404s in view-source after hydrate */}
+      {canonical && <meta name="carenest:path" content={canonical.replace(SITE_URL, "") || "/"} />}
     </Helmet>
   );
 };
