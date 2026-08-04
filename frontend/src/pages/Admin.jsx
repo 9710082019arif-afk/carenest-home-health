@@ -102,6 +102,7 @@ export const AdminDashboard = () => {
 
   return (
     <Layout>
+      <SEOHead seo={PAGE_SEO.admin} />
       <PageHeader
         eyebrow="Admin"
         title="Enquiries dashboard"
