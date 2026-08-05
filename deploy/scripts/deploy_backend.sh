@@ -1,48 +1,27 @@
 #!/usr/bin/env bash
-# Deploy / update CareNest FastAPI backend on EC2.
-# Usage: sudo -u carenest bash deploy/scripts/deploy_backend.sh
+# Redeploy backend only (after code/env changes). Prefer full deploy/install.sh for first setup.
 set -euo pipefail
-
 APP_ROOT="${APP_ROOT:-/opt/carenest/app}"
-BACKEND="$APP_ROOT/backend"
+DEPLOY_DIR="${APP_ROOT}/deploy"
+# shellcheck source=../lib/common.sh
+source "${DEPLOY_DIR}/lib/common.sh"
+# shellcheck source=../lib/backend.sh
+source "${DEPLOY_DIR}/lib/backend.sh"
 
-# Prefer interpreter recorded by bootstrap_ec2.sh; otherwise system python3.
 if [[ -f /etc/carenest/python.env ]]; then
   # shellcheck disable=SC1091
   source /etc/carenest/python.env
 fi
 PYTHON_BIN="${PYTHON_BIN:-$(command -v python3)}"
+CARENEST_USER="${CARENEST_USER:-carenest}"
+export APP_ROOT DEPLOY_DIR PYTHON_BIN CARENEST_USER
 
-if [[ -z "${PYTHON_BIN}" ]] || [[ ! -x "${PYTHON_BIN}" ]]; then
-  echo "ERROR: python3 not found. Re-run deploy/scripts/bootstrap_ec2.sh" >&2
-  exit 1
-fi
-
-cd "$BACKEND"
-if [[ ! -f .env ]]; then
-  echo "Missing $BACKEND/.env — copy from deploy/env/backend.env.example" >&2
-  exit 1
-fi
-
-echo "Using ${PYTHON_BIN} ($("${PYTHON_BIN}" --version 2>&1))"
-"${PYTHON_BIN}" -m venv .venv
-# shellcheck disable=SC1091
-source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# Optional: install Anthropic if patch applied and not in requirements yet
-pip install 'anthropic>=0.40.0' || true
-
-deactivate
-
+[[ -f "${APP_ROOT}/backend/.env" ]] || fail "Missing backend/.env — run: sudo bash deploy/install.sh"
+install_backend
 if systemctl list-unit-files | grep -q carenest-api.service; then
   sudo systemctl restart carenest-api
   sleep 2
-  curl -sf http://127.0.0.1:8000/api/health | tee /dev/stderr
+  curl -sf http://127.0.0.1:8000/api/health
   echo
-else
-  echo "systemd unit not installed yet. Copy deploy/systemd/carenest-api.service and enable it."
 fi
-
-echo "Backend deploy OK"
+echo "Backend redeploy OK"

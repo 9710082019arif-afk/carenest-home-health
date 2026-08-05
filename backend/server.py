@@ -5,15 +5,13 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 import asyncio
-import httpx
 import uuid
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator
 from typing import List, Optional, Literal
 from datetime import datetime, timezone
 
-from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
-
+from aws_integrations import send_email_ses, stream_anthropic_chat
 from env_utils import env_str, load_environment
 
 ROOT_DIR = Path(__file__).parent
@@ -36,12 +34,9 @@ mongo_url = os.environ["MONGO_URL"]
 mongo_client = AsyncIOMotorClient(mongo_url)
 db = mongo_client[os.environ["DB_NAME"]]
 
-# Integrations
-EMERGENT_LLM_KEY = env_str("EMERGENT_LLM_KEY")
-EMERGENT_EMAIL_KEY = env_str("EMERGENT_EMAIL_KEY")
+# Integrations (AWS SES + Anthropic — Emergent keys are no longer used)
 EMAIL_FROM_NAME = env_str("EMAIL_FROM_NAME", "CareNest Home Health")
 LEAD_NOTIFY_EMAIL = env_str("LEAD_NOTIFY_EMAIL", "info@carenesthomehealth.in")
-EMAIL_BASE_URL = "https://integrations.emergentagent.com"
 ADMIN_TOKEN = env_str("ADMIN_TOKEN")
 
 
@@ -136,29 +131,12 @@ class ChatMessage(BaseModel):
 
 # ------------------------- Helpers -------------------------
 async def send_email_async(to_email: str, subject: str, html: str, reply_to: Optional[str] = None):
-    if not EMERGENT_EMAIL_KEY:
-        logger.warning("EMERGENT_EMAIL_KEY missing; skipping email send")
-        return None
-    payload = {
-        "to": [to_email],
-        "subject": subject,
-        "html": html,
-        "from_name": EMAIL_FROM_NAME,
-    }
-    if reply_to:
-        payload["contact_email"] = reply_to
-    try:
-        async with httpx.AsyncClient(timeout=30) as client:
-            resp = await client.post(
-                f"{EMAIL_BASE_URL}/api/v1/email/send",
-                headers={"X-Email-Key": EMERGENT_EMAIL_KEY},
-                json=payload,
-            )
-        resp.raise_for_status()
-        return resp.json().get("id")
-    except Exception as e:
-        logger.error(f"Email send failed: {e}")
-        return None
+    return await send_email_ses(
+        to_email=to_email,
+        subject=subject,
+        html=html,
+        reply_to=reply_to,
+    )
 
 
 def render_lead_email_html(payload: dict, kind: str = "Lead") -> str:
@@ -191,7 +169,13 @@ async def root():
 
 @api.get("/health")
 async def health():
-    return {"status": "healthy", "timestamp": now_iso()}
+    try:
+        await db.command({"ping": 1})
+        mongo_status = "ok"
+    except Exception as exc:
+        logger.error("Mongo health check failed: %s", exc)
+        raise HTTPException(status_code=503, detail=f"mongo unavailable: {exc}") from exc
+    return {"status": "healthy", "mongo": mongo_status, "timestamp": now_iso()}
 
 
 @api.post("/leads", response_model=Lead)
@@ -349,10 +333,9 @@ Guidelines:
 
 @api.post("/chat/stream")
 async def chat_stream(payload: ChatMessage):
-    if not EMERGENT_LLM_KEY:
+    if not env_str("ANTHROPIC_API_KEY"):
         raise HTTPException(status_code=500, detail="LLM key not configured")
 
-    # persist user message
     await db.chat_messages.insert_one({
         "id": str(uuid.uuid4()),
         "session_id": payload.session_id,
@@ -361,24 +344,17 @@ async def chat_stream(payload: ChatMessage):
         "created_at": now_iso(),
     })
 
-    chat = LlmChat(
-        api_key=EMERGENT_LLM_KEY,
-        session_id=payload.session_id,
-        system_message=CHAT_SYSTEM_PROMPT,
-    ).with_model("anthropic", "claude-sonnet-4-5-20250929")
-
-    user_msg = UserMessage(text=payload.message)
     assistant_buffer = {"text": ""}
 
     async def event_generator():
         try:
-            async for ev in chat.stream_message(user_msg):
-                if isinstance(ev, TextDelta):
-                    assistant_buffer["text"] += ev.content
-                    # SSE format
-                    yield f"data: {ev.content}\n\n"
-                elif isinstance(ev, StreamDone):
-                    break
+            async for chunk in stream_anthropic_chat(
+                session_id=payload.session_id,
+                user_message=payload.message,
+                system_prompt=CHAT_SYSTEM_PROMPT,
+            ):
+                assistant_buffer["text"] += chunk
+                yield f"data: {chunk}\n\n"
         except Exception as e:
             logger.error(f"chat stream error: {e}")
             yield f"data: [error] {str(e)}\n\n"

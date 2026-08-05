@@ -1,29 +1,18 @@
 #!/usr/bin/env bash
-# Build React app and publish to Nginx docroot.
-# Usage: sudo -u carenest bash deploy/scripts/deploy_frontend.sh
+# Redeploy frontend only. Prefer full deploy/install.sh for first setup.
 set -euo pipefail
-
 APP_ROOT="${APP_ROOT:-/opt/carenest/app}"
-FRONTEND="$APP_ROOT/frontend"
-DOCROOT="${DOCROOT:-/var/www/carenest/frontend}"
-BACKUP_DIR="${BACKUP_DIR:-/var/backups/carenest}"
+DEPLOY_DIR="${APP_ROOT}/deploy"
+# shellcheck source=../lib/common.sh
+source "${DEPLOY_DIR}/lib/common.sh"
+# shellcheck source=../lib/frontend.sh
+source "${DEPLOY_DIR}/lib/frontend.sh"
 
-cd "$FRONTEND"
-if [[ ! -f .env ]]; then
-  echo "Missing $FRONTEND/.env — copy from deploy/env/frontend.env.example" >&2
-  exit 1
-fi
+CARENEST_USER="${CARENEST_USER:-carenest}"
+export APP_ROOT DEPLOY_DIR CARENEST_USER DOMAIN="${CARENEST_DOMAIN:-carenesthomehealth.in}"
 
-# Backup previous build
-if [[ -d "$DOCROOT" ]] && [[ -f "$DOCROOT/index.html" ]]; then
-  TS=$(date +%Y%m%d%H%M%S)
-  mkdir -p "$BACKUP_DIR"
-  tar -czf "$BACKUP_DIR/frontend-$TS.tgz" -C "$(dirname "$DOCROOT")" "$(basename "$DOCROOT")"
-  echo "Backed up previous frontend → $BACKUP_DIR/frontend-$TS.tgz"
-fi
-
-yarn install --frozen-lockfile || yarn install
-yarn build
-
-rsync -a --delete build/ "$DOCROOT/"
-echo "Frontend published to $DOCROOT"
+[[ -f "${APP_ROOT}/frontend/.env" ]] || fail "Missing frontend/.env — run: sudo bash deploy/install.sh"
+command -v yarn >/dev/null 2>&1 || fail "yarn missing — run: sudo bash deploy/install.sh"
+build_frontend
+sudo systemctl reload nginx || true
+echo "Frontend redeploy OK"
