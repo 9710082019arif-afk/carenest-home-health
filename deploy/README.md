@@ -25,6 +25,15 @@ The installer:
 6. Builds React, starts FastAPI, configures SSL  
 7. Verifies SEO + health and prints **Deployment Successful** or **Deployment Failed**
 
+### After install — full verification
+
+```bash
+cd /opt/carenest/app
+sudo bash deploy/verify_everything.sh
+```
+
+Checks systemd, nginx, backend health, frontend, SEO (`/locations`, `/services`, `robots.txt`, `sitemap.xml`), permissions, SSL, DNS, and secrets. Auto-fixes safe issues (permissions, stale `:8000`, service restarts). Asks for manual action only for DNS/Cloudflare/secrets.
+
 ### Secrets (asked once)
 
 | Prompt / env var | Purpose |
