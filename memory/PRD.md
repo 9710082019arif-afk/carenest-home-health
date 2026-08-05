@@ -87,3 +87,8 @@ Build India's most premium, luxurious, high-converting, SEO-optimized Home Healt
 ## Landing-page CPC recommendation (2026-08-05)
 - Evaluated suggestion to build a dedicated 4-service Ads LP (Elder Care, Home Nursing, Patient Care, Companion Care).
 - Verdict in `LANDING_PAGE_CPC_RECOMMENDATION.md`: focused LP helps LPE/QS only modestly (−10% to −25% CPC if replacing homepage); will **not** alone cut ₹300→₹120; prefer **separate existing city×service URLs**; new 4-in-1 page is **Low–Medium** priority vs tracking + bidding.
+
+## One-command AWS deploy (2026-08-05)
+- `sudo bash deploy/install.sh` — auto Python/Node/Yarn, secrets wizard, `.env` generation, systemd, nginx, SSL, build, health verify.
+- Emergent integrations removed from `backend/server.py`; Anthropic + SES via `backend/aws_integrations.py`.
+- `/api/health` pings Mongo.

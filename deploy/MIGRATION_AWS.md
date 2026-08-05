@@ -3,9 +3,16 @@
 
 **Domain:** `carenesthomehealth.in` / `www.carenesthomehealth.in`  
 **Current production:** Emergent (`elite-homecare-ui.emergent.host`) behind Cloudflare  
-**Target:** Single AWS EC2 (Ubuntu 24.04 LTS), Nginx, systemd FastAPI, local or DocumentDB/Atlas MongoDB, AWS SES + Anthropic (no Emergent services)
+**Target:** Single AWS EC2 (Ubuntu), Nginx, systemd FastAPI, Atlas or local MongoDB, AWS SES + Anthropic
 
-This pack lives in `/deploy`. Follow sections **0 → 10** in order.
+## One-command deploy (use this)
+
+```bash
+cd /opt/carenest/app
+sudo bash deploy/install.sh
+```
+
+See [`deploy/README.md`](./README.md). The sections below are reference architecture and DNS/Mongo cutover notes — the installer performs package, env, systemd, nginx, SSL, build, and health verification automatically.
 
 ---
 
