@@ -232,6 +232,91 @@ _wait_nginx_ready() {
   done
   return 0
 }
+_nginx_listening_80() {
+  ss -tln 2>/dev/null | grep -qE ':80\s' || ss -tlnp 2>/dev/null | grep -qE ':80\s'
+}
+# SSL_MODE=none: force the HTTP site onto :80.
+# Root cause of "frontend home via nginx" + "nginx /api/health HTTP 000":
+# nginx.service can be active while sites-enabled has no server listening on
+# port 80 (prior verify deleted sites-enabled/$DOMAIN after linking it, or
+# HTTPS leftover config failed to bind). Symlink recreate without restart
+# left the master process with zero :80 listeners.
+_ensure_ssl_none_http_nginx() {
+  if [[ "${SSL_MODE}" != "none" && -n "${SSL_MODE}" ]]; then
+    return 0
+  fi
+  local site_avail="/etc/nginx/sites-available/${DOMAIN}"
+  local site_enabled="/etc/nginx/sites-enabled/${DOMAIN}"
+  local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
+  local need_apply=0
+  local tmp_new backup=""
+  [[ -f "${http_tmpl}" ]] || { warn "missing ${http_tmpl}"; return 0; }
+
+  tmp_new="$(mktemp)"
+  sed \
+    -e "s|__DOMAIN__|${DOMAIN}|g" \
+    -e "s|__WWW_DOMAIN__|${WWW_DOMAIN}|g" \
+    -e "s|__DOCROOT__|/var/www/carenest/frontend|g" \
+    "${http_tmpl}" > "${tmp_new}"
+
+  if [[ ! -f "${site_avail}" ]] || ! cmp -s "${tmp_new}" "${site_avail}"; then
+    need_apply=1
+  fi
+
+  # Enable canonical site; never rm sites-enabled/${DOMAIN} afterward.
+  if [[ ! -e "${site_enabled}" ]] || \
+     [[ "$(readlink -f "${site_enabled}" 2>/dev/null || true)" != "$(readlink -f "${site_avail}" 2>/dev/null || true)" ]]; then
+    need_apply=1
+  fi
+
+  # Heal: no :80 socket, or curl cannot connect (HTTP 000)
+  if ! _nginx_listening_80; then
+    need_apply=1
+  fi
+  if [[ "$(_http_code "http://127.0.0.1/" /dev/null)" == "000" ]]; then
+    need_apply=1
+  fi
+
+  if [[ "${need_apply}" -eq 1 ]]; then
+    if [[ -f "${site_avail}" ]]; then
+      backup="$(mktemp)"
+      cp "${site_avail}" "${backup}"
+    fi
+    cp "${tmp_new}" "${site_avail}"
+    ln -sfn "${site_avail}" "${site_enabled}"
+    rm -f /etc/nginx/sites-enabled/default
+
+    if nginx -t >/dev/null 2>&1; then
+      # restart (not reload) so listen sockets are (re)bound after empty sites-enabled
+      systemctl restart nginx || true
+      _wait_nginx_ready
+      if [[ "$(_http_code "http://127.0.0.1/" /dev/null)" != "000" ]] && _nginx_listening_80; then
+        fixed "nginx HTTP site (SSL_MODE=none) listening on :80 for ${DOMAIN}"
+      else
+        # Last resort: kill lingering masters and start clean
+        systemctl stop nginx 2>/dev/null || true
+        sleep 1
+        systemctl start nginx || true
+        _wait_nginx_ready
+        if [[ "$(_http_code "http://127.0.0.1/" /dev/null)" != "000" ]]; then
+          fixed "nginx HTTP site restarted clean on :80"
+        else
+          warn "nginx still not answering on :80 after HTTP site install"
+        fi
+      fi
+    else
+      if [[ -n "${backup}" && -f "${backup}" ]]; then
+        cp "${backup}" "${site_avail}"
+      fi
+      warn "nginx -t failed after installing HTTP site — restored previous config"
+    fi
+    [[ -n "${backup}" ]] && rm -f "${backup}"
+  else
+    # Idempotent: keep symlink healthy even when no apply needed
+    ln -sfn "${site_avail}" "${site_enabled}"
+  fi
+  rm -f "${tmp_new}"
+}
 _fix_prerender_trailing_slash_301() {
   local site_avail="/etc/nginx/sites-available/${DOMAIN}"
   local changed=0
@@ -243,33 +328,10 @@ _fix_prerender_trailing_slash_301() {
       changed=1
     fi
   done
-  # Reinstall HTTP template only when SSL mode is none/empty AND content differs
-  if [[ "${SSL_MODE}" == "none" || -z "${SSL_MODE}" ]]; then
-    local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
-    if [[ -f "${http_tmpl}" ]]; then
-      local tmp_new
-      tmp_new="$(mktemp)"
-      sed \
-        -e "s|__DOMAIN__|${DOMAIN}|g" \
-        -e "s|__WWW_DOMAIN__|${WWW_DOMAIN}|g" \
-        -e "s|__DOCROOT__|/var/www/carenest/frontend|g" \
-        "${http_tmpl}" > "${tmp_new}"
-      if [[ ! -f "${site_avail}" ]] || ! cmp -s "${tmp_new}" "${site_avail}"; then
-        cp "${tmp_new}" "${site_avail}"
-        changed=1
-      fi
-      rm -f "${tmp_new}"
-      # Enable only the canonical site name — do NOT rm sites-enabled/${DOMAIN}
-      # (older scripts deleted carenesthomehealth.in after linking it when DOMAIN matched).
-      ln -sfn "${site_avail}" "/etc/nginx/sites-enabled/${DOMAIN}"
-      rm -f /etc/nginx/sites-enabled/default
-    fi
-  fi
   if [[ "${changed}" -eq 1 ]]; then
     if nginx -t >/dev/null 2>&1; then
       systemctl reload nginx || systemctl restart nginx || true
       _wait_nginx_ready
-      # Verify the claim before printing FIXED (avoid false "HTTP 200" labels)
       local loc_code svc_code
       loc_code="$(_http_code "http://127.0.0.1/locations" /tmp/carenest_verify_fix_loc)"
       svc_code="$(_http_code "http://127.0.0.1/services" /tmp/carenest_verify_fix_svc)"
@@ -283,7 +345,9 @@ _fix_prerender_trailing_slash_301() {
     fi
   fi
 }
+_ensure_ssl_none_http_nginx
 _fix_prerender_trailing_slash_301
+_ensure_ssl_none_http_nginx
 _wait_nginx_ready
 
 if nginx -t >/dev/null 2>&1; then
@@ -307,13 +371,36 @@ if [[ -f "${DOCROOT}/services/index.html" ]]; then
 else
   warn "prerendered services/index.html missing — yarn build may have skipped prerender"
 fi
-HOME_BODY="$(curl -s --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/ 2>/dev/null || true)"
-if echo "${HOME_BODY}" | grep -qi 'CareNest'; then
+HOME_BODY=""
+HOME_OK=0
+for _try in 1 2 3 4 5; do
+  HOME_BODY="$(curl -s --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/ 2>/dev/null || true)"
+  if echo "${HOME_BODY}" | grep -qi 'CareNest'; then
+    HOME_OK=1
+    break
+  fi
+  # Heal empty/broken :80 listener under SSL_MODE=none
+  _ensure_ssl_none_http_nginx
+  sleep 0.35
+done
+if [[ "${HOME_OK}" -eq 1 ]]; then
   pass "frontend home via nginx (Host ${DOMAIN})"
 else
   fail "frontend home via nginx"
 fi
-NGINX_API_CODE="$(_http_code "http://127.0.0.1/api/health" /tmp/carenest_nginx_api.json)"
+NGINX_API_CODE="000"
+for _try in 1 2 3 4 5; do
+  NGINX_API_CODE="$(_http_code "http://127.0.0.1/api/health" /tmp/carenest_nginx_api.json)"
+  if [[ "${NGINX_API_CODE}" == "200" ]]; then
+    break
+  fi
+  if [[ "${NGINX_API_CODE}" == "000" ]]; then
+    _ensure_ssl_none_http_nginx
+    sleep 0.35
+  else
+    break
+  fi
+done
 NGINX_API_BODY="$(cat /tmp/carenest_nginx_api.json 2>/dev/null || true)"
 if [[ "${NGINX_API_CODE}" == "200" ]] && echo "${NGINX_API_BODY}" | grep -q healthy; then
   pass "nginx proxies /api/health"
