@@ -204,6 +204,46 @@ else
 fi
 
 section "4. Frontend / Nginx"
+# Prerender writes locations/index.html + services/index.html. Old nginx
+# `try_files $uri $uri/ /index.html` 301s /locations → /locations/. Fix in place.
+_fix_prerender_trailing_slash_301() {
+  local site_avail="/etc/nginx/sites-available/${DOMAIN}"
+  local changed=0
+  local f
+  for f in /etc/nginx/sites-available/${DOMAIN} /etc/nginx/sites-available/carenesthomehealth.in /etc/nginx/sites-available/default; do
+    [[ -f "${f}" ]] || continue
+    if grep -qE 'try_files \$uri \$uri/ /index\.html' "${f}"; then
+      sed -i 's|try_files \$uri \$uri/ /index.html;|try_files $uri $uri/index.html /index.html;|g' "${f}"
+      changed=1
+    fi
+  done
+  # Prefer reinstalling the HTTP template when SSL mode is none (guarantees fix)
+  if [[ "${SSL_MODE}" == "none" || -z "${SSL_MODE}" ]]; then
+    local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
+    if [[ -f "${http_tmpl}" ]]; then
+      sed \
+        -e "s|__DOMAIN__|${DOMAIN}|g" \
+        -e "s|__WWW_DOMAIN__|${WWW_DOMAIN}|g" \
+        -e "s|__DOCROOT__|/var/www/carenest/frontend|g" \
+        "${http_tmpl}" > "${site_avail}"
+      ln -sfn "${site_avail}" "/etc/nginx/sites-enabled/${DOMAIN}"
+      # Remove duplicate/old site names that may still 301
+      rm -f /etc/nginx/sites-enabled/carenesthomehealth.in
+      rm -f /etc/nginx/sites-enabled/default
+      changed=1
+    fi
+  fi
+  if [[ "${changed}" -eq 1 ]]; then
+    if nginx -t >/dev/null 2>&1; then
+      systemctl reload nginx || systemctl restart nginx || true
+      fixed "nginx try_files serves prerendered /locations and /services with HTTP 200 (no trailing-slash 301)"
+    else
+      warn "nginx -t failed after try_files fix — left previous config"
+    fi
+  fi
+}
+_fix_prerender_trailing_slash_301
+
 if nginx -t >/dev/null 2>&1; then
   pass "nginx -t"
 else
@@ -214,17 +254,29 @@ if [[ -f "${DOCROOT}/index.html" ]]; then
 else
   fail "docroot index.html missing at ${DOCROOT}"
 fi
-HOME_BODY="$(curl -sf --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/ 2>/dev/null || true)"
+# Confirm prerendered SEO dirs exist (root cause of old 301s)
+if [[ -f "${DOCROOT}/locations/index.html" ]]; then
+  pass "prerendered locations/index.html present"
+else
+  warn "prerendered locations/index.html missing — yarn build may have skipped prerender"
+fi
+if [[ -f "${DOCROOT}/services/index.html" ]]; then
+  pass "prerendered services/index.html present"
+else
+  warn "prerendered services/index.html missing — yarn build may have skipped prerender"
+fi
+HOME_BODY="$(curl -s --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/ 2>/dev/null || true)"
 if echo "${HOME_BODY}" | grep -qi 'CareNest'; then
   pass "frontend home via nginx (Host ${DOMAIN})"
 else
   fail "frontend home via nginx"
 fi
-API_VIA_NGINX="$(curl -sf --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/api/health 2>/dev/null || true)"
-if echo "${API_VIA_NGINX}" | grep -q healthy; then
+NGINX_API_CODE="$(curl -s -o /tmp/carenest_nginx_api.json -w '%{http_code}' --max-time 12 -H "Host: ${DOMAIN}" http://127.0.0.1/api/health || echo 000)"
+NGINX_API_BODY="$(cat /tmp/carenest_nginx_api.json 2>/dev/null || true)"
+if [[ "${NGINX_API_CODE}" == "200" ]] && echo "${NGINX_API_BODY}" | grep -q healthy; then
   pass "nginx proxies /api/health"
 else
-  fail "nginx does not proxy /api/health"
+  fail "nginx /api/health HTTP ${NGINX_API_CODE}"
 fi
 
 section "5. SEO"
@@ -255,6 +307,11 @@ else
 fi
 for path in /robots.txt /sitemap.xml /locations /services; do
   code="$(curl -s -o /tmp/carenest_verify_body -w '%{http_code}' --max-time 10 -H "Host: ${DOMAIN}" "http://127.0.0.1${path}" || echo 000)"
+  if [[ "${code}" == "301" || "${code}" == "302" ]]; then
+    # One more attempt after ensuring try_files fix is live
+    _fix_prerender_trailing_slash_301
+    code="$(curl -s -o /tmp/carenest_verify_body -w '%{http_code}' --max-time 10 -H "Host: ${DOMAIN}" "http://127.0.0.1${path}" || echo 000)"
+  fi
   if [[ "${code}" == "200" ]]; then
     if [[ "${path}" == "/locations" || "${path}" == "/services" ]]; then
       if grep -qi 'CareNest\|carenest-seo-bootstrap\|<!doctype html>' /tmp/carenest_verify_body; then
