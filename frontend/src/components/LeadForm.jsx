@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createLead } from "@/lib/api";
+import { trackLeadSubmit } from "@/lib/analytics";
 import { toast } from "sonner";
 import { SERVICES, LOCATIONS } from "@/data/content";
 import { ArrowRight } from "lucide-react";
@@ -18,6 +19,12 @@ const LeadForm = ({ variant = "inline", defaultService = "", title = "Talk to a 
     setLoading(true);
     try {
       await createLead({ ...form, source: variant });
+      trackLeadSubmit({
+        city: form.city,
+        service: form.service,
+        source: variant,
+        urgency: form.urgency,
+      });
       toast.success("Thank you. A care coordinator will call you shortly.");
       setForm({ name: "", phone: "", email: "", city: "", service: defaultService, message: "", urgency: "standard" });
     } catch { toast.error("Could not submit — please call +91 9175724546."); }

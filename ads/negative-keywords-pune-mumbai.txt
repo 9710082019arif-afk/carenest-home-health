@@ -1,0 +1,95 @@
+# CareNest — Account-level negative keywords (Pune & Mumbai Search)
+# Match type: Broad negative (unless noted). Upload as shared negative list.
+# Review Search Terms weekly and append.
+
+# --- Jobs / careers ---
+job
+jobs
+vacancy
+vacancies
+hiring
+recruitment
+salary
+salaries
+wage
+wages
+internship
+fresher
+walk in
+walk-in
+nurse job
+nursing job
+caregiver job
+attendant job
+work from home nursing
+
+# --- Education / training ---
+course
+courses
+college
+colleges
+diploma
+degree
+bsc nursing
+gnm
+anm
+training
+coaching
+exam
+syllabus
+fee structure
+
+# --- Free / DIY / research ---
+free
+gratis
+diy
+how to become
+what is
+wikipedia
+pdf
+download
+meaning
+definition
+
+# --- Irrelevant medical / other verticals ---
+veterinary
+pet
+dog
+cat
+hospital job
+govt
+government scheme
+ayushman
+pmc tender
+tender
+franchise
+franchisee
+
+# --- Other cities (keep if campaigns are Pune/Mumbai only) ---
+delhi
+noida
+gurgaon
+gurugram
+bengaluru
+bangalore
+hyderabad
+kolkata
+chennai
+ahmedabad
+jaipur
+lucknow
+goa
+ranchi
+bhubaneswar
+
+# --- Competitor research / wholesale ---
+wholesale
+bulk hire
+agency registration
+nursing bureau franchise
+
+# --- Low-intent money waste ---
+cheap free nurse
+home remedy
+yoga only
+ayurvedic doctor free

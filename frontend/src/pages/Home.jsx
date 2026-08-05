@@ -10,6 +10,7 @@ import { COMPANY, SERVICES, STATS, TEAM, LOCATIONS, TRUST_BADGES, PARTNERS, IMAG
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PAGE_SEO } from "@/lib/seo";
 import { JsonLd, offerCatalogSchema, faqPageSchema } from "@/lib/schema";
+import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const featuredServices = ["home-nursing","icu-at-home","doctor-at-home","physiotherapy-at-home","elder-care","post-operative-care","medical-equipment-rental","24x7-nursing-care"];
 
@@ -47,13 +48,13 @@ const Home = () => {
               <Link to="/book-appointment" data-testid="hero-book-appointment" className="btn-gold">
                 <Ambulance size={16}/> Book appointment
               </Link>
-              <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} data-testid="hero-call-now" className="btn-primary">
+              <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} data-testid="hero-call-now" className="btn-primary" onClick={() => trackPhoneClick({ location: "home-hero" })}>
                 <Phone size={16}/> Call now
               </a>
-              <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noreferrer" data-testid="hero-whatsapp" className="btn-outline">
+              <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noreferrer" data-testid="hero-whatsapp" className="btn-outline" onClick={() => trackWhatsAppClick({ location: "home-hero" })}>
                 <MessageCircle size={16}/> WhatsApp
               </a>
-              <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} data-testid="hero-emergency" className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-destructive hover:underline underline-offset-4 ml-2">
+              <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} data-testid="hero-emergency" className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-destructive hover:underline underline-offset-4 ml-2" onClick={() => trackPhoneClick({ location: "home-hero-emergency" })}>
                 <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive/70"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-destructive"></span></span>
                 Emergency support 24×7
               </a>

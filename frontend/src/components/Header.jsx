@@ -4,6 +4,7 @@ import { Menu, X, Sun, Moon, Phone, ChevronDown, Ambulance } from "lucide-react"
 import { COMPANY, SERVICES, LOCATIONS } from "@/data/content";
 import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+import { trackPhoneClick } from "@/lib/analytics";
 
 const NAV = [
   { label: "Home", to: "/" },
@@ -35,7 +36,7 @@ const Header = () => {
             <span className="hidden sm:inline">24×7 emergency care coordination · in-network with major insurers</span>
             <span className="sm:hidden">24×7 emergency care</span>
           </div>
-          <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} data-testid="header-emergency-call" className="font-semibold tracking-wide flex items-center gap-1.5 hover:text-gold-light transition-colors">
+          <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} data-testid="header-emergency-call" onClick={() => trackPhoneClick({ location: "header" })} className="font-semibold tracking-wide flex items-center gap-1.5 hover:text-gold-light transition-colors">
             <Phone size={12} /> {COMPANY.phone}
           </a>
         </div>

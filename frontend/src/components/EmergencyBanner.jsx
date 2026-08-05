@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AlertTriangle, X, Phone } from "lucide-react";
 import { COMPANY } from "@/data/content";
+import { trackPhoneClick } from "@/lib/analytics";
 
 const KEY = "carenest_banner_dismissed_v1";
 
@@ -39,6 +40,7 @@ const EmergencyBanner = () => {
             <a
               href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
               data-testid="emergency-banner-call"
+              onClick={() => trackPhoneClick({ location: "emergency-banner" })}
               className="btn-primary mt-3 h-9 py-0 text-xs"
             >
               <Phone size={13} /> Call {COMPANY.phone}
