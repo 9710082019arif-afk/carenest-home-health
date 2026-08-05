@@ -25,6 +25,15 @@ The installer:
 6. Builds React, starts FastAPI, configures SSL  
 7. Verifies SEO + health and prints **Deployment Successful** or **Deployment Failed**
 
+### After install — full verification
+
+```bash
+cd /opt/carenest/app
+sudo bash deploy/verify_everything.sh
+```
+
+Checks systemd, nginx, backend health, frontend, SEO (`/locations`, `/services`, `robots.txt`, `sitemap.xml`), permissions, SSL, DNS, and secrets. Auto-fixes safe issues (permissions, stale `:8000`, service restarts). Asks for manual action only for DNS/Cloudflare/secrets.
+
 ### Secrets (asked once)
 
 | Prompt / env var | Purpose |
@@ -58,6 +67,7 @@ sudo CARENEST_MONGO_URL='mongodb+srv://...' \
 | Path | Role |
 |---|---|
 | `install.sh` | **One-command deploy** |
+| `verify_everything.sh` | **One-command post-deploy verification + safe fixes** |
 | `lib/*.sh` | Installer modules |
 | `nginx/*.conf` | HTTP / HTTPS / Cloudflare templates |
 | `systemd/carenest-api.service` | FastAPI unit |
