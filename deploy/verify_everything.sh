@@ -116,13 +116,9 @@ if ! systemctl is-active --quiet carenest-api; then
   fi
 fi
 
-# Nginx config test + reload
-if nginx -t >/dev/null 2>&1; then
-  systemctl reload nginx 2>/dev/null || systemctl restart nginx || true
-  if systemctl is-active --quiet nginx; then
-    fixed "nginx reloaded"
-  fi
-else
+# Defer nginx reload to the try_files fix below — reloading here then again
+# there caused curl races (HTTP 000 / "000000") on /locations and /services.
+if ! nginx -t >/dev/null 2>&1; then
   warn "nginx -t failed — will report in checks (not auto-rewriting site config)"
 fi
 
@@ -206,43 +202,89 @@ fi
 section "4. Frontend / Nginx"
 # Prerender writes locations/index.html + services/index.html. Old nginx
 # `try_files $uri $uri/ /index.html` 301s /locations → /locations/. Fix in place.
+_http_code() {
+  # curl writes "000" on connect failure AND exits non-zero — never append
+  # another "000" via `|| echo 000` (that produced the bogus "000000" FAILs).
+  local url="$1"
+  local out="${2:-/dev/null}"
+  local code
+  code="$(curl -sS -o "${out}" -w '%{http_code}' --connect-timeout 2 --max-time 10 \
+    -H "Host: ${DOMAIN}" "${url}" 2>/dev/null || true)"
+  # Trim whitespace; collapse accidental double "000000"
+  code="$(printf '%s' "${code}" | tr -d '[:space:]')"
+  if [[ "${code}" == "000000" ]]; then
+    code="000"
+  fi
+  if [[ -z "${code}" || ! "${code}" =~ ^[0-9]{3}$ ]]; then
+    code="000"
+  fi
+  printf '%s' "${code}"
+}
+_wait_nginx_ready() {
+  # Wait until nginx answers with a real status (not connect-fail 000).
+  local i code
+  for i in $(seq 1 20); do
+    code="$(_http_code "http://127.0.0.1/" /dev/null)"
+    if [[ "${code}" != "000" ]]; then
+      return 0
+    fi
+    sleep 0.25
+  done
+  return 0
+}
 _fix_prerender_trailing_slash_301() {
   local site_avail="/etc/nginx/sites-available/${DOMAIN}"
   local changed=0
   local f
-  for f in /etc/nginx/sites-available/${DOMAIN} /etc/nginx/sites-available/carenesthomehealth.in /etc/nginx/sites-available/default; do
+  for f in "/etc/nginx/sites-available/${DOMAIN}" /etc/nginx/sites-available/carenesthomehealth.in /etc/nginx/sites-available/default; do
     [[ -f "${f}" ]] || continue
     if grep -qE 'try_files \$uri \$uri/ /index\.html' "${f}"; then
       sed -i 's|try_files \$uri \$uri/ /index.html;|try_files $uri $uri/index.html /index.html;|g' "${f}"
       changed=1
     fi
   done
-  # Prefer reinstalling the HTTP template when SSL mode is none (guarantees fix)
+  # Reinstall HTTP template only when SSL mode is none/empty AND content differs
   if [[ "${SSL_MODE}" == "none" || -z "${SSL_MODE}" ]]; then
     local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
     if [[ -f "${http_tmpl}" ]]; then
+      local tmp_new
+      tmp_new="$(mktemp)"
       sed \
         -e "s|__DOMAIN__|${DOMAIN}|g" \
         -e "s|__WWW_DOMAIN__|${WWW_DOMAIN}|g" \
         -e "s|__DOCROOT__|/var/www/carenest/frontend|g" \
-        "${http_tmpl}" > "${site_avail}"
+        "${http_tmpl}" > "${tmp_new}"
+      if [[ ! -f "${site_avail}" ]] || ! cmp -s "${tmp_new}" "${site_avail}"; then
+        cp "${tmp_new}" "${site_avail}"
+        changed=1
+      fi
+      rm -f "${tmp_new}"
+      # Enable only the canonical site name — do NOT rm sites-enabled/${DOMAIN}
+      # (older scripts deleted carenesthomehealth.in after linking it when DOMAIN matched).
       ln -sfn "${site_avail}" "/etc/nginx/sites-enabled/${DOMAIN}"
-      # Remove duplicate/old site names that may still 301
-      rm -f /etc/nginx/sites-enabled/carenesthomehealth.in
       rm -f /etc/nginx/sites-enabled/default
-      changed=1
     fi
   fi
   if [[ "${changed}" -eq 1 ]]; then
     if nginx -t >/dev/null 2>&1; then
       systemctl reload nginx || systemctl restart nginx || true
-      fixed "nginx try_files serves prerendered /locations and /services with HTTP 200 (no trailing-slash 301)"
+      _wait_nginx_ready
+      # Verify the claim before printing FIXED (avoid false "HTTP 200" labels)
+      local loc_code svc_code
+      loc_code="$(_http_code "http://127.0.0.1/locations" /tmp/carenest_verify_fix_loc)"
+      svc_code="$(_http_code "http://127.0.0.1/services" /tmp/carenest_verify_fix_svc)"
+      if [[ "${loc_code}" == "200" && "${svc_code}" == "200" ]]; then
+        fixed "nginx try_files serves prerendered /locations and /services with HTTP 200 (no trailing-slash 301)"
+      else
+        fixed "nginx try_files config updated (post-reload /locations=${loc_code} /services=${svc_code})"
+      fi
     else
       warn "nginx -t failed after try_files fix — left previous config"
     fi
   fi
 }
 _fix_prerender_trailing_slash_301
+_wait_nginx_ready
 
 if nginx -t >/dev/null 2>&1; then
   pass "nginx -t"
@@ -271,7 +313,7 @@ if echo "${HOME_BODY}" | grep -qi 'CareNest'; then
 else
   fail "frontend home via nginx"
 fi
-NGINX_API_CODE="$(curl -s -o /tmp/carenest_nginx_api.json -w '%{http_code}' --max-time 12 -H "Host: ${DOMAIN}" http://127.0.0.1/api/health || echo 000)"
+NGINX_API_CODE="$(_http_code "http://127.0.0.1/api/health" /tmp/carenest_nginx_api.json)"
 NGINX_API_BODY="$(cat /tmp/carenest_nginx_api.json 2>/dev/null || true)"
 if [[ "${NGINX_API_CODE}" == "200" ]] && echo "${NGINX_API_BODY}" | grep -q healthy; then
   pass "nginx proxies /api/health"
@@ -305,30 +347,46 @@ if grep -Eq 'path!=="/"|setCanonical\(url\)' "${DOCROOT}/index.html" 2>/dev/null
 else
   fail "locations soft-404 canonical guard missing"
 fi
-for path in /robots.txt /sitemap.xml /locations /services; do
-  code="$(curl -s -o /tmp/carenest_verify_body -w '%{http_code}' --max-time 10 -H "Host: ${DOMAIN}" "http://127.0.0.1${path}" || echo 000)"
-  if [[ "${code}" == "301" || "${code}" == "302" ]]; then
-    # One more attempt after ensuring try_files fix is live
-    _fix_prerender_trailing_slash_301
-    code="$(curl -s -o /tmp/carenest_verify_body -w '%{http_code}' --max-time 10 -H "Host: ${DOMAIN}" "http://127.0.0.1${path}" || echo 000)"
-  fi
+_check_seo_path() {
+  local path="$1"
+  local attempt code
+  for attempt in 1 2 3 4 5 6 7 8; do
+    code="$(_http_code "http://127.0.0.1${path}" /tmp/carenest_verify_body)"
+    if [[ "${code}" == "200" ]]; then
+      break
+    fi
+    if [[ "${code}" == "301" || "${code}" == "302" ]]; then
+      _fix_prerender_trailing_slash_301
+      _wait_nginx_ready
+      sleep 0.25
+    elif [[ "${code}" == "000" ]]; then
+      # Transient: nginx reload / worker handoff — wait and retry
+      sleep 0.35
+      _wait_nginx_ready
+    else
+      break
+    fi
+  done
   if [[ "${code}" == "200" ]]; then
     if [[ "${path}" == "/locations" || "${path}" == "/services" ]]; then
-      if grep -qi 'CareNest\|carenest-seo-bootstrap\|<!doctype html>' /tmp/carenest_verify_body; then
+      if grep -qiE 'CareNest|carenest-seo-bootstrap|<!doctype html>' /tmp/carenest_verify_body; then
         pass "HTTP 200 ${path}"
       else
-        fail "HTTP ${code} ${path} but body unexpected"
+        fail "HTTP 200 ${path} but body unexpected"
       fi
     elif [[ "${path}" == "/robots.txt" ]]; then
-      grep -qi 'Sitemap\|User-agent' /tmp/carenest_verify_body && pass "HTTP 200 ${path}" || fail "${path} body invalid"
+      grep -qiE 'Sitemap|User-agent' /tmp/carenest_verify_body && pass "HTTP 200 ${path}" || fail "${path} body invalid"
     elif [[ "${path}" == "/sitemap.xml" ]]; then
-      grep -qi 'urlset\|<url>' /tmp/carenest_verify_body && pass "HTTP 200 ${path}" || fail "${path} body invalid"
+      grep -qiE 'urlset|<url>' /tmp/carenest_verify_body && pass "HTTP 200 ${path}" || fail "${path} body invalid"
     else
       pass "HTTP 200 ${path}"
     fi
   else
     fail "HTTP ${code} ${path}"
   fi
+}
+for path in /robots.txt /sitemap.xml /locations /services; do
+  _check_seo_path "${path}"
 done
 
 section "6. Permissions"
