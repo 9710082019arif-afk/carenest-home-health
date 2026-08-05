@@ -6,13 +6,26 @@ set -euo pipefail
 APP_ROOT="${APP_ROOT:-/opt/carenest/app}"
 BACKEND="$APP_ROOT/backend"
 
+# Prefer interpreter recorded by bootstrap_ec2.sh; otherwise system python3.
+if [[ -f /etc/carenest/python.env ]]; then
+  # shellcheck disable=SC1091
+  source /etc/carenest/python.env
+fi
+PYTHON_BIN="${PYTHON_BIN:-$(command -v python3)}"
+
+if [[ -z "${PYTHON_BIN}" ]] || [[ ! -x "${PYTHON_BIN}" ]]; then
+  echo "ERROR: python3 not found. Re-run deploy/scripts/bootstrap_ec2.sh" >&2
+  exit 1
+fi
+
 cd "$BACKEND"
 if [[ ! -f .env ]]; then
   echo "Missing $BACKEND/.env — copy from deploy/env/backend.env.example" >&2
   exit 1
 fi
 
-python3.12 -m venv .venv
+echo "Using ${PYTHON_BIN} ($("${PYTHON_BIN}" --version 2>&1))"
+"${PYTHON_BIN}" -m venv .venv
 # shellcheck disable=SC1091
 source .venv/bin/activate
 pip install --upgrade pip

@@ -8,7 +8,7 @@
 | `systemd/carenest-api.service` | FastAPI uvicorn unit |
 | `env/backend.env.example` | Backend secrets template (SES + Anthropic) |
 | `env/frontend.env.example` | CRA build-time env |
-| `scripts/bootstrap_ec2.sh` | Fresh Ubuntu bootstrap |
+| `scripts/bootstrap_ec2.sh` | Fresh Ubuntu bootstrap (auto-detects system `python3`) |
 | `scripts/deploy_backend.sh` | Install/restart API |
 | `scripts/deploy_frontend.sh` | `yarn build` → docroot |
 | `scripts/mongo_migrate.sh` | mongodump / mongorestore |
