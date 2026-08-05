@@ -29,9 +29,13 @@ def _blank_str_to_none(v):
         return None
     return v
 
-# MongoDB
+# MongoDB — short timeouts so /api/health fails fast instead of hanging
 mongo_url = os.environ["MONGO_URL"]
-mongo_client = AsyncIOMotorClient(mongo_url)
+mongo_client = AsyncIOMotorClient(
+    mongo_url,
+    serverSelectionTimeoutMS=5000,
+    connectTimeoutMS=5000,
+)
 db = mongo_client[os.environ["DB_NAME"]]
 
 # Integrations (AWS SES + Anthropic — Emergent keys are no longer used)

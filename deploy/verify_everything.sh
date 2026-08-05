@@ -171,20 +171,25 @@ else
 fi
 
 section "3. Backend health"
-HEALTH_JSON="$(curl -sf --max-time 10 http://127.0.0.1:8000/api/health 2>/dev/null || true)"
-if echo "${HEALTH_JSON}" | grep -q '"status":"healthy"'; then
+# Do not use curl -f — /api/health returns 503 when Mongo is down; -f hides the body as "no response"
+HEALTH_CODE="$(curl -s -o /tmp/carenest_health.json -w '%{http_code}' --max-time 12 http://127.0.0.1:8000/api/health || echo 000)"
+HEALTH_JSON="$(cat /tmp/carenest_health.json 2>/dev/null || true)"
+if [[ "${HEALTH_CODE}" == "200" ]] && echo "${HEALTH_JSON}" | grep -q '"status":"healthy"'; then
   pass "GET /api/health healthy"
 else
-  fail "GET /api/health not healthy (${HEALTH_JSON:-no response})"
+  fail "GET /api/health HTTP ${HEALTH_CODE} (${HEALTH_JSON:-empty body})"
 fi
-if echo "${HEALTH_JSON}" | grep -q '"mongo":"ok"'; then
+if [[ "${HEALTH_CODE}" == "200" ]] && echo "${HEALTH_JSON}" | grep -q '"mongo":"ok"'; then
   pass "Mongo connected"
+elif echo "${HEALTH_JSON}" | grep -qi 'mongo'; then
+  fail "Mongo not ok — Atlas Network Access must allow this EC2 IP (or fix MONGO_URL)"
+  manual "MongoDB Atlas → Network Access → Add IP Address → add this EC2 Elastic IP (or 0.0.0.0/0 temporarily), wait 1 minute, then: sudo systemctl restart carenest-api && sudo bash deploy/verify_everything.sh"
 else
-  # older health without mongo field still ok if healthy
-  if echo "${HEALTH_JSON}" | grep -q '"status":"healthy"'; then
-    warn "Mongo field missing in health JSON (API may be older build)"
+  if [[ "${HEALTH_CODE}" == "200" ]]; then
+    warn "Mongo field missing in health JSON (API may be older build — restart after git pull)"
   else
-    fail "Mongo not ok"
+    fail "Mongo not ok (health did not return 200)"
+    manual "MongoDB Atlas → Network Access → allow this EC2 IP; confirm MONGO_URL in backend/.env; sudo systemctl restart carenest-api"
   fi
 fi
 if curl -sf --max-time 10 http://127.0.0.1:8000/api/config/public 2>/dev/null | grep -q 'CareNest Home Health'; then
@@ -204,6 +209,49 @@ else
 fi
 
 section "4. Frontend / Nginx"
+# SSL mode=none must not HTTP→HTTPS redirect on localhost checks
+_restore_http_nginx_if_needed() {
+  local probe
+  probe="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 -H "Host: ${DOMAIN}" http://127.0.0.1/locations || echo 000)"
+  if [[ "${probe}" != "301" && "${probe}" != "302" ]]; then
+    return 0
+  fi
+  # cloudflare mode may intentionally redirect — do not clobber
+  if [[ "${SSL_MODE}" == "cloudflare" ]]; then
+    return 0
+  fi
+  # If a Let's Encrypt cert exists and SSL_MODE=certbot, leave redirects alone
+  if [[ "${SSL_MODE}" == "certbot" && -f "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" ]]; then
+    return 0
+  fi
+  local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
+  local site_avail="/etc/nginx/sites-available/${DOMAIN}"
+  if [[ -f "${http_tmpl}" ]]; then
+    sed \
+      -e "s|__DOMAIN__|${DOMAIN}|g" \
+      -e "s|__WWW_DOMAIN__|${WWW_DOMAIN}|g" \
+      -e "s|__DOCROOT__|/var/www/carenest/frontend|g" \
+      "${http_tmpl}" > "${site_avail}"
+    ln -sfn "${site_avail}" "/etc/nginx/sites-enabled/${DOMAIN}"
+    if nginx -t >/dev/null 2>&1; then
+      systemctl reload nginx || systemctl restart nginx || true
+      fixed "restored HTTP nginx site (removed HTTPS redirect for SSL mode=none)"
+      mkdir -p /etc/carenest
+      if [[ -f /etc/carenest/deploy.env ]]; then
+        if grep -q '^SSL_MODE=' /etc/carenest/deploy.env; then
+          sed -i 's/^SSL_MODE=.*/SSL_MODE=none/' /etc/carenest/deploy.env
+        else
+          echo 'SSL_MODE=none' >> /etc/carenest/deploy.env
+        fi
+      else
+        echo "SSL_MODE=none" > /etc/carenest/deploy.env
+      fi
+      SSL_MODE=none
+    fi
+  fi
+}
+_restore_http_nginx_if_needed
+
 if nginx -t >/dev/null 2>&1; then
   pass "nginx -t"
 else
@@ -214,17 +262,22 @@ if [[ -f "${DOCROOT}/index.html" ]]; then
 else
   fail "docroot index.html missing at ${DOCROOT}"
 fi
-HOME_BODY="$(curl -sf --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/ 2>/dev/null || true)"
+HOME_BODY="$(curl -s --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/ 2>/dev/null || true)"
 if echo "${HOME_BODY}" | grep -qi 'CareNest'; then
   pass "frontend home via nginx (Host ${DOMAIN})"
 else
   fail "frontend home via nginx"
 fi
-API_VIA_NGINX="$(curl -sf --max-time 10 -H "Host: ${DOMAIN}" http://127.0.0.1/api/health 2>/dev/null || true)"
-if echo "${API_VIA_NGINX}" | grep -q healthy; then
+NGINX_API_CODE="$(curl -s -o /tmp/carenest_nginx_api.json -w '%{http_code}' --max-time 12 -H "Host: ${DOMAIN}" http://127.0.0.1/api/health || echo 000)"
+NGINX_API_BODY="$(cat /tmp/carenest_nginx_api.json 2>/dev/null || true)"
+if [[ "${NGINX_API_CODE}" == "200" ]] && echo "${NGINX_API_BODY}" | grep -q healthy; then
   pass "nginx proxies /api/health"
+elif [[ "${NGINX_API_CODE}" == "503" ]]; then
+  fail "nginx proxies /api/health but upstream returned 503 (Mongo) — not an nginx bug"
+elif [[ "${NGINX_API_CODE}" == "301" || "${NGINX_API_CODE}" == "302" ]]; then
+  fail "nginx redirects /api/health (HTTP ${NGINX_API_CODE}) — expected no redirect when SSL mode=none"
 else
-  fail "nginx does not proxy /api/health"
+  fail "nginx /api/health HTTP ${NGINX_API_CODE}"
 fi
 
 section "5. SEO"
@@ -255,6 +308,11 @@ else
 fi
 for path in /robots.txt /sitemap.xml /locations /services; do
   code="$(curl -s -o /tmp/carenest_verify_body -w '%{http_code}' --max-time 10 -H "Host: ${DOMAIN}" "http://127.0.0.1${path}" || echo 000)"
+  # Follow one redirect only for reporting; success requires final 200 without HTTPS force when SSL=none
+  if [[ "${code}" == "301" || "${code}" == "302" ]]; then
+    _restore_http_nginx_if_needed
+    code="$(curl -s -o /tmp/carenest_verify_body -w '%{http_code}' --max-time 10 -H "Host: ${DOMAIN}" "http://127.0.0.1${path}" || echo 000)"
+  fi
   if [[ "${code}" == "200" ]]; then
     if [[ "${path}" == "/locations" || "${path}" == "/services" ]]; then
       if grep -qi 'CareNest\|carenest-seo-bootstrap\|<!doctype html>' /tmp/carenest_verify_body; then
