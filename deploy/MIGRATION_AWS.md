@@ -72,25 +72,41 @@ ssh -i carenest-aws.pem ubuntu@EC2_EIP
 
 ### 1.3 Base packages
 
+Prefer the automated bootstrap (detects system Python — do **not** hardcode `python3.12`):
+
+```bash
+sudo bash /opt/carenest/app/deploy/scripts/bootstrap_ec2.sh
+# or from a cloned checkout:
+# sudo bash deploy/scripts/bootstrap_ec2.sh
+```
+
+Manual equivalent (works on current AWS Ubuntu images with Python 3.12+ / 3.14):
+
 ```bash
 sudo apt update && sudo apt -y upgrade
 sudo apt -y install \
   nginx certbot python3-certbot-nginx \
   git curl build-essential \
-  python3.12 python3.12-venv python3-pip \
+  python3 python3-venv python3-pip \
   mongodb-org \
   ufw fail2ban
+python3 --version   # e.g. 3.14.x — use this interpreter for venv
 ```
 
-> **MongoDB on Ubuntu 24.04:** follow [MongoDB 8.0 apt repo](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/) if `mongodb-org` is not in default apt.  
+> **Do not install `python3.12` / `python3.12-venv` by name** on images that only ship a newer `python3` — apt will fail with “Unable to locate package”.  
+> **MongoDB on Ubuntu:** follow [MongoDB apt repo](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/) if `mongodb-org` is not in default apt.  
 > **Preferred production:** skip on-box Mongo; use **MongoDB Atlas** M10+ and set `MONGO_URL` to the Atlas URI (see §6).
 
-### 1.4 Node 20 + Yarn
+### 1.4 Node + Yarn
+
+Bootstrap installs Yarn Classic if missing and keeps an existing Node (e.g. v22). Manual:
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+# Only if node is missing — Node 22 LTS example:
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt -y install nodejs
 sudo npm install -g yarn@1.22.22
+# or: sudo corepack enable && sudo corepack prepare yarn@1.22.22 --activate
 node -v && yarn -v
 ```
 
@@ -102,6 +118,7 @@ sudo mkdir -p /opt/carenest /var/www/carenest/frontend /var/log/carenest
 sudo chown -R carenest:carenest /opt/carenest /var/www/carenest /var/log/carenest
 ```
 
+(`bootstrap_ec2.sh` creates `carenest`, `/opt/carenest`, and related dirs automatically.)
 ### 1.6 Clone repository
 
 ```bash
@@ -204,9 +221,9 @@ Unit file: [`deploy/systemd/carenest-api.service`](./systemd/carenest-api.servic
 ```bash
 sudo -u carenest -H bash <<'EOF'
 cd /opt/carenest/app/backend
-python3.12 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
+# Use system python3 (version recorded in /etc/carenest/python.env by bootstrap)
+python3 -m venv .venv
+source .venv/bin/activatepip install --upgrade pip
 pip install -r requirements.txt
 # After applying Emergent-exit patch (§7):
 # pip install anthropic boto3   # if not already pulled by requirements
