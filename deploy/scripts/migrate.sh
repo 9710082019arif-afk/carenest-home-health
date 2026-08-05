@@ -26,9 +26,19 @@ BACKUP_ROOT="/var/backups/carenest"
 BACKUP_DIR=""
 RESTORE_SCRIPT=""
 
+# shellcheck source=../lib/migrate_mongo.sh
+source "${DEPLOY_DIR}/lib/migrate_mongo.sh"
+
 mkdir -p "${STATE_DIR}" "${LOG_DIR}" "${BACKUP_ROOT}" /etc/carenest /etc/ssl/cloudflare
 touch "${LOG_FILE}"
-chmod 600 "${CUTOVER_ENV}" 2>/dev/null || true
+# Always ensure cutover.env exists (wizard writes here; never require manual create)
+if [[ ! -f "${CUTOVER_ENV}" ]]; then
+  umask 077
+  cat > "${CUTOVER_ENV}" <<'EOF'
+# Auto-created by deploy/scripts/migrate.sh — do not commit
+EOF
+fi
+chmod 600 "${CUTOVER_ENV}"
 
 # UI → terminal; detail → log only
 say() { printf '%s\n' "$*" > /dev/tty; }
@@ -248,7 +258,17 @@ _cutover_set() {
 # shellcheck disable=SC1091
 [[ -f "${CUTOVER_ENV}" ]] && source "${CUTOVER_ENV}" || true
 
-MONGO_URL="${CARENEST_MONGO_URL:-${MONGO_URL:-$(_backend_get MONGO_URL)}}"
+# Atlas URI: prefer explicit CARENEST_MONGO_URL / ATLAS_MONGO_URL / cutover MONGO_URL,
+# then backend/.env — but REJECT placeholders (localhost / CHANGE_ME / examples).
+_raw_mongo="${CARENEST_MONGO_URL:-${ATLAS_MONGO_URL:-${MONGO_URL:-$(_backend_get MONGO_URL)}}}"
+MONGO_URL="$(reject_placeholder_mongo_url "${_raw_mongo}")"
+if is_placeholder_mongo_uri "${_raw_mongo}" && [[ -n "${_raw_mongo}" ]]; then
+  : # will prompt; note for UI later
+  PLACEHOLDER_MONGO_DETECTED=1
+else
+  PLACEHOLDER_MONGO_DETECTED=0
+fi
+
 DB_NAME="${DB_NAME:-$(_backend_get DB_NAME)}"; DB_NAME="${DB_NAME:-carenest}"
 ADMIN_TOKEN="${ADMIN_TOKEN:-$(_backend_get ADMIN_TOKEN)}"
 SES_SMTP_USER="${CARENEST_SES_SMTP_USER:-${SES_SMTP_USER:-$(_backend_get SES_SMTP_USER)}}"
@@ -260,6 +280,7 @@ SES_SMTP_PORT="${SES_SMTP_PORT:-587}"
 GA_MEASUREMENT_ID="${GA_MEASUREMENT_ID:-$(_backend_get GA_MEASUREMENT_ID)}"
 GTM_ID="${GTM_ID:-$(_backend_get GTM_ID)}"
 EMERGENT_MONGO_URL="${EMERGENT_MONGO_URL:-}"
+EMERGENT_MONGO_URL="$(reject_placeholder_mongo_url "${EMERGENT_MONGO_URL}")"
 EMERGENT_DB_NAME="${EMERGENT_DB_NAME:-}"
 CLOUDFLARE_API_TOKEN="${CLOUDFLARE_API_TOKEN:-}"
 CLOUDFLARE_ZONE_ID="${CLOUDFLARE_ZONE_ID:-}"
@@ -276,7 +297,11 @@ VENV_PY="${APP_ROOT}/backend/.venv/bin/python3"
 # ---------------------------------------------------------------------------
 validate_mongo_uri() {
   local uri="$1" label="$2" py out rc=0
-  [[ -n "${uri}" ]] || { printf '%s' "${label} is empty"; return 1; }
+  if is_placeholder_mongo_uri "${uri}"; then
+    printf '%s' "$(atlas_mongo_uri_required_message)"
+    return 1
+  fi
+  [[ -n "${uri}" ]] || { printf '%s' "$(atlas_mongo_uri_required_message)"; return 1; }
   [[ "${uri}" =~ ^mongodb(\+srv)?:// ]] || { printf '%s' "${label} must start with mongodb:// or mongodb+srv://"; return 1; }
   py="$(mktemp)"
   cat > "${py}" <<'PY'
@@ -392,14 +417,23 @@ say "Detail log: ${LOG_FILE}"
 say ""
 
 MISSING_LIST=()
-[[ -z "${MONGO_URL}" ]] && MISSING_LIST+=("Atlas MONGO_URL")
+# Atlas is ALWAYS required (SKIP_MONGO only skips Emergent dump/restore)
+if [[ -z "${MONGO_URL}" ]] || is_placeholder_mongo_uri "${MONGO_URL}"; then
+  MISSING_LIST+=("Atlas MONGO_URL (mongodb+srv://...)")
+fi
 [[ -z "${SES_SMTP_USER}" || -z "${SES_SMTP_PASS}" ]] && MISSING_LIST+=("SES SMTP user/pass")
 [[ -z "${GA_MEASUREMENT_ID}" ]] && MISSING_LIST+=("GA4 ID")
 [[ -z "${GTM_ID}" ]] && MISSING_LIST+=("GTM ID")
 [[ -z "${CLOUDFLARE_API_TOKEN}" ]] && MISSING_LIST+=("Cloudflare API token")
-[[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]] && MISSING_LIST+=("Emergent Mongo URI")
+# SKIP_MONGO=1 skips Emergent dump/restore ONLY — never Atlas
+[[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]] && MISSING_LIST+=("Emergent Mongo URI (or re-run with SKIP_MONGO=1)")
 if [[ (! -f "${CF_ORIGIN_CERT}" || ! -f "${CF_ORIGIN_KEY}") && -z "${CLOUDFLARE_ORIGIN_CA_KEY}" ]]; then
   MISSING_LIST+=("Cloudflare Origin CA Key")
+fi
+
+if [[ "${PLACEHOLDER_MONGO_DETECTED:-0}" == "1" ]]; then
+  say "Detected placeholder/local MONGO_URL in backend/.env (localhost / CHANGE_ME) — will ask for Atlas URI."
+  say ""
 fi
 
 if [[ "${#MISSING_LIST[@]}" -gt 0 ]]; then
@@ -413,14 +447,20 @@ else
   say ""
 fi
 
-[[ -z "${MONGO_URL}" ]] && ask "MongoDB Atlas URI (mongodb+srv://...)" 0 MONGO_URL
+if [[ -z "${MONGO_URL}" ]] || is_placeholder_mongo_uri "${MONGO_URL}"; then
+  ask "MongoDB Atlas URI (mongodb+srv://...)" 0 MONGO_URL
+fi
+# Hard stop if still missing/placeholder after prompt (non-interactive or empty answer)
+if [[ -z "${MONGO_URL}" ]] || is_placeholder_mongo_uri "${MONGO_URL}"; then
+  migration_fail "$(atlas_mongo_uri_required_message)"
+fi
 [[ -z "${SES_SMTP_USER}" ]] && ask "SES SMTP username" 0 SES_SMTP_USER
 [[ -z "${SES_SMTP_PASS}" ]] && ask "SES SMTP password" 1 SES_SMTP_PASS
 [[ -z "${GA_MEASUREMENT_ID}" ]] && ask "GA4 Measurement ID (G-XXXXXXXX)" 0 GA_MEASUREMENT_ID
 [[ -z "${GTM_ID}" ]] && ask "GTM Container ID (GTM-XXXXXXX)" 0 GTM_ID
 [[ -z "${CLOUDFLARE_API_TOKEN}" ]] && ask "Cloudflare API token" 1 CLOUDFLARE_API_TOKEN
 if [[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]]; then
-  ask "Emergent Mongo URI" 1 EMERGENT_MONGO_URL
+  ask "Emergent Mongo URI (or Ctrl-C and re-run with SKIP_MONGO=1)" 1 EMERGENT_MONGO_URL
   [[ -z "${EMERGENT_DB_NAME}" ]] && ask "Emergent DB name (blank = auto-detect)" 0 EMERGENT_DB_NAME
 fi
 if [[ (! -f "${CF_ORIGIN_CERT}" || ! -f "${CF_ORIGIN_KEY}") && -z "${CLOUDFLARE_ORIGIN_CA_KEY}" ]]; then
@@ -435,7 +475,15 @@ say ""
 say "Validating…"
 ERR=""
 
+# Atlas always validated — even when SKIP_MONGO=1
+if is_placeholder_mongo_uri "${MONGO_URL}" || [[ -z "${MONGO_URL}" ]]; then
+  migration_fail "$(atlas_mongo_uri_required_message)"
+fi
 if ! ERR="$(validate_mongo_uri "${MONGO_URL}" "Atlas MONGO_URL")"; then
+  # Prefer exact required message for placeholders; otherwise keep connection detail
+  if [[ "${ERR}" == "$(atlas_mongo_uri_required_message)" ]]; then
+    migration_fail "$(atlas_mongo_uri_required_message)"
+  fi
   migration_fail "Validate Atlas MongoDB URI — ${ERR}"
 fi
 say "  ✓ Atlas MongoDB URI"
@@ -445,6 +493,8 @@ if [[ "${SKIP_MONGO}" != "1" ]]; then
     migration_fail "Validate Emergent MongoDB URI — ${ERR}"
   fi
   say "  ✓ Emergent MongoDB URI"
+else
+  say "  ✓ Emergent dump/restore skipped (SKIP_MONGO=1) — Atlas still required"
 fi
 
 if ! ERR="$(validate_ga4 "${GA_MEASUREMENT_ID}")"; then
@@ -480,9 +530,12 @@ say ""
 say "Creating preflight backups (before any changes)…"
 create_preflight_backup
 
-# Persist (after backup)
+# Persist Atlas URI to backend/.env + cutover.env (wizard writes — no manual edit)
 _backend_set MONGO_URL "${MONGO_URL}"
 _backend_set DB_NAME "${DB_NAME}"
+_cutover_set MONGO_URL "${MONGO_URL}"
+_cutover_set ATLAS_MONGO_URL "${MONGO_URL}"
+_cutover_set DB_NAME "${DB_NAME}"
 _backend_set SES_SMTP_USER "${SES_SMTP_USER}"
 _backend_set SES_SMTP_PASS "${SES_SMTP_PASS}"
 _backend_set SES_SMTP_HOST "${SES_SMTP_HOST}"

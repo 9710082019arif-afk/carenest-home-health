@@ -10,13 +10,17 @@ sudo bash deploy/scripts/migrate.sh
 
 The wizard:
 
-1. Detects values already in `backend/.env` / `/etc/carenest/cutover.env`
-2. Prompts **only** for missing secrets
-3. Validates Atlas Mongo, Emergent Mongo, GA4, GTM, SES, Cloudflare token
-4. Shows a pre-flight checklist → type `YES`
-5. Creates timestamped backups under `/var/backups/carenest/YYYYMMDD-HHMMSS/`
-6. Shows a pre-flight checklist → type `YES`
-7. Runs Mongo sync → analytics → origin cert → SSL → DNS flip → live verify
+1. **Creates** `/etc/carenest/cutover.env` if missing  
+2. Detects values already in `backend/.env` / `cutover.env`  
+3. **Rejects placeholder Mongo URIs** (`localhost`, `127.0.0.1`, `CHANGE_ME_*`, example templates) and prompts for real **Atlas** `mongodb+srv://…`  
+4. Prompts **only** for other missing secrets  
+5. Validates Atlas Mongo, Emergent Mongo (unless `SKIP_MONGO=1`), GA4, GTM, SES, Cloudflare token  
+6. Writes Atlas URI into `backend/.env` + `cutover.env` automatically  
+7. Creates timestamped backups under `/var/backups/carenest/YYYYMMDD-HHMMSS/`  
+8. Shows a pre-flight checklist → type `YES`  
+9. Runs Mongo sync (optional) → analytics → origin cert → SSL → DNS flip → live verify  
+
+`SKIP_MONGO=1` skips **only** Emergent dump/restore. Atlas URI is always required.
 
 **Final output is only:**
 
