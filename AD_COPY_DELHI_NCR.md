@@ -130,7 +130,7 @@ Also swap landing page to specific service pages (e.g. `/locations/delhi-ncr/icu
    - `Lead` event on lead form submit
    - `Contact` on phone click
    - `Schedule` on appointment confirm
-3. Once IDs are ready, drop them into `/app/backend/.env` (`GA_MEASUREMENT_ID`, `GTM_ID`, `META_PIXEL_ID`) — AnalyticsLoader will auto-inject.
+3. Once IDs are ready, set them in `/app/backend/.env` (`GA_MEASUREMENT_ID`, `GTM_ID`, `META_PIXEL_ID`) **and** in Emergent → Deployment → Secrets for production. Editing `.env` alone does not overwrite existing production secrets on redeploy (empty placeholders stay empty → `/api/config/public` returns `ga_id=""`). AnalyticsLoader will auto-inject once the live API returns non-empty IDs (or `REACT_APP_GA_MEASUREMENT_ID` is set at frontend build time).
 
 ---
 
