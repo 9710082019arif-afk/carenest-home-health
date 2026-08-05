@@ -58,6 +58,7 @@ sudo CARENEST_MONGO_URL='mongodb+srv://...' \
 | Path | Role |
 |---|---|
 | `install.sh` | **One-command deploy** |
+| `verify_everything.sh` | **One-command post-deploy verification + safe fixes** |
 | `lib/*.sh` | Installer modules |
 | `nginx/*.conf` | HTTP / HTTPS / Cloudflare templates |
 | `systemd/carenest-api.service` | FastAPI unit |
