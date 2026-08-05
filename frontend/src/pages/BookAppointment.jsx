@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { createAppointment } from "@/lib/api";
+import { trackAppointmentBooked, trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 import { toast } from "sonner";
 import { SERVICES, LOCATIONS, COMPANY } from "@/data/content";
 import { ArrowRight, ArrowLeft, CheckCircle2, Phone, MessageCircle } from "lucide-react";
@@ -31,6 +32,7 @@ const BookAppointment = () => {
   const submit = async () => {
     try {
       await createAppointment({ ...f, patient_age: f.patient_age ? Number(f.patient_age) : undefined });
+      trackAppointmentBooked({ city: f.city, service: f.service });
       setDone(true);
       toast.success("Appointment received. We'll confirm within 15 minutes.");
     } catch { toast.error("Could not book — please call us at " + COMPANY.phone); }
@@ -50,8 +52,8 @@ const BookAppointment = () => {
               <h2 className="font-serif text-3xl mt-6">Thank you, {f.patient_name.split(" ")[0]}.</h2>
               <p className="text-muted-foreground mt-3 max-w-lg mx-auto font-light">A care coordinator has been notified and will call you at <b>{f.phone}</b> within 15 minutes. If it's urgent, please call us directly.</p>
               <div className="mt-6 flex justify-center gap-3">
-                <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} className="btn-primary"><Phone size={15}/> Call {COMPANY.phone}</a>
-                <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noreferrer" className="btn-outline"><MessageCircle size={15}/> WhatsApp</a>
+                <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} className="btn-primary" onClick={() => trackPhoneClick({ location: "book-thankyou" })}><Phone size={15}/> Call {COMPANY.phone}</a>
+                <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noreferrer" className="btn-outline" onClick={() => trackWhatsAppClick({ location: "book-thankyou" })}><MessageCircle size={15}/> WhatsApp</a>
               </div>
             </div>
           ) : (

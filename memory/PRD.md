@@ -77,3 +77,9 @@ Build India's most premium, luxurious, high-converting, SEO-optimized Home Healt
 - **Exit-intent popup** (mouseleave-top detection after 15s, one-per-session, lead form inside)
 - **Starting rates for all 22 services** — no more "custom plan" placeholders. Explicit ranges shown on pricing page, service cards and detail pages.
 - **Delhi NCR ad copy playbook** at `/app/AD_COPY_DELHI_NCR.md` — 5 Google RSA + 5 Meta creative variants + budget/targeting plan
+
+## Google Ads CPC audit (2026-08-05)
+- **Root cause of ~₹300 CPC:** production `/api/config/public` returns empty `ga_id` / `gtm_id` / `meta_pixel_id`; Smart Bidding has no conversion signal. Full write-up in `GOOGLE_ADS_AUDIT.md`.
+- **Pune/Mumbai RSA playbook** + account negatives: `AD_COPY_PUNE_MUMBAI.md`, `ads/negative-keywords-pune-mumbai.txt`.
+- **Conversion event hooks** in `frontend/src/lib/analytics.js` wired to lead form, appointment booking, phone/WhatsApp CTAs (fires when GA4/GTM IDs are set).
+- **Ops still required:** set `GA_MEASUREMENT_ID` (+ GTM / Ads conversion labels) in production `.env`, then apply High-priority Ads UI fixes from the audit.
