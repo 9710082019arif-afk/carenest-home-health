@@ -72,6 +72,17 @@ Zone ID is auto-resolved. Origin certificate is auto-created via Origin CA Key.
 
 ## After `Migration Successful`
 
+### Upgrade Flexible → Full (strict) (no DNS change)
+
+If you cut over with **manual Cloudflare** / Flexible SSL, upgrade origin HTTPS next:
+
+```bash
+cd /opt/carenest/app
+sudo bash deploy/scripts/upgrade_ssl_full_strict.sh
+```
+
+The script installs the Cloudflare Origin Certificate on EC2, configures nginx HTTPS, verifies `https://127.0.0.1` via `--resolve`, then instructs you to set Cloudflare SSL/TLS → **Full (strict)** and purge cache (DNS unchanged). It then re-verifies the live site.
+
 Still do once in Google UIs (cannot be API-automated here):
 
 1. Search Console → resubmit sitemap  
