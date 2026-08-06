@@ -30,6 +30,8 @@ MIGRATE_FINISHED=0
 
 # shellcheck source=../lib/migrate_mongo.sh
 source "${DEPLOY_DIR}/lib/migrate_mongo.sh"
+# shellcheck source=../lib/migrate_analytics.sh
+source "${DEPLOY_DIR}/lib/migrate_analytics.sh"
 
 CARENEST_ETC_DIR="${CARENEST_ETC_DIR:-/etc/carenest}"
 CF_SSL_DIR="${CARENEST_CF_SSL_DIR:-/etc/ssl/cloudflare}"
@@ -420,22 +422,6 @@ PY
   return 0
 }
 
-validate_ga4() {
-  if [[ "${1}" =~ ^G-[A-Z0-9]+$ ]]; then
-    return 0
-  fi
-  printf '%s' "must match G-XXXXXXXX"
-  return 1
-}
-
-validate_gtm() {
-  if [[ "${1}" =~ ^GTM-[A-Z0-9]+$ ]]; then
-    return 0
-  fi
-  printf '%s' "must match GTM-XXXXXXX"
-  return 1
-}
-
 validate_ses() {
   local py out rc=0
   py="$(mktemp)"
@@ -583,7 +569,7 @@ if [[ -z "${MONGO_URL}" ]] || is_placeholder_mongo_uri "${MONGO_URL}"; then
 fi
 [[ -z "${SES_SMTP_USER}" || -z "${SES_SMTP_PASS}" ]] && MISSING_LIST+=("SES SMTP user/pass")
 [[ -z "${GA_MEASUREMENT_ID}" ]] && MISSING_LIST+=("GA4 ID")
-[[ -z "${GTM_ID}" ]] && MISSING_LIST+=("GTM ID")
+# GTM / Google Tag is OPTIONAL (blank or GT-… / GTM-…); never block GA4-only cutover
 # SKIP_MONGO=1 skips Emergent dump/restore ONLY -- never Atlas
 [[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]] && MISSING_LIST+=("Emergent Mongo URI (or re-run with SKIP_MONGO=1)")
 
@@ -628,7 +614,8 @@ fi
 [[ -z "${SES_SMTP_USER}" ]] && ask "SES SMTP username" 0 SES_SMTP_USER
 [[ -z "${SES_SMTP_PASS}" ]] && ask "SES SMTP password" 1 SES_SMTP_PASS
 [[ -z "${GA_MEASUREMENT_ID}" ]] && ask "GA4 Measurement ID (G-XXXXXXXX)" 0 GA_MEASUREMENT_ID
-[[ -z "${GTM_ID}" ]] && ask "GTM Container ID (GTM-XXXXXXX)" 0 GTM_ID
+# GTM / Google Tag is optional — blank means GA4-only (no prompt)
+GTM_ID="$(normalize_optional_gtm "${GTM_ID}")"
 if [[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]]; then
   ask "Emergent Mongo URI (or Ctrl-C and re-run with SKIP_MONGO=1)" 1 EMERGENT_MONGO_URL
   [[ -z "${EMERGENT_DB_NAME}" ]] && ask "Emergent DB name (blank = auto-detect)" 0 EMERGENT_DB_NAME
@@ -690,9 +677,13 @@ fi
 say "  ✓ GA4 ID"
 
 if ! ERR="$(validate_gtm "${GTM_ID}")"; then
-  migration_fail "Validate GTM ID -- ${ERR}"
+  migration_fail "Validate GTM / Google Tag ID -- ${ERR}"
 fi
-say "  ✓ GTM ID"
+if [[ -z "${GTM_ID}" ]]; then
+  say "  ✓ GTM / Google Tag (optional -- skipped, GA4-only)"
+else
+  say "  ✓ GTM / Google Tag ID (${GTM_ID})"
+fi
 
 if ! ERR="$(validate_ses)"; then
   migration_fail "Validate SES credentials -- ${ERR}"
@@ -771,7 +762,11 @@ else
 fi
 say "  [x] SES SMTP            validated"
 say "  [x] GA4                 ${GA_MEASUREMENT_ID}"
-say "  [x] GTM                 ${GTM_ID}"
+if [[ -n "${GTM_ID}" ]]; then
+  say "  [x] GTM / Google Tag    ${GTM_ID}"
+else
+  say "  [ ] GTM / Google Tag    skipped (GA4-only)"
+fi
 if [[ "${CF_MODE}" == "api" ]]; then
   say "  [x] Cloudflare mode    api (automated DNS/SSL)"
   say "  [x] Cloudflare token    validated"
