@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CareNest — true one-command Emergent→AWS migration
+# CareNest -- true one-command Emergent→AWS migration
 #
 #   cd /opt/carenest/app && sudo bash deploy/scripts/migrate.sh
 #
@@ -18,31 +18,55 @@ DEPLOY_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 APP_ROOT="$(cd "${DEPLOY_DIR}/.." && pwd)"
 DOMAIN="${CARENEST_DOMAIN:-carenesthomehealth.in}"
 WWW_DOMAIN="${CARENEST_WWW_DOMAIN:-www.${DOMAIN}}"
-CUTOVER_ENV="/etc/carenest/cutover.env"
-STATE_DIR="/var/lib/carenest/cutover"
-LOG_DIR="/var/log/carenest"
+CUTOVER_ENV="${CARENEST_CUTOVER_ENV:-/etc/carenest/cutover.env}"
+STATE_DIR="${CARENEST_MIGRATE_STATE_DIR:-/var/lib/carenest/cutover}"
+LOG_DIR="${CARENEST_MIGRATE_LOG_DIR:-/var/log/carenest}"
 LOG_FILE="${LOG_DIR}/migrate-$(date +%Y%m%d%H%M%S).log"
-BACKUP_ROOT="/var/backups/carenest"
+BACKUP_ROOT="${CARENEST_MIGRATE_BACKUP_ROOT:-/var/backups/carenest}"
 BACKUP_DIR=""
 RESTORE_SCRIPT=""
+# Guard so fail/ok/trap handlers never recurse or miss the stdout contract
+MIGRATE_FINISHED=0
 
 # shellcheck source=../lib/migrate_mongo.sh
 source "${DEPLOY_DIR}/lib/migrate_mongo.sh"
 
-mkdir -p "${STATE_DIR}" "${LOG_DIR}" "${BACKUP_ROOT}" /etc/carenest /etc/ssl/cloudflare
+CARENEST_ETC_DIR="${CARENEST_ETC_DIR:-/etc/carenest}"
+CF_SSL_DIR="${CARENEST_CF_SSL_DIR:-/etc/ssl/cloudflare}"
+mkdir -p "${STATE_DIR}" "${LOG_DIR}" "${BACKUP_ROOT}" "${CARENEST_ETC_DIR}" "${CF_SSL_DIR}"
 touch "${LOG_FILE}"
 # Always ensure cutover.env exists (wizard writes here; never require manual create)
 if [[ ! -f "${CUTOVER_ENV}" ]]; then
   umask 077
+  mkdir -p "$(dirname "${CUTOVER_ENV}")"
   cat > "${CUTOVER_ENV}" <<'EOF'
-# Auto-created by deploy/scripts/migrate.sh — do not commit
+# Auto-created by deploy/scripts/migrate.sh -- do not commit
 EOF
 fi
 chmod 600 "${CUTOVER_ENV}"
 
-# UI → terminal; detail → log only
-say() { printf '%s\n' "$*" > /dev/tty; }
-log() { printf '%s\n' "$*" >> "${LOG_FILE}"; }
+# UI → TTY + log (stdout contract lines are separate; never rely on stdout alone for operators)
+log() { printf '%s\n' "$*" >> "${LOG_FILE}" 2>/dev/null || true; }
+say() {
+  log "$*"
+  # Prefer TTY so progress is visible even when stdout is redirected/piped
+  if [[ -w /dev/tty ]]; then
+    printf '%s\n' "$*" > /dev/tty 2>/dev/null || printf '%s\n' "$*"
+  else
+    printf '%s\n' "$*"
+  fi
+}
+emit_contract() {
+  # Always print contract lines to stdout AND TTY (and log)
+  local line
+  for line in "$@"; do
+    log "${line}"
+    printf '%s\n' "${line}"
+    if [[ -w /dev/tty ]]; then
+      printf '%s\n' "${line}" > /dev/tty 2>/dev/null || true
+    fi
+  done
+}
 ask() {
   local prompt="$1" silent="${2:-0}" var="$3" val=""
   if [[ "${silent}" == "1" ]]; then
@@ -55,53 +79,102 @@ ask() {
   export "${var?}"
 }
 
-print_restore_commands() {
-  local out="${1:-/dev/stdout}"
-  {
+# Build restore text on stdout of this function (caller decides where to send it).
+# Never truncate the migrate log -- callers append.
+restore_commands_text() {
+  echo
+  echo "=== RESTORE FROM BACKUP ==="
+  if [[ -z "${BACKUP_DIR}" || ! -d "${BACKUP_DIR}" ]]; then
+    echo "No preflight backup was created yet (failure before backup step)."
+    echo "DNS rollback (if DNS was flipped): sudo bash ${SCRIPT_DIR}/cutover_dns_cloudflare.sh rollback"
+    return 0
+  fi
+  if [[ -x "${RESTORE_SCRIPT}" ]]; then
+    echo "Run:"
+    echo "  sudo bash ${RESTORE_SCRIPT}"
     echo
-    echo "=== RESTORE FROM BACKUP ==="
-    if [[ -z "${BACKUP_DIR}" || ! -d "${BACKUP_DIR}" ]]; then
-      echo "No preflight backup was created yet (failure before backup step)."
-      echo "DNS rollback (if DNS was flipped): sudo bash ${SCRIPT_DIR}/cutover_dns_cloudflare.sh rollback"
-      return 0
-    fi
-    if [[ -x "${RESTORE_SCRIPT}" ]]; then
-      echo "Run:"
-      echo "  sudo bash ${RESTORE_SCRIPT}"
-      echo
-    fi
-    echo "Or manually:"
-    echo "  BACKUP=${BACKUP_DIR}"
-    [[ -f "${BACKUP_DIR}/backend.env" ]] && echo "  sudo cp \"\$BACKUP/backend.env\" ${APP_ROOT}/backend/.env && sudo chmod 600 ${APP_ROOT}/backend/.env"
-    [[ -f "${BACKUP_DIR}/frontend.env" ]] && echo "  sudo cp \"\$BACKUP/frontend.env\" ${APP_ROOT}/frontend/.env && sudo chmod 600 ${APP_ROOT}/frontend/.env"
-    [[ -d "${BACKUP_DIR}/nginx/sites-available" ]] && echo "  sudo cp -a \"\$BACKUP/nginx/sites-available/.\" /etc/nginx/sites-available/"
-    [[ -d "${BACKUP_DIR}/nginx/sites-enabled" ]] && echo "  sudo rm -rf /etc/nginx/sites-enabled/* && sudo cp -a \"\$BACKUP/nginx/sites-enabled/.\" /etc/nginx/sites-enabled/"
-    [[ -f "${BACKUP_DIR}/systemd/carenest-api.service" ]] && echo "  sudo cp \"\$BACKUP/systemd/carenest-api.service\" /etc/systemd/system/carenest-api.service && sudo systemctl daemon-reload"
-    echo "  sudo nginx -t && sudo systemctl reload nginx"
-    echo "  sudo systemctl restart carenest-api"
-    echo "  # If DNS was flipped: sudo bash ${SCRIPT_DIR}/cutover_dns_cloudflare.sh rollback"
-    echo "Backup path: ${BACKUP_DIR}"
-  } > "${out}"
+  fi
+  echo "Or manually:"
+  echo "  BACKUP=${BACKUP_DIR}"
+  [[ -f "${BACKUP_DIR}/backend.env" ]] && echo "  sudo cp \"\$BACKUP/backend.env\" ${APP_ROOT}/backend/.env && sudo chmod 600 ${APP_ROOT}/backend/.env"
+  [[ -f "${BACKUP_DIR}/frontend.env" ]] && echo "  sudo cp \"\$BACKUP/frontend.env\" ${APP_ROOT}/frontend/.env && sudo chmod 600 ${APP_ROOT}/frontend/.env"
+  [[ -d "${BACKUP_DIR}/nginx/sites-available" ]] && echo "  sudo cp -a \"\$BACKUP/nginx/sites-available/.\" /etc/nginx/sites-available/"
+  [[ -d "${BACKUP_DIR}/nginx/sites-enabled" ]] && echo "  sudo rm -rf /etc/nginx/sites-enabled/* && sudo cp -a \"\$BACKUP/nginx/sites-enabled/.\" /etc/nginx/sites-enabled/"
+  [[ -f "${BACKUP_DIR}/systemd/carenest-api.service" ]] && echo "  sudo cp \"\$BACKUP/systemd/carenest-api.service\" /etc/systemd/system/carenest-api.service && sudo systemctl daemon-reload"
+  echo "  sudo nginx -t && sudo systemctl reload nginx"
+  echo "  sudo systemctl restart carenest-api"
+  echo "  # If DNS was flipped: sudo bash ${SCRIPT_DIR}/cutover_dns_cloudflare.sh rollback"
+  echo "Backup path: ${BACKUP_DIR}"
+}
+
+print_restore_commands() {
+  local out="${1:-}"
+  local body
+  body="$(restore_commands_text)"
+  case "${out}" in
+    ""|"/dev/stdout"|"-")
+      printf '%s\n' "${body}"
+      ;;
+    "/dev/tty")
+      printf '%s\n' "${body}" > /dev/tty 2>/dev/null || printf '%s\n' "${body}"
+      ;;
+    *)
+      # Append -- never truncate LOG_FILE with `>`
+      printf '%s\n' "${body}" >> "${out}"
+      ;;
+  esac
 }
 
 migration_fail() {
-  local step="$1"
+  local step="${1:-unknown failure}"
+  # Prevent recursion from ERR/EXIT traps
+  if [[ "${MIGRATE_FINISHED}" == "1" ]]; then
+    exit 1
+  fi
+  MIGRATE_FINISHED=1
+  trap - ERR EXIT
   log "FAILED: ${step}"
   print_restore_commands "${LOG_FILE}"
-  # Final stdout contract + restore hints for the operator
-  printf '%s\n%s\n' "Migration Failed" "${step}"
+  # Contract MUST be visible on TTY (operators watch say()/tty) and stdout
+  emit_contract "Migration Failed" "${step}"
   print_restore_commands /dev/stdout
-  # Also show on TTY during interactive runs
   print_restore_commands /dev/tty 2>/dev/null || true
   exit 1
 }
 
 migration_ok() {
+  if [[ "${MIGRATE_FINISHED}" == "1" ]]; then
+    exit 0
+  fi
+  MIGRATE_FINISHED=1
+  trap - ERR EXIT
   log "OK: Migration Successful"
   log "Preflight backup retained at ${BACKUP_DIR:-none}"
-  printf '%s\n' "Migration Successful"
+  emit_contract "Migration Successful"
   exit 0
 }
+
+# Catch unexpected set -e / unbound-variable exits that skip migration_fail()
+_migrate_on_err() {
+  local ec=$? line="${1:-?}"
+  [[ "${MIGRATE_FINISHED}" == "1" ]] && return
+  migration_fail "Unexpected error at ${BASH_SOURCE[0]}:${line} (exit ${ec}) -- see ${LOG_FILE}"
+}
+_migrate_on_exit() {
+  local ec=$?
+  # migration_fail / migration_ok already emitted the contract and cleared traps
+  [[ "${MIGRATE_FINISHED}" == "1" ]] && return
+  MIGRATE_FINISHED=1
+  trap - ERR EXIT
+  log "EXIT without Migration Successful/Failed handler: code ${ec}"
+  emit_contract "Migration Failed" "Script exited without success/failure contract (code ${ec}) -- see ${LOG_FILE}"
+  print_restore_commands /dev/stdout
+  print_restore_commands /dev/tty 2>/dev/null || true
+  print_restore_commands "${LOG_FILE}"
+  exit 1
+}
+trap '_migrate_on_err ${LINENO}' ERR
+trap '_migrate_on_exit' EXIT
 
 create_preflight_backup() {
   BACKUP_DIR="${BACKUP_ROOT}/$(date +%Y%m%d-%H%M%S)"
@@ -150,7 +223,7 @@ create_preflight_backup() {
 
   cat > "${RESTORE_SCRIPT}" <<EOF
 #!/usr/bin/env bash
-# Auto-generated by migrate.sh — restore pre-migration state
+# Auto-generated by migrate.sh -- restore pre-migration state
 set -euo pipefail
 BACKUP="${BACKUP_DIR}"
 APP_ROOT="${APP_ROOT}"
@@ -205,7 +278,7 @@ if [[ -f "\${SCRIPT_DIR}/cutover_dns_cloudflare.sh" ]] && [[ -f /etc/carenest/cu
   # shellcheck disable=SC1091
   source /etc/carenest/cutover.env || true
   if [[ -n "\${CLOUDFLARE_API_TOKEN:-}" && -n "\${CLOUDFLARE_ZONE_ID:-}" ]]; then
-    bash "\${SCRIPT_DIR}/cutover_dns_cloudflare.sh" rollback || echo "DNS rollback skipped/failed — restore A records from \${BACKUP}/rollback-dns.txt"
+    bash "\${SCRIPT_DIR}/cutover_dns_cloudflare.sh" rollback || echo "DNS rollback skipped/failed -- restore A records from \${BACKUP}/rollback-dns.txt"
   else
     echo "Set DNS A records from \${BACKUP}/rollback-dns.txt manually if needed"
   fi
@@ -218,8 +291,23 @@ EOF
   say "  ✓ Preflight backup → ${BACKUP_DIR}"
 }
 
-if [[ "${EUID}" -ne 0 ]]; then
+if [[ "${CARENEST_MIGRATE_ALLOW_NON_ROOT:-0}" != "1" && "${EUID}" -ne 0 ]]; then
   migration_fail "Run as root: sudo bash deploy/scripts/migrate.sh"
+fi
+
+# Test hook: prove failure contract after a successful GA4-style say (no real cutover)
+if [[ -n "${CARENEST_MIGRATE_TEST_FAIL_AT:-}" ]]; then
+  say "  ✓ Atlas MongoDB URI"
+  say "  ✓ Emergent dump/restore skipped (SKIP_MONGO=1) -- Atlas still required"
+  say "  ✓ GA4 ID"
+  case "${CARENEST_MIGRATE_TEST_FAIL_AT}" in
+    gtm) migration_fail "Validate GTM ID -- must match GTM-XXXXXXX" ;;
+    errexit)
+      # Force an unexpected set -e failure; ERR/EXIT traps must still print Migration Failed
+      false
+      ;;
+    *) migration_fail "Test failure at ${CARENEST_MIGRATE_TEST_FAIL_AT}" ;;
+  esac
 fi
 
 # ---------------------------------------------------------------------------
@@ -259,7 +347,7 @@ _cutover_set() {
 [[ -f "${CUTOVER_ENV}" ]] && source "${CUTOVER_ENV}" || true
 
 # Atlas URI: prefer explicit CARENEST_MONGO_URL / ATLAS_MONGO_URL / cutover MONGO_URL,
-# then backend/.env — but REJECT placeholders (localhost / CHANGE_ME / examples).
+# then backend/.env -- but REJECT placeholders (localhost / CHANGE_ME / examples).
 _raw_mongo="${CARENEST_MONGO_URL:-${ATLAS_MONGO_URL:-${MONGO_URL:-$(_backend_get MONGO_URL)}}}"
 MONGO_URL="$(reject_placeholder_mongo_url "${_raw_mongo}")"
 if is_placeholder_mongo_uri "${_raw_mongo}" && [[ -n "${_raw_mongo}" ]]; then
@@ -333,11 +421,19 @@ PY
 }
 
 validate_ga4() {
-  [[ "${1}" =~ ^G-[A-Z0-9]+$ ]] || { printf '%s' "must match G-XXXXXXXX"; return 1; }
+  if [[ "${1}" =~ ^G-[A-Z0-9]+$ ]]; then
+    return 0
+  fi
+  printf '%s' "must match G-XXXXXXXX"
+  return 1
 }
 
 validate_gtm() {
-  [[ "${1}" =~ ^GTM-[A-Z0-9]+$ ]] || { printf '%s' "must match GTM-XXXXXXX"; return 1; }
+  if [[ "${1}" =~ ^GTM-[A-Z0-9]+$ ]]; then
+    return 0
+  fi
+  printf '%s' "must match GTM-XXXXXXX"
+  return 1
 }
 
 validate_ses() {
@@ -427,7 +523,7 @@ write_manual_cloudflare_instructions() {
   local out="${1:-${STATE_DIR}/MANUAL_CLOUDFLARE.txt}"
   mkdir -p "$(dirname "${out}")"
   cat > "${out}" <<EOF
-CareNest — manual Cloudflare DNS/SSL cutover
+CareNest -- manual Cloudflare DNS/SSL cutover
 Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 EC2_EIP=${EC2_EIP}
 DOMAIN=${DOMAIN}
@@ -488,7 +584,7 @@ fi
 [[ -z "${SES_SMTP_USER}" || -z "${SES_SMTP_PASS}" ]] && MISSING_LIST+=("SES SMTP user/pass")
 [[ -z "${GA_MEASUREMENT_ID}" ]] && MISSING_LIST+=("GA4 ID")
 [[ -z "${GTM_ID}" ]] && MISSING_LIST+=("GTM ID")
-# SKIP_MONGO=1 skips Emergent dump/restore ONLY — never Atlas
+# SKIP_MONGO=1 skips Emergent dump/restore ONLY -- never Atlas
 [[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]] && MISSING_LIST+=("Emergent Mongo URI (or re-run with SKIP_MONGO=1)")
 
 # Cloudflare: choose api vs manual before requiring secrets
@@ -507,18 +603,18 @@ if [[ "${CF_MODE}" == "api" ]]; then
 fi
 
 if [[ "${PLACEHOLDER_MONGO_DETECTED:-0}" == "1" ]]; then
-  say "Detected placeholder/local MONGO_URL in backend/.env (localhost / CHANGE_ME) — will ask for Atlas URI."
+  say "Detected placeholder/local MONGO_URL in backend/.env (localhost / CHANGE_ME) -- will ask for Atlas URI."
   say ""
 fi
 
 if [[ "${#MISSING_LIST[@]}" -gt 0 ]]; then
-  say "Detected missing values — prompting only for these:"
+  say "Detected missing values -- prompting only for these:"
   for item in "${MISSING_LIST[@]}"; do
     say "  • ${item}"
   done
   say ""
 else
-  say "All required secrets already present — validating…"
+  say "All required secrets already present -- validating…"
   say ""
 fi
 
@@ -541,8 +637,8 @@ fi
 # Cloudflare mode selection (no API secrets required for manual)
 if [[ -z "${CF_MODE}" || ( "${CF_MODE}" != "api" && "${CF_MODE}" != "manual" ) ]]; then
   say "Cloudflare cutover mode:"
-  say "  api     — needs API token + Origin CA Key (fully automated DNS/SSL)"
-  say "  manual  — no Cloudflare secrets; you flip DNS/SSL in the dashboard"
+  say "  api     -- needs API token + Origin CA Key (fully automated DNS/SSL)"
+  say "  manual  -- no Cloudflare secrets; you flip DNS/SSL in the dashboard"
   ask "Choose Cloudflare mode [manual/api]" 0 CF_MODE
   CF_MODE="$(echo "${CF_MODE:-manual}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
 fi
@@ -560,13 +656,13 @@ if [[ "${CF_MODE}" == "api" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Validate — hard refuse
+# Validate -- hard refuse
 # ---------------------------------------------------------------------------
 say ""
 say "Validating…"
 ERR=""
 
-# Atlas always validated — even when SKIP_MONGO=1
+# Atlas always validated -- even when SKIP_MONGO=1
 if is_placeholder_mongo_uri "${MONGO_URL}" || [[ -z "${MONGO_URL}" ]]; then
   migration_fail "$(atlas_mongo_uri_required_message)"
 fi
@@ -575,37 +671,37 @@ if ! ERR="$(validate_mongo_uri "${MONGO_URL}" "Atlas MONGO_URL")"; then
   if [[ "${ERR}" == "$(atlas_mongo_uri_required_message)" ]]; then
     migration_fail "$(atlas_mongo_uri_required_message)"
   fi
-  migration_fail "Validate Atlas MongoDB URI — ${ERR}"
+  migration_fail "Validate Atlas MongoDB URI -- ${ERR}"
 fi
 say "  ✓ Atlas MongoDB URI"
 
 if [[ "${SKIP_MONGO}" != "1" ]]; then
   if ! ERR="$(validate_mongo_uri "${EMERGENT_MONGO_URL}" "Emergent MONGO_URL")"; then
-    migration_fail "Validate Emergent MongoDB URI — ${ERR}"
+    migration_fail "Validate Emergent MongoDB URI -- ${ERR}"
   fi
   say "  ✓ Emergent MongoDB URI"
 else
-  say "  ✓ Emergent dump/restore skipped (SKIP_MONGO=1) — Atlas still required"
+  say "  ✓ Emergent dump/restore skipped (SKIP_MONGO=1) -- Atlas still required"
 fi
 
 if ! ERR="$(validate_ga4 "${GA_MEASUREMENT_ID}")"; then
-  migration_fail "Validate GA4 ID — ${ERR}"
+  migration_fail "Validate GA4 ID -- ${ERR}"
 fi
 say "  ✓ GA4 ID"
 
 if ! ERR="$(validate_gtm "${GTM_ID}")"; then
-  migration_fail "Validate GTM ID — ${ERR}"
+  migration_fail "Validate GTM ID -- ${ERR}"
 fi
 say "  ✓ GTM ID"
 
 if ! ERR="$(validate_ses)"; then
-  migration_fail "Validate SES credentials — ${ERR}"
+  migration_fail "Validate SES credentials -- ${ERR}"
 fi
 say "  ✓ SES credentials"
 
 if [[ "${CF_MODE}" == "api" ]]; then
   if ! ERR="$(validate_cf_token "${CLOUDFLARE_API_TOKEN}")"; then
-    migration_fail "Validate Cloudflare API token — ${ERR}"
+    migration_fail "Validate Cloudflare API token -- ${ERR}"
   fi
   say "  ✓ Cloudflare API token"
   if [[ -z "${CLOUDFLARE_ZONE_ID}" ]]; then
@@ -624,7 +720,7 @@ say ""
 say "Creating preflight backups (before any changes)…"
 create_preflight_backup
 
-# Persist Atlas URI to backend/.env + cutover.env (wizard writes — no manual edit)
+# Persist Atlas URI to backend/.env + cutover.env (wizard writes -- no manual edit)
 _backend_set MONGO_URL "${MONGO_URL}"
 _backend_set DB_NAME "${DB_NAME}"
 _cutover_set MONGO_URL "${MONGO_URL}"
@@ -668,7 +764,11 @@ say "  [x] Domain              ${DOMAIN}"
 say "  [x] EC2 Elastic IP      ${EC2_EIP}"
 say "  [x] Preflight backup    ${BACKUP_DIR}"
 say "  [x] Atlas Mongo         validated"
-say "  [$([[ "${SKIP_MONGO}" == "1" ]] && echo ' ' || echo 'x')] Emergent Mongo       $([[ "${SKIP_MONGO}" == "1" ]] && echo skipped || echo validated)"
+if [[ "${SKIP_MONGO}" == "1" ]]; then
+  say "  [ ] Emergent Mongo       skipped"
+else
+  say "  [x] Emergent Mongo       validated"
+fi
 say "  [x] SES SMTP            validated"
 say "  [x] GA4                 ${GA_MEASUREMENT_ID}"
 say "  [x] GTM                 ${GTM_ID}"
@@ -689,7 +789,7 @@ say "======================================"
 say ""
 CONFIRM=""
 ask "Type YES to start migration" 0 CONFIRM
-[[ "${CONFIRM}" == "YES" ]] || migration_fail "Checklist confirmation — typed '${CONFIRM}' instead of YES"
+[[ "${CONFIRM}" == "YES" ]] || migration_fail "Checklist confirmation -- typed '${CONFIRM}' instead of YES"
 
 # ---------------------------------------------------------------------------
 # Execute
@@ -757,6 +857,6 @@ for i in 1 2 3 4 5 6 7 8; do
   fi
   sleep 12
 done
-[[ "${VERIFY_OK}" -eq 1 ]] || migration_fail "Live public verification (AWS origin / SEO / API / lead / chat) — see ${LOG_FILE}"
+[[ "${VERIFY_OK}" -eq 1 ]] || migration_fail "Live public verification (AWS origin / SEO / API / lead / chat) -- see ${LOG_FILE}"
 
 migration_ok

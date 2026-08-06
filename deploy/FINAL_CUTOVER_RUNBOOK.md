@@ -46,7 +46,7 @@ Migration Failed
   sudo bash /var/backups/carenest/YYYYMMDD-HHMMSS/RESTORE.sh
 ```
 
-Detail log: `/var/log/carenest/migrate-*.log`
+Detail log always includes wizard progress plus FAILED/OK lines (never truncated by restore text): `/var/log/carenest/migrate-*.log`
 
 ### Backups (automatic, before any changes)
 
