@@ -70,8 +70,8 @@ Path: `/var/backups/carenest/YYYYMMDD-HHMMSS/`
 | Atlas `MONGO_URL` | Usually already on EC2 |
 | Emergent Mongo URI (+ DB name) | Emergent backend `.env` |
 | SES SMTP user/pass | Usually already on EC2 |
-| `GA_MEASUREMENT_ID` | GA4 Admin → Data streams (`G-…`) |
-| `GTM_ID` | GTM container (`GTM-…`) |
+| `GA_MEASUREMENT_ID` | GA4 Admin → Data streams (`G-…`) — **required** |
+| `GTM_ID` | **Optional.** Blank (GA4-only), `GTM-…` container, or Google Tag `GT-…` |
 | Cloudflare API token | Zone DNS Edit + Cache Purge + Zone Settings Edit |
 | Cloudflare Origin CA Key | My Profile → API Tokens → Origin CA Key |
 
