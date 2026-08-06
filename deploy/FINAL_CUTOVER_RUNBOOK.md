@@ -14,13 +14,22 @@ The wizard:
 2. Detects values already in `backend/.env` / `cutover.env`  
 3. **Rejects placeholder Mongo URIs** (`localhost`, `127.0.0.1`, `CHANGE_ME_*`, example templates) and prompts for real **Atlas** `mongodb+srv://…`  
 4. Prompts **only** for other missing secrets  
-5. Validates Atlas Mongo, Emergent Mongo (unless `SKIP_MONGO=1`), GA4, GTM, SES, Cloudflare token  
+5. Validates Atlas Mongo, Emergent Mongo (unless `SKIP_MONGO=1`), GA4, GTM, SES; Cloudflare API **or** manual mode  
 6. Writes Atlas URI into `backend/.env` + `cutover.env` automatically  
 7. Creates timestamped backups under `/var/backups/carenest/YYYYMMDD-HHMMSS/`  
 8. Shows a pre-flight checklist → type `YES`  
-9. Runs Mongo sync (optional) → analytics → origin cert → SSL → DNS flip → live verify  
+9. Runs cutover (API mode automates DNS/SSL; **manual** mode prints DNS/SSL clicks then verifies)
 
 `SKIP_MONGO=1` skips **only** Emergent dump/restore. Atlas URI is always required.
+
+### Manual Cloudflare (no API token)
+
+```bash
+sudo SKIP_MONGO=1 CUTOVER_CF_MODE=manual bash deploy/scripts/migrate.sh
+# or answer "manual" when asked for Cloudflare mode
+```
+
+Wizard keeps HTTP nginx (`SSL_MODE=none`). You set Cloudflare DNS A `@`/`www` → EC2 EIP (proxied) and SSL/TLS **Flexible**, purge cache, then press ENTER.
 
 **Final output is only:**
 

@@ -288,6 +288,12 @@ CLOUDFLARE_ORIGIN_CA_KEY="${CLOUDFLARE_ORIGIN_CA_KEY:-}"
 CF_ORIGIN_CERT="${CF_ORIGIN_CERT:-/etc/ssl/cloudflare/carenest.pem}"
 CF_ORIGIN_KEY="${CF_ORIGIN_KEY:-/etc/ssl/cloudflare/carenest.key}"
 SKIP_MONGO="${SKIP_MONGO:-0}"
+# api = Cloudflare API DNS/SSL automation | manual = print DNS/SSL clicks, no API secrets
+CF_MODE="${CUTOVER_CF_MODE:-${CF_MODE:-}}"
+if [[ "${MANUAL_CLOUDFLARE:-0}" == "1" ]]; then
+  CF_MODE="manual"
+fi
+CF_MODE="$(echo "${CF_MODE:-}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
 
 VENV_PY="${APP_ROOT}/backend/.venv/bin/python3"
 [[ -x "${VENV_PY}" ]] || VENV_PY="$(command -v python3)"
@@ -395,6 +401,64 @@ open(sys.argv[2],"w").write(r["private_key"].rstrip()+"\n")
   chmod 600 "${CF_ORIGIN_KEY}"
 }
 
+# HTTP-only nginx site for manual CF mode (Flexible SSL: visitor↔CF HTTPS, CF↔origin HTTP)
+ensure_http_nginx_site() {
+  local site_avail="/etc/nginx/sites-available/${DOMAIN}"
+  local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
+  [[ -f "${http_tmpl}" ]] || return 1
+  sed \
+    -e "s|__DOMAIN__|${DOMAIN}|g" \
+    -e "s|__WWW_DOMAIN__|${WWW_DOMAIN}|g" \
+    -e "s|__DOCROOT__|/var/www/carenest/frontend|g" \
+    "${http_tmpl}" > "${site_avail}"
+  ln -sfn "${site_avail}" "/etc/nginx/sites-enabled/${DOMAIN}"
+  rm -f /etc/nginx/sites-enabled/default
+  nginx -t
+  systemctl restart nginx
+  mkdir -p /etc/carenest
+  if grep -q '^SSL_MODE=' /etc/carenest/deploy.env 2>/dev/null; then
+    sed -i 's/^SSL_MODE=.*/SSL_MODE=none/' /etc/carenest/deploy.env
+  else
+    echo 'SSL_MODE=none' >> /etc/carenest/deploy.env
+  fi
+}
+
+write_manual_cloudflare_instructions() {
+  local out="${1:-${STATE_DIR}/MANUAL_CLOUDFLARE.txt}"
+  mkdir -p "$(dirname "${out}")"
+  cat > "${out}" <<EOF
+CareNest — manual Cloudflare DNS/SSL cutover
+Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+EC2_EIP=${EC2_EIP}
+DOMAIN=${DOMAIN}
+
+Do these in Cloudflare (or Hostinger DNS if that holds your A records):
+
+1) DNS → Records
+   Type  Name  Content       Proxy
+   A     @     ${EC2_EIP}    Proxied (orange cloud) ON
+   A     www   ${EC2_EIP}    Proxied (orange cloud) ON
+
+   Do NOT change MX / SPF / DKIM / google-site-verification TXT.
+
+2) SSL/TLS → Overview
+   Set mode to: Flexible
+   (Visitor↔Cloudflare is HTTPS; origin EC2 speaks HTTP on :80.
+    Upgrade later to Full (strict) with an Origin Certificate.)
+
+3) Caching → Configuration → Purge Everything
+
+4) EC2 Security Group
+   Inbound TCP 80 from 0.0.0.0/0 (and ::/0) must be allowed.
+   TCP 443 optional until you install an origin cert.
+
+5) Return to the migrate wizard and press ENTER.
+
+Rollback: restore A records from ${STATE_DIR}/rollback-dns.txt
+EOF
+  cp -a "${out}" "${BACKUP_DIR}/MANUAL_CLOUDFLARE.txt" 2>/dev/null || true
+}
+
 run_step() {
   local name="$1"
   shift
@@ -424,11 +488,22 @@ fi
 [[ -z "${SES_SMTP_USER}" || -z "${SES_SMTP_PASS}" ]] && MISSING_LIST+=("SES SMTP user/pass")
 [[ -z "${GA_MEASUREMENT_ID}" ]] && MISSING_LIST+=("GA4 ID")
 [[ -z "${GTM_ID}" ]] && MISSING_LIST+=("GTM ID")
-[[ -z "${CLOUDFLARE_API_TOKEN}" ]] && MISSING_LIST+=("Cloudflare API token")
 # SKIP_MONGO=1 skips Emergent dump/restore ONLY — never Atlas
 [[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]] && MISSING_LIST+=("Emergent Mongo URI (or re-run with SKIP_MONGO=1)")
-if [[ (! -f "${CF_ORIGIN_CERT}" || ! -f "${CF_ORIGIN_KEY}") && -z "${CLOUDFLARE_ORIGIN_CA_KEY}" ]]; then
-  MISSING_LIST+=("Cloudflare Origin CA Key")
+
+# Cloudflare: choose api vs manual before requiring secrets
+if [[ -z "${CF_MODE}" ]]; then
+  if [[ -n "${CLOUDFLARE_API_TOKEN}" ]]; then
+    CF_MODE="api"
+  else
+    MISSING_LIST+=("Cloudflare mode (api or manual)")
+  fi
+fi
+if [[ "${CF_MODE}" == "api" ]]; then
+  [[ -z "${CLOUDFLARE_API_TOKEN}" ]] && MISSING_LIST+=("Cloudflare API token")
+  if [[ (! -f "${CF_ORIGIN_CERT}" || ! -f "${CF_ORIGIN_KEY}") && -z "${CLOUDFLARE_ORIGIN_CA_KEY}" ]]; then
+    MISSING_LIST+=("Cloudflare Origin CA Key")
+  fi
 fi
 
 if [[ "${PLACEHOLDER_MONGO_DETECTED:-0}" == "1" ]]; then
@@ -458,14 +533,30 @@ fi
 [[ -z "${SES_SMTP_PASS}" ]] && ask "SES SMTP password" 1 SES_SMTP_PASS
 [[ -z "${GA_MEASUREMENT_ID}" ]] && ask "GA4 Measurement ID (G-XXXXXXXX)" 0 GA_MEASUREMENT_ID
 [[ -z "${GTM_ID}" ]] && ask "GTM Container ID (GTM-XXXXXXX)" 0 GTM_ID
-[[ -z "${CLOUDFLARE_API_TOKEN}" ]] && ask "Cloudflare API token" 1 CLOUDFLARE_API_TOKEN
 if [[ "${SKIP_MONGO}" != "1" && -z "${EMERGENT_MONGO_URL}" ]]; then
   ask "Emergent Mongo URI (or Ctrl-C and re-run with SKIP_MONGO=1)" 1 EMERGENT_MONGO_URL
   [[ -z "${EMERGENT_DB_NAME}" ]] && ask "Emergent DB name (blank = auto-detect)" 0 EMERGENT_DB_NAME
 fi
-if [[ (! -f "${CF_ORIGIN_CERT}" || ! -f "${CF_ORIGIN_KEY}") && -z "${CLOUDFLARE_ORIGIN_CA_KEY}" ]]; then
-  say "Cloudflare → My Profile → API Tokens → Origin CA Key"
-  ask "Cloudflare Origin CA Key" 1 CLOUDFLARE_ORIGIN_CA_KEY
+
+# Cloudflare mode selection (no API secrets required for manual)
+if [[ -z "${CF_MODE}" || ( "${CF_MODE}" != "api" && "${CF_MODE}" != "manual" ) ]]; then
+  say "Cloudflare cutover mode:"
+  say "  api     — needs API token + Origin CA Key (fully automated DNS/SSL)"
+  say "  manual  — no Cloudflare secrets; you flip DNS/SSL in the dashboard"
+  ask "Choose Cloudflare mode [manual/api]" 0 CF_MODE
+  CF_MODE="$(echo "${CF_MODE:-manual}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
+fi
+if [[ "${CF_MODE}" != "api" && "${CF_MODE}" != "manual" ]]; then
+  CF_MODE="manual"
+fi
+say "  Cloudflare mode: ${CF_MODE}"
+
+if [[ "${CF_MODE}" == "api" ]]; then
+  [[ -z "${CLOUDFLARE_API_TOKEN}" ]] && ask "Cloudflare API token" 1 CLOUDFLARE_API_TOKEN
+  if [[ (! -f "${CF_ORIGIN_CERT}" || ! -f "${CF_ORIGIN_KEY}") && -z "${CLOUDFLARE_ORIGIN_CA_KEY}" ]]; then
+    say "Cloudflare → My Profile → API Tokens → Origin CA Key"
+    ask "Cloudflare Origin CA Key" 1 CLOUDFLARE_ORIGIN_CA_KEY
+  fi
 fi
 
 # ---------------------------------------------------------------------------
@@ -512,16 +603,19 @@ if ! ERR="$(validate_ses)"; then
 fi
 say "  ✓ SES credentials"
 
-if ! ERR="$(validate_cf_token "${CLOUDFLARE_API_TOKEN}")"; then
-  migration_fail "Validate Cloudflare API token — ${ERR}"
+if [[ "${CF_MODE}" == "api" ]]; then
+  if ! ERR="$(validate_cf_token "${CLOUDFLARE_API_TOKEN}")"; then
+    migration_fail "Validate Cloudflare API token — ${ERR}"
+  fi
+  say "  ✓ Cloudflare API token"
+  if [[ -z "${CLOUDFLARE_ZONE_ID}" ]]; then
+    CLOUDFLARE_ZONE_ID="$(resolve_cf_zone_id "${CLOUDFLARE_API_TOKEN}" "${DOMAIN}")"
+  fi
+  [[ -n "${CLOUDFLARE_ZONE_ID}" ]] || migration_fail "Resolve Cloudflare zone ID for ${DOMAIN}"
+  say "  ✓ Cloudflare zone ${CLOUDFLARE_ZONE_ID}"
+else
+  say "  ✓ Cloudflare manual mode (API token / Origin CA Key not required)"
 fi
-say "  ✓ Cloudflare API token"
-
-if [[ -z "${CLOUDFLARE_ZONE_ID}" ]]; then
-  CLOUDFLARE_ZONE_ID="$(resolve_cf_zone_id "${CLOUDFLARE_API_TOKEN}" "${DOMAIN}")"
-fi
-[[ -n "${CLOUDFLARE_ZONE_ID}" ]] || migration_fail "Resolve Cloudflare zone ID for ${DOMAIN}"
-say "  ✓ Cloudflare zone ${CLOUDFLARE_ZONE_ID}"
 
 # ---------------------------------------------------------------------------
 # Preflight backup BEFORE any file mutations
@@ -544,12 +638,18 @@ _backend_set GA_MEASUREMENT_ID "${GA_MEASUREMENT_ID}"
 _backend_set GTM_ID "${GTM_ID}"
 _cutover_set EMERGENT_MONGO_URL "${EMERGENT_MONGO_URL}"
 [[ -n "${EMERGENT_DB_NAME}" ]] && _cutover_set EMERGENT_DB_NAME "${EMERGENT_DB_NAME}"
-_cutover_set CLOUDFLARE_API_TOKEN "${CLOUDFLARE_API_TOKEN}"
-_cutover_set CLOUDFLARE_ZONE_ID "${CLOUDFLARE_ZONE_ID}"
-[[ -n "${CLOUDFLARE_ORIGIN_CA_KEY}" ]] && _cutover_set CLOUDFLARE_ORIGIN_CA_KEY "${CLOUDFLARE_ORIGIN_CA_KEY}"
-_cutover_set CF_ORIGIN_CERT "${CF_ORIGIN_CERT}"
-_cutover_set CF_ORIGIN_KEY "${CF_ORIGIN_KEY}"
-_cutover_set CUTOVER_SSL_MODE cloudflare
+_cutover_set CF_MODE "${CF_MODE}"
+_cutover_set CUTOVER_CF_MODE "${CF_MODE}"
+if [[ "${CF_MODE}" == "api" ]]; then
+  _cutover_set CLOUDFLARE_API_TOKEN "${CLOUDFLARE_API_TOKEN}"
+  _cutover_set CLOUDFLARE_ZONE_ID "${CLOUDFLARE_ZONE_ID}"
+  [[ -n "${CLOUDFLARE_ORIGIN_CA_KEY}" ]] && _cutover_set CLOUDFLARE_ORIGIN_CA_KEY "${CLOUDFLARE_ORIGIN_CA_KEY}"
+  _cutover_set CF_ORIGIN_CERT "${CF_ORIGIN_CERT}"
+  _cutover_set CF_ORIGIN_KEY "${CF_ORIGIN_KEY}"
+  _cutover_set CUTOVER_SSL_MODE cloudflare
+else
+  _cutover_set CUTOVER_SSL_MODE none
+fi
 _cutover_set GA_MEASUREMENT_ID "${GA_MEASUREMENT_ID}"
 _cutover_set GTM_ID "${GTM_ID}"
 _cutover_set SKIP_MONGO "${SKIP_MONGO}"
@@ -572,11 +672,19 @@ say "  [$([[ "${SKIP_MONGO}" == "1" ]] && echo ' ' || echo 'x')] Emergent Mongo 
 say "  [x] SES SMTP            validated"
 say "  [x] GA4                 ${GA_MEASUREMENT_ID}"
 say "  [x] GTM                 ${GTM_ID}"
-say "  [x] Cloudflare token    validated"
-say "  [x] Cloudflare zone     ${CLOUDFLARE_ZONE_ID}"
-say "  [x] Origin cert         auto-create if missing"
-say "  [x] DNS A @ + www    →  ${EC2_EIP}"
-say "  [x] SSL                 Full (strict)"
+if [[ "${CF_MODE}" == "api" ]]; then
+  say "  [x] Cloudflare mode    api (automated DNS/SSL)"
+  say "  [x] Cloudflare token    validated"
+  say "  [x] Cloudflare zone     ${CLOUDFLARE_ZONE_ID}"
+  say "  [x] Origin cert         auto-create if missing"
+  say "  [x] DNS A @ + www    →  ${EC2_EIP}"
+  say "  [x] SSL                 Full (strict)"
+else
+  say "  [x] Cloudflare mode    manual (no API secrets)"
+  say "  [ ] DNS A @ + www    →  ${EC2_EIP}  (you flip in Cloudflare UI)"
+  say "  [ ] SSL/TLS             Flexible (you set in Cloudflare UI)"
+  say "  [ ] Purge cache         (you click in Cloudflare UI)"
+fi
 say "======================================"
 say ""
 CONFIRM=""
@@ -589,8 +697,12 @@ ask "Type YES to start migration" 0 CONFIRM
 export MONGO_URL DB_NAME EMERGENT_MONGO_URL EMERGENT_DB_NAME
 export GA_MEASUREMENT_ID GTM_ID ADMIN_TOKEN
 export CLOUDFLARE_API_TOKEN CLOUDFLARE_ZONE_ID CLOUDFLARE_ORIGIN_CA_KEY
-export CF_ORIGIN_CERT CF_ORIGIN_KEY EC2_EIP DOMAIN WWW_DOMAIN
-export CUTOVER_SSL_MODE=cloudflare
+export CF_ORIGIN_CERT CF_ORIGIN_KEY EC2_EIP DOMAIN WWW_DOMAIN CF_MODE
+if [[ "${CF_MODE}" == "api" ]]; then
+  export CUTOVER_SSL_MODE=cloudflare
+else
+  export CUTOVER_SSL_MODE=none
+fi
 
 run_step "Save DNS rollback snapshot" \
   bash -c "bash '${SCRIPT_DIR}/save_rollback_dns.sh' > '${STATE_DIR}/rollback-dns.txt'"
@@ -603,21 +715,36 @@ fi
 run_step "Restart API with analytics IDs" \
   bash -c "systemctl restart carenest-api && sleep 2 && curl -sf http://127.0.0.1:8000/api/config/public | grep -q '\"ga_id\":\"${GA_MEASUREMENT_ID}\"'"
 
-say "→ Create Cloudflare Origin Certificate (if needed)..."
-if create_origin_cert >> "${LOG_FILE}" 2>&1; then
-  say "  ✓ Origin certificate ready"
+if [[ "${CF_MODE}" == "api" ]]; then
+  say "→ Create Cloudflare Origin Certificate (if needed)..."
+  if create_origin_cert >> "${LOG_FILE}" 2>&1; then
+    say "  ✓ Origin certificate ready"
+  else
+    migration_fail "Create Cloudflare Origin Certificate"
+  fi
+  run_step "Install nginx Cloudflare SSL site" \
+    bash "${SCRIPT_DIR}/cutover_ssl_apply.sh" cloudflare
+  run_step "Cloudflare DNS flip + cache purge + Full (strict)" \
+    bash "${SCRIPT_DIR}/cutover_dns_cloudflare.sh" apply
+  say "→ Waiting for propagation…"
+  sleep 8
 else
-  migration_fail "Create Cloudflare Origin Certificate"
+  say "→ Install nginx HTTP site (SSL_MODE=none for Flexible)..."
+  if ensure_http_nginx_site >> "${LOG_FILE}" 2>&1; then
+    say "  ✓ Install nginx HTTP site (SSL_MODE=none for Flexible)"
+  else
+    migration_fail "Install nginx HTTP site (SSL_MODE=none for Flexible)"
+  fi
+
+  write_manual_cloudflare_instructions "${STATE_DIR}/MANUAL_CLOUDFLARE.txt"
+  say ""
+  say "======== MANUAL CLOUDFLARE STEPS (required) ========"
+  cat "${STATE_DIR}/MANUAL_CLOUDFLARE.txt" > /dev/tty
+  say "===================================================="
+  say "Instructions also saved: ${STATE_DIR}/MANUAL_CLOUDFLARE.txt"
+  say ""
+  ask "Press ENTER after DNS A @/www → ${EC2_EIP}, SSL Flexible, and Purge Everything" 0 _CF_DONE
 fi
-
-run_step "Install nginx Cloudflare SSL site" \
-  bash "${SCRIPT_DIR}/cutover_ssl_apply.sh" cloudflare
-
-run_step "Cloudflare DNS flip + cache purge + Full (strict)" \
-  bash "${SCRIPT_DIR}/cutover_dns_cloudflare.sh" apply
-
-say "→ Waiting for propagation…"
-sleep 8
 
 VERIFY_OK=0
 for i in 1 2 3 4 5 6 7 8; do
