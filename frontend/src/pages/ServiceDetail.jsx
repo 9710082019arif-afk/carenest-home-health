@@ -4,55 +4,78 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
-import { SERVICES, IMAGES, FAQS, COMPANY, LOCATIONS } from "@/data/content";
-import * as Icons from "lucide-react";
-import { CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import { SERVICES, FAQS, COMPANY, IMAGES } from "@/data/content";
+import { SERVICE_REDIRECTS } from "@/data/redirects";
+import { Stethoscope, HeartPulse, Users, CheckCircle2, Phone, MessageCircle } from "lucide-react";
 import { JsonLd, faqPageSchema, breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { serviceSeo } from "@/lib/seo";
 
+const ICONS = { Stethoscope, HeartPulse, Users };
+
 const ServiceDetail = () => {
   const { slug } = useParams();
+  if (SERVICE_REDIRECTS[slug]) {
+    return <Navigate to={`/services/${SERVICE_REDIRECTS[slug]}`} replace />;
+  }
   const svc = SERVICES.find((s) => s.slug === slug);
   if (!svc) return <Navigate to="/services" replace />;
-  const Icon = Icons[svc.icon] || Icons.HeartPulse;
+  const Icon = ICONS[svc.icon] || HeartPulse;
+  const image = svc.image || IMAGES.nurseCare;
 
   const includes = [
     "Verified & background-checked professional",
-    "Daily digital case notes shared with the family",
-    "Care manager on call 24×7",
+    "Care coordinator on call",
+    "Clear plan and timing for Pune deployments",
     "Insurance-ready invoices & documentation",
-    "Emergency escalation to consultant within minutes",
-    "Same-day / next-day deployment across metros",
+    "Family updates via call or WhatsApp",
+    "Same-day / next-day deployment when available",
   ];
 
   return (
     <Layout>
       <SEOHead seo={serviceSeo(svc)} />
-      <JsonLd data={serviceSchema({ name: svc.name, description: svc.short, path: `/services/${svc.slug}`, rate: svc.rate, rateUnit: svc.rateUnit })} />
+      <JsonLd
+        data={serviceSchema({
+          name: svc.name,
+          description: svc.short,
+          path: `/services/${svc.slug}`,
+          rate: svc.rate,
+          rateUnit: svc.rateUnit,
+        })}
+      />
       <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
-      <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Services", to: "/services" }, { label: svc.name, to: `/services/${svc.slug}` }])} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { label: "Home", to: "/" },
+          { label: "Services", to: "/services" },
+          { label: svc.name, to: `/services/${svc.slug}` },
+        ])}
+      />
       <PageHeader
-        eyebrow={svc.category}
+        eyebrow="Service"
         title={svc.name}
         subtitle={svc.tagline}
-        image={IMAGES.nurseCare}
-        imageAlt={`${svc.name} at home by CareNest Home Health`}
+        image={image}
+        imageAlt={`${svc.name} at home in Pune by CareNest Home Health`}
         crumbs={[{ label: "Services", to: "/services" }, { label: svc.name }]}
       />
 
-      <section className="container-lux grid lg:grid-cols-12 gap-10 pb-24">
-        <div className="lg:col-span-8 space-y-10">
+      <section className="container-lux grid lg:grid-cols-12 gap-10 pb-20">
+        <div className="lg:col-span-8 space-y-8">
           <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-8">
-            <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary grid place-items-center"><Icon size={22}/></div>
+            <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary grid place-items-center">
+              <Icon size={22} />
+            </div>
             <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">What this looks like at home</h2>
             <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
-              {svc.short} Our team designs a personalised plan built around your loved one — hours, clinical scope, equipment and family preferences. A dedicated care manager coordinates every visit and adjusts the plan as recovery evolves.
+              {svc.short} Our Pune team designs a plan around your loved one — hours, scope and family preferences — with a
+              care coordinator to keep everything clear.
             </p>
           </div>
 
           <div>
             <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Every {svc.name.toLowerCase()} plan includes</h3>
-            <div className="mt-6 grid sm:grid-cols-2 gap-3">
+            <div className="mt-5 grid sm:grid-cols-2 gap-3">
               {includes.map((it) => (
                 <div key={it} className="flex items-start gap-3 rounded-2xl border border-border/70 bg-card/50 p-4">
                   <CheckCircle2 size={18} className="text-secondary mt-0.5 shrink-0" />
@@ -63,34 +86,30 @@ const ServiceDetail = () => {
           </div>
 
           <div>
-            <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Common questions</h3>
-            <div className="mt-6 space-y-3">
-              {FAQS.slice(0, 5).map((f, i) => (
-                <details key={i} className="group rounded-2xl border border-border/70 bg-card/60 p-5">
-                  <summary className="cursor-pointer font-serif text-lg font-medium">{f.q}</summary>
-                  <p className="mt-3 text-muted-foreground font-light leading-relaxed">{f.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Available in</h3>
-            <p className="mt-2 text-sm text-muted-foreground font-light">Book {svc.name.toLowerCase()} in your city — each link opens the local CareNest page.</p>
+            <h3 className="font-serif text-2xl tracking-tight">Also available in Pune</h3>
             <div className="mt-4 flex flex-wrap gap-2">
-              {LOCATIONS.map((l) => (
-                <Link key={l.slug} to={`/locations/${l.slug}/${svc.slug}`} className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-primary hover:text-primary-foreground transition-colors">{svc.name} in {l.name}</Link>
+              <Link
+                to={`/locations/pune/${svc.slug}`}
+                className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                {svc.name} in Pune
+              </Link>
+              {SERVICES.filter((s) => s.slug !== svc.slug).map((s) => (
+                <Link
+                  key={s.slug}
+                  to={`/services/${s.slug}`}
+                  className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-muted transition-colors"
+                >
+                  {s.name}
+                </Link>
               ))}
-            </div>
-            <div className="mt-4">
-              <Link to="/locations" className="text-sm font-medium text-primary hover:underline underline-offset-4">Browse all locations →</Link>
             </div>
           </div>
         </div>
 
         <aside className="lg:col-span-4 space-y-4">
-          <div className="sticky top-32">
-            {svc.rate ? (
+          <div className="lg:sticky lg:top-28">
+            {svc.rate && (
               <div className="rounded-3xl border border-accent/40 bg-gradient-to-br from-accent/10 via-background to-background p-6 mb-4 shadow-lux">
                 <div className="overline text-accent">Indicative rate</div>
                 <div className="mt-3 flex items-baseline gap-2">
@@ -98,23 +117,25 @@ const ServiceDetail = () => {
                   <span className="text-sm text-muted-foreground">{svc.rateUnit}</span>
                 </div>
                 {svc.rateNote && <p className="text-xs text-muted-foreground mt-2 font-light">{svc.rateNote}</p>}
-                <p className="text-[11px] text-muted-foreground mt-3">Final plan shared after a free 10-minute consultation.</p>
-              </div>
-            ) : (
-              <div className="rounded-3xl border border-border/70 bg-card/60 p-6 mb-4">
-                <div className="overline text-accent">Pricing</div>
-                <div className="mt-3 font-serif text-2xl">Personalised plan</div>
-                <p className="text-sm text-muted-foreground mt-2 font-light">Rates depend on hours, clinical scope and equipment. Free 10-minute consult · we share a written plan the same day.</p>
               </div>
             )}
-            <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-sm p-6 shadow-lux">
+            <div className="rounded-3xl border border-border/70 bg-card/70 p-6 shadow-lux">
               <LeadForm variant={`service-${svc.slug}`} defaultService={svc.name} title={`Enquire about ${svc.name}`} />
             </div>
             <div className="mt-4 rounded-3xl bg-primary text-primary-foreground p-5">
               <div className="overline text-gold-light">Prefer to talk?</div>
               <div className="mt-3 flex flex-col gap-2">
-                <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} className="btn-gold w-full"><Phone size={15}/> {COMPANY.phone}</a>
-                <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn-outline w-full border-white/30 text-white hover:bg-white/10"><MessageCircle size={15}/> WhatsApp us</a>
+                <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="btn-gold w-full">
+                  <Phone size={15} /> {COMPANY.phone}
+                </a>
+                <a
+                  href={`https://wa.me/${COMPANY.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline w-full border-white/30 text-white hover:bg-white/10"
+                >
+                  <MessageCircle size={15} /> WhatsApp us
+                </a>
               </div>
             </div>
           </div>

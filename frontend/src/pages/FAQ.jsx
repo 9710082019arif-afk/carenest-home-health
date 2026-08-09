@@ -2,7 +2,6 @@ import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { FAQS } from "@/data/content";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { JsonLd, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 import SEOHead from "@/components/SEOHead";
 import { PAGE_SEO } from "@/lib/seo";
@@ -12,16 +11,21 @@ const FAQ = () => (
     <SEOHead seo={PAGE_SEO.faq} />
     <JsonLd data={faqPageSchema(FAQS)} />
     <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "FAQ", to: "/faq" }])} />
-    <PageHeader eyebrow="Frequently asked" title="Answers, honestly." subtitle="Still not sure? WhatsApp us and a real human will reply within minutes." crumbs={[{ label: "FAQ" }]} />
-    <section className="container-lux pb-24 max-w-4xl">
-      <Accordion type="single" collapsible className="space-y-3">
-        {FAQS.map((f, i) => (
-          <AccordionItem key={i} value={`q${i}`} className="rounded-2xl border border-border/70 bg-card/60 px-5">
-            <AccordionTrigger data-testid={`faqpage-q-${i}`} className="text-left font-serif text-xl py-5 hover:no-underline">{f.q}</AccordionTrigger>
-            <AccordionContent className="text-muted-foreground pb-5 font-light leading-relaxed">{f.a}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+    <PageHeader
+      eyebrow="FAQ"
+      title="Common questions."
+      subtitle="Still unsure? Call or WhatsApp — a CareNest coordinator will help."
+      crumbs={[{ label: "FAQ" }]}
+    />
+    <section className="container-lux pb-20 max-w-3xl space-y-3">
+      {FAQS.map((f, i) => (
+        <details key={i} className="group rounded-2xl border border-border/70 bg-card/60 p-5">
+          <summary data-testid={`faqpage-q-${i}`} className="cursor-pointer font-serif text-xl font-medium">
+            {f.q}
+          </summary>
+          <p className="mt-3 text-muted-foreground font-light leading-relaxed">{f.a}</p>
+        </details>
+      ))}
     </section>
   </Layout>
 );

@@ -27,28 +27,6 @@
     --ring: 211 78% 22%;
     --radius: 1rem;
   }
-
-  .dark {
-    --background: 220 40% 6%;
-    --foreground: 210 30% 96%;
-    --card: 222 39% 11%;
-    --card-foreground: 210 30% 96%;
-    --popover: 222 39% 11%;
-    --popover-foreground: 210 30% 96%;
-    --primary: 202 74% 55%;
-    --primary-foreground: 220 40% 6%;
-    --secondary: 176 71% 41%;
-    --secondary-foreground: 220 40% 6%;
-    --muted: 220 30% 14%;
-    --muted-foreground: 214 20% 65%;
-    --accent: 46 78% 62%;
-    --accent-foreground: 220 40% 6%;
-    --destructive: 0 62% 44%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 25% 18%;
-    --input: 220 25% 18%;
-    --ring: 202 74% 55%;
-  }
 }
 
 @layer base {
@@ -81,10 +59,10 @@
     @apply mx-auto w-full max-w-[1360px] px-5 md:px-10 lg:px-14;
   }
   .glass {
-    @apply backdrop-blur-xl bg-white/70 dark:bg-slate-950/60 border border-white/40 dark:border-white/10;
+    @apply backdrop-blur-xl bg-white/70 border border-white/40;
   }
   .glass-strong {
-    @apply backdrop-blur-2xl bg-white/80 dark:bg-slate-950/70 border border-white/50 dark:border-white/10;
+    @apply backdrop-blur-2xl bg-white/80 border border-white/50;
   }
   .text-gold {
     background: linear-gradient(90deg, #B8892B 0%, #E5C158 50%, #B8892B 100%);
@@ -118,7 +96,7 @@
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-200 hover:brightness-110 active:scale-[.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary;
   }
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-primary/25 bg-transparent text-primary dark:text-primary px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-200 hover:bg-primary/5 active:scale-[.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-primary/25 bg-transparent text-primary px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-200 hover:bg-primary/5 active:scale-[.98];
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200 hover:bg-muted;

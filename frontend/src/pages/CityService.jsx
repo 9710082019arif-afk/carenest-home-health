@@ -4,70 +4,91 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
-import { SERVICES, LOCATIONS, COMPANY, FAQS, IMAGES } from "@/data/content";
-import * as Icons from "lucide-react";
-import { Phone, MessageCircle, CheckCircle2 } from "lucide-react";
+import { SERVICES, LOCATIONS, COMPANY, FAQS } from "@/data/content";
+import { resolvePrimaryServiceSlug } from "@/data/redirects";
+import { Stethoscope, HeartPulse, Users, Phone, MessageCircle, CheckCircle2 } from "lucide-react";
 import { JsonLd, cityServiceSchema, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
 import { cityServiceSeo } from "@/lib/seo";
+
+const ICONS = { Stethoscope, HeartPulse, Users };
 
 const CityService = () => {
   const { city, slug } = useParams();
   const loc = LOCATIONS.find((l) => l.slug === city);
+  const primarySlug = resolvePrimaryServiceSlug(slug);
+  if (slug && primarySlug && primarySlug !== slug) {
+    return <Navigate to={`/locations/${city}/${primarySlug}`} replace />;
+  }
   const svc = SERVICES.find((s) => s.slug === slug);
 
   if (!loc || !svc) return <Navigate to="/services" replace />;
-  const Icon = Icons[svc.icon] || Icons.HeartPulse;
+  const Icon = ICONS[svc.icon] || HeartPulse;
   const title = `${svc.name} in ${loc.name}`;
-  const subtitle = `${svc.tagline} Delivered at your doorstep across ${loc.name} and its suburbs by verified professionals — with a dedicated care manager on call.`;
+  const subtitle = `${svc.tagline} Delivered at home in ${loc.name} by verified professionals — with CareNest coordination.`;
 
   const includes = [
-    `Local care coordinator based in ${loc.name}`,
-    `Same-day / next-day deployment across ${loc.name}`,
+    `Care coordination for families in ${loc.name}`,
     "Background-verified professional",
-    "Digital case notes shared daily",
+    "Clear plan and timing",
     "Insurance-ready invoices",
-    "24×7 escalation to consultant",
+    "Call / WhatsApp updates for family",
+    "Enquire for same-day or next-day start",
   ];
-
-  const otherServices = SERVICES.filter((s) => s.slug !== slug).slice(0, 6);
 
   return (
     <Layout>
       <SEOHead seo={cityServiceSeo(svc, loc)} />
       <JsonLd data={cityServiceSchema({ svc, loc })} />
       <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
-      <JsonLd data={breadcrumbSchema([
-        { label: "Home", to: "/" },
-        { label: "Locations", to: "/locations" },
-        { label: loc.name, to: `/locations/${loc.slug}` },
-        { label: svc.name, to: `/locations/${loc.slug}/${svc.slug}` },
-      ])} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { label: "Home", to: "/" },
+          { label: "Locations", to: "/locations" },
+          { label: loc.name, to: `/locations/${loc.slug}` },
+          { label: svc.name, to: `/locations/${loc.slug}/${svc.slug}` },
+        ])}
+      />
       <PageHeader
         eyebrow={`${loc.name} · ${loc.state}`}
         title={title}
         subtitle={subtitle}
-        image={IMAGES.nurseCare}
+        image={svc.image}
         imageAlt={`${svc.name} in ${loc.name} by CareNest Home Health`}
-        crumbs={[{ label: "Locations", to: "/locations" }, { label: loc.name, to: `/locations/${loc.slug}` }, { label: svc.name }]}
+        crumbs={[
+          { label: "Locations", to: "/locations" },
+          { label: loc.name, to: `/locations/${loc.slug}` },
+          { label: svc.name },
+        ]}
       />
 
-      <section className="container-lux pb-24 grid lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-8 space-y-10">
+      <section className="container-lux pb-20 grid lg:grid-cols-12 gap-10">
+        <div className="lg:col-span-8 space-y-8">
           <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-8">
-            <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary grid place-items-center"><Icon size={22}/></div>
-            <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">Why families in {loc.name} choose CareNest for {svc.name.toLowerCase()}</h2>
+            <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary grid place-items-center">
+              <Icon size={22} />
+            </div>
+            <h2 className="font-serif text-3xl mt-5 tracking-tight">
+              {svc.name} for families in {loc.name}
+            </h2>
             <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
-              {svc.short} Our {loc.name} team designs a personalised plan around your loved one — hours, clinical scope, equipment and family preferences. A dedicated care manager coordinates every visit and adjusts the plan as recovery evolves.
+              {svc.short}{" "}
+              {loc.slug === "pune"
+                ? "Pune is our primary service area — we prioritise fast, local coordination."
+                : `CareNest’s primary focus is Pune; enquire for availability and timing in ${loc.name}.`}
             </p>
             <div className="mt-4 flex flex-wrap gap-3 text-sm">
-              <Link to={`/services/${svc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">About {svc.name} nationwide →</Link>
-              <Link to={`/locations/${loc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">All care in {loc.name} →</Link>
+              <Link to={`/services/${svc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">
+                About {svc.name} →
+              </Link>
+              <Link to={`/locations/${loc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">
+                Care in {loc.name} →
+              </Link>
             </div>
           </div>
 
           <div>
-            <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Included in every {svc.name} plan in {loc.name}</h3>
-            <div className="mt-6 grid sm:grid-cols-2 gap-3">
+            <h3 className="font-serif text-2xl tracking-tight">Included</h3>
+            <div className="mt-5 grid sm:grid-cols-2 gap-3">
               {includes.map((it) => (
                 <div key={it} className="flex items-start gap-3 rounded-2xl border border-border/70 bg-card/50 p-4">
                   <CheckCircle2 size={18} className="text-secondary mt-0.5 shrink-0" />
@@ -77,44 +98,46 @@ const CityService = () => {
             </div>
           </div>
 
-          <div className="rounded-3xl overflow-hidden border border-border/70 h-[320px]">
-            <iframe title={`Map of ${svc.name} coverage in ${loc.name}, India`} src={`https://www.google.com/maps?q=${encodeURIComponent(loc.name + ', India')}&output=embed`} className="w-full h-full" loading="lazy" />
-          </div>
-
           <div>
-            <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Other care in {loc.name}</h3>
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {otherServices.map((s) => (
-                <Link key={s.slug} to={`/locations/${loc.slug}/${s.slug}`} className="rounded-2xl border border-border/70 bg-card/50 p-4 hover:shadow-lux transition-shadow">
+            <h3 className="font-serif text-2xl tracking-tight">Other services in {loc.name}</h3>
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {SERVICES.filter((s) => s.slug !== slug).map((s) => (
+                <Link
+                  key={s.slug}
+                  to={`/locations/${loc.slug}/${s.slug}`}
+                  className="rounded-2xl border border-border/70 bg-card/50 p-4 hover:shadow-lux transition-shadow"
+                >
                   <div className="font-medium">{s.name}</div>
                   <div className="text-xs text-muted-foreground mt-1">in {loc.name}</div>
                 </Link>
               ))}
             </div>
           </div>
-
-          <div>
-            <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Common questions</h3>
-            <div className="mt-6 space-y-3">
-              {FAQS.slice(0, 5).map((f, i) => (
-                <details key={i} className="group rounded-2xl border border-border/70 bg-card/60 p-5">
-                  <summary className="cursor-pointer font-serif text-lg font-medium">{f.q}</summary>
-                  <p className="mt-3 text-muted-foreground font-light leading-relaxed">{f.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
         </div>
 
         <aside className="lg:col-span-4">
-          <div className="sticky top-32 space-y-4">
-            <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-sm p-6 shadow-lux">
-              <LeadForm variant={`city-service-${loc.slug}-${svc.slug}`} defaultService={svc.name} title={`${svc.name} in ${loc.name}?`} />
+          <div className="lg:sticky lg:top-28 space-y-4">
+            <div className="rounded-3xl border border-border/70 bg-card/70 p-6 shadow-lux">
+              <LeadForm
+                variant={`city-service-${loc.slug}-${svc.slug}`}
+                defaultService={svc.name}
+                defaultCity={loc.name}
+                title={`${svc.name} in ${loc.name}?`}
+              />
             </div>
             <div className="rounded-3xl bg-primary text-primary-foreground p-5">
-              <div className="overline text-gold-light">{loc.name} team</div>
-              <a href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} className="btn-gold w-full mt-4"><Phone size={15}/> {COMPANY.phone}</a>
-              <a href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(`Hi, I need ${svc.name} in ${loc.name}`)}`} target="_blank" rel="noopener noreferrer" className="btn-outline w-full mt-3 border-white/30 text-white hover:bg-white/10"><MessageCircle size={15}/> WhatsApp</a>
+              <div className="overline text-gold-light">{loc.name} enquiries</div>
+              <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="btn-gold w-full mt-4">
+                <Phone size={15} /> {COMPANY.phone}
+              </a>
+              <a
+                href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(`Hi, I need ${svc.name} in ${loc.name}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline w-full mt-3 border-white/30 text-white hover:bg-white/10"
+              >
+                <MessageCircle size={15} /> WhatsApp
+              </a>
             </div>
           </div>
         </aside>

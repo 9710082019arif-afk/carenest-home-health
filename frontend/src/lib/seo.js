@@ -3,7 +3,7 @@ import { COMPANY, SERVICES, LOCATIONS } from "@/data/content";
 
 export const SITE_URL = COMPANY.website.replace(/\/$/, "");
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/brand-kit/social/hero-banner.jpg`;
-export const DEFAULT_OG_IMAGE_ALT = "CareNest Home Health — premium home nursing and elder care across India";
+export const DEFAULT_OG_IMAGE_ALT = "CareNest Home Health — nursing, patient and elder care at home in Pune";
 export const TWITTER_HANDLE = "@carenesthomehealth";
 export const SITE_NAME = COMPANY.name;
 export const DEFAULT_ROBOTS = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
@@ -69,83 +69,45 @@ export const buildPageSeo = ({
   };
 };
 
-// —— Static page SEO catalog ——
 export const PAGE_SEO = {
   home: buildPageSeo({
-    title: "CareNest Home Health · Premium Home Healthcare Services",
+    title: "Care at Home in Pune · CareNest Home Health",
     description:
-      "CareNest Home Health delivers premium home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care across 12 Indian cities. 24×7 professional support at your doorstep.",
+      "CareNest Home Health provides Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune. Call or WhatsApp for a free care consult.",
     path: "/",
-    keywords:
-      "home nursing, home healthcare India, doctor at home, ICU at home, physiotherapy at home, caregivers, elder care, Pune, Mumbai, Bengaluru, Hyderabad",
+    keywords: "home nursing Pune, patient care at home Pune, elder care Pune, CareNest Home Health",
   }),
   about: buildPageSeo({
     title: "About CareNest Home Health",
     description:
-      "Founded by Riya Shaikh, CareNest Home Health brings hospital-grade nursing, physicians and caregivers into Indian homes — with dignity, punctuality and a dedicated care manager per family.",
+      "Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care & Companionship into homes — with dignity and clear coordination in Pune.",
     path: "/about",
   }),
   services: buildPageSeo({
-    title: "Home Healthcare Services — Nursing, ICU, Physio & More",
+    title: "Home Healthcare Services — Nursing, Patient & Elder Care",
     description:
-      "Explore 22 CareNest home healthcare services: home nursing, ICU-at-home, doctor visits, physiotherapy, elder care, palliative care, equipment rental and more across India.",
+      "Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune.",
     path: "/services",
-    keywords: "home healthcare services, home nursing, ICU at home, caregiver services, physiotherapy at home",
-  }),
-  pricing: buildPageSeo({
-    title: "Home Healthcare Pricing — Transparent Rates",
-    description:
-      "View indicative CareNest rates for home nursing, caregivers, doctor-at-home, physiotherapy and more. No GST, no hidden charges. Free 10-minute consult for a written plan.",
-    path: "/pricing",
+    keywords: "home nursing, patient care at home, elder care companionship, CareNest services Pune",
   }),
   locations: buildPageSeo({
-    title: "Home Healthcare Locations Across India",
+    title: "CareNest Locations — Pune Primary",
     description:
-      "CareNest Home Health serves Pune, Mumbai, Bengaluru, Hyderabad, Delhi NCR, Kolkata, Goa and more. Find local home nursing, ICU-at-home and elder care in your city.",
+      "Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care & Companionship enquiries.",
     path: "/locations",
-    keywords: "home healthcare near me, home nursing Pune, home care Mumbai, elder care Bengaluru",
-  }),
-  book: buildPageSeo({
-    title: "Book a Home Healthcare Appointment",
-    description:
-      "Book CareNest home nursing, doctor-at-home or caregiver services online. A care coordinator confirms within 15 minutes — same-day deployment across metros.",
-    path: "/book-appointment",
+    keywords: "home healthcare Pune, home nursing Pune, elder care Pune",
   }),
   contact: buildPageSeo({
     title: "Contact CareNest Home Health",
     description:
-      "Call, WhatsApp or email CareNest Home Health 24×7. Reach our care coordinators for home nursing, ICU setup, physiotherapy and elder care across India.",
+      "Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care & Companionship in Pune.",
     path: "/contact",
   }),
   faq: buildPageSeo({
-    title: "Home Healthcare FAQ — CareNest Answers",
+    title: "Home Healthcare FAQ",
     description:
-      "Answers to common questions about CareNest home nursing, pricing, insurance, emergencies, nurse qualifications and same-day deployment across India.",
+      "Answers about CareNest nursing, patient care, elder companionship, pricing and how care starts in Pune.",
     path: "/faq",
-  }),
-  gallery: buildPageSeo({
-    title: "Care Gallery — Moments from Home Visits",
-    description:
-      "See CareNest Home Health in action — consented, anonymised moments from nursing, elder care, physiotherapy and ICU-at-home visits across India.",
-    path: "/gallery",
-  }),
-  testimonials: buildPageSeo({
-    title: "Patient & Family Testimonials",
-    description:
-      "Read real CareNest reviews from families in Pune, Mumbai, Bengaluru, Hyderabad and beyond — 4.9★ Google rating from 600+ reviews.",
-    path: "/testimonials",
-  }),
-  blog: buildPageSeo({
-    title: "Home Healthcare Blog & Care Guides",
-    description:
-      "Practical CareNest guides on bedsore prevention, post-stroke recovery, choosing attendants and more — written by our home-care team.",
-    path: "/blog",
-  }),
-  careers: buildPageSeo({
-    title: "Careers — Join CareNest Home Health",
-    description:
-      "Hiring nurses, ICU staff, caregivers, physiotherapists, doctors and care managers across India. Meaningful work with structured shifts and continuous training.",
-    path: "/careers",
   }),
   privacy: buildPageSeo({
     title: "Privacy Policy",
@@ -159,12 +121,12 @@ export const PAGE_SEO = {
   }),
   refund: buildPageSeo({
     title: "Refund Policy",
-    description: "CareNest Home Health refund rules for deposits, deployments and medical equipment rentals.",
+    description: "CareNest Home Health refund rules for deposits and deployments.",
     path: "/refund-policy",
   }),
   cancellation: buildPageSeo({
     title: "Cancellation Policy",
-    description: "How to cancel a CareNest booking and the timing rules for shift and long-term plan cancellations.",
+    description: "How to cancel a CareNest booking and timing rules for shift cancellations.",
     path: "/cancellation-policy",
   }),
   notFound: (() => {
@@ -174,7 +136,6 @@ export const PAGE_SEO = {
       path: "/404",
       noindex: true,
     });
-    // Omit canonical/og:url so unknown URLs are not marked as homepage duplicates.
     return { ...base, canonical: undefined, og: { ...base.og, url: undefined } };
   })(),
   admin: buildPageSeo({
@@ -187,28 +148,28 @@ export const PAGE_SEO = {
 
 export const serviceSeo = (svc) =>
   buildPageSeo({
-    title: `${svc.name} at Home`,
-    description: `${svc.name} at home by CareNest — ${svc.short} Available across 12 Indian cities with 24×7 care coordination. ${svc.rate ? `From ${svc.rate} ${svc.rateUnit}.` : ""}`,
+    title: `${svc.name} at Home in Pune`,
+    description: `${svc.name} at home by CareNest — ${svc.short} ${svc.rate ? `From ${svc.rate} ${svc.rateUnit}.` : ""}`,
     path: `/services/${svc.slug}`,
-    keywords: `${svc.name}, ${svc.name} at home, home healthcare ${svc.name}, CareNest ${svc.name}`,
+    keywords: `${svc.name}, ${svc.name} Pune, home healthcare ${svc.name}, CareNest`,
     imageAlt: `${svc.name} at home by CareNest Home Health`,
   });
 
 export const locationSeo = (loc) =>
   buildPageSeo({
     title: `Home Healthcare in ${loc.name}`,
-    description: `CareNest Home Health in ${loc.name}, ${loc.state} — home nursing, ICU-at-home, doctor visits, physiotherapy, caregivers and elder care with same-day deployment.`,
+    description: `CareNest Nursing Care, Patient Care and Elder Care & Companionship in ${loc.name}, ${loc.state}. Enquire for availability — Pune is our primary service area.`,
     path: `/locations/${loc.slug}`,
-    keywords: `home healthcare ${loc.name}, home nursing ${loc.name}, ICU at home ${loc.name}, elder care ${loc.name}, caregiver ${loc.name}`,
+    keywords: `home healthcare ${loc.name}, home nursing ${loc.name}, elder care ${loc.name}`,
     imageAlt: `Home healthcare services in ${loc.name} by CareNest`,
   });
 
 export const cityServiceSeo = (svc, loc) =>
   buildPageSeo({
     title: `${svc.name} in ${loc.name}`,
-    description: `${svc.name} at home in ${loc.name}, ${loc.state}. ${svc.short} Local CareNest care manager, verified professionals, same-day deployment.`,
+    description: `${svc.name} at home in ${loc.name}, ${loc.state}. ${svc.short}`,
     path: `/locations/${loc.slug}/${svc.slug}`,
-    keywords: `${svc.name} ${loc.name}, ${svc.name} at home ${loc.name}, home healthcare ${loc.name}`,
+    keywords: `${svc.name} ${loc.name}, ${svc.name} at home ${loc.name}`,
     imageAlt: `${svc.name} at home in ${loc.name} — CareNest Home Health`,
   });
 
@@ -219,21 +180,15 @@ export const LEGAL_SEO = {
   "cancellation-policy": PAGE_SEO.cancellation,
 };
 
-/** All public indexable paths (for sitemap generation). */
+/** Indexable paths for sitemap (primaries only; redirected URLs omitted). */
 export const getAllPublicPaths = () => {
   const staticPaths = [
     { path: "/", priority: "1.0", changefreq: "weekly" },
     { path: "/about", priority: "0.8", changefreq: "monthly" },
     { path: "/services", priority: "0.9", changefreq: "weekly" },
-    { path: "/pricing", priority: "0.8", changefreq: "weekly" },
-    { path: "/locations", priority: "0.9", changefreq: "weekly" },
-    { path: "/book-appointment", priority: "0.8", changefreq: "monthly" },
+    { path: "/locations", priority: "0.7", changefreq: "monthly" },
     { path: "/contact", priority: "0.8", changefreq: "monthly" },
-    { path: "/faq", priority: "0.8", changefreq: "monthly" },
-    { path: "/gallery", priority: "0.6", changefreq: "monthly" },
-    { path: "/testimonials", priority: "0.7", changefreq: "monthly" },
-    { path: "/blog", priority: "0.7", changefreq: "weekly" },
-    { path: "/careers", priority: "0.6", changefreq: "monthly" },
+    { path: "/faq", priority: "0.6", changefreq: "monthly" },
     { path: "/privacy-policy", priority: "0.3", changefreq: "yearly" },
     { path: "/terms", priority: "0.3", changefreq: "yearly" },
     { path: "/refund-policy", priority: "0.3", changefreq: "yearly" },
@@ -246,14 +201,14 @@ export const getAllPublicPaths = () => {
   }));
   const locationPaths = LOCATIONS.map((l) => ({
     path: `/locations/${l.slug}`,
-    priority: "0.9",
-    changefreq: "weekly",
+    priority: l.slug === "pune" ? "0.9" : "0.6",
+    changefreq: "monthly",
   }));
   const cityServicePaths = LOCATIONS.flatMap((l) =>
     SERVICES.map((s) => ({
       path: `/locations/${l.slug}/${s.slug}`,
-      priority: "0.8",
-      changefreq: "weekly",
+      priority: l.slug === "pune" ? "0.8" : "0.5",
+      changefreq: "monthly",
     }))
   );
   return [...staticPaths, ...servicePaths, ...locationPaths, ...cityServicePaths];

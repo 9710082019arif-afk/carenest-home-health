@@ -14,7 +14,6 @@ const NotFound = () => (
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Link to="/" className="btn-primary">Back to home</Link>
         <Link to="/services" className="btn-outline">Browse services</Link>
-        <Link to="/locations" className="btn-outline">Find your city</Link>
         <Link to="/contact" className="btn-outline">Contact us</Link>
       </div>
     </section>
