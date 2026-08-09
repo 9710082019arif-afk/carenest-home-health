@@ -2,20 +2,16 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import FloatingActions from "./FloatingActions";
-import EmergencyBanner from "./EmergencyBanner";
-import ExitIntentPopup from "./ExitIntentPopup";
 import { Toaster } from "sonner";
 
 const Layout = ({ children }) => {
   return (
     <div className="relative min-h-screen bg-background text-foreground">
       <Header />
-      <main className="pt-[100px] md:pt-[112px]">{children}</main>
+      <main className="pt-[96px] md:pt-[108px]">{children}</main>
       <Footer />
       <FloatingActions />
-      <EmergencyBanner />
-      <ExitIntentPopup />
-      <Toaster position="top-center" richColors closeButton theme="system" />
+      <Toaster position="top-center" richColors closeButton theme="light" />
     </div>
   );
 };

@@ -1,86 +1,74 @@
 // Shared static SEO route metadata for bootstrap + prerender.
-// Keep in sync with src/lib/seo.js PAGE_SEO for key indexable hubs.
-
 const SITE = "https://carenesthomehealth.in";
 
 const ROUTES = [
   {
     path: "/",
     file: "index.html",
-    title: "CareNest Home Health · Premium Home Healthcare Services",
+    title: "Care at Home in Pune · CareNest Home Health",
     description:
-      "CareNest Home Health delivers premium home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care across 12 Indian cities. 24×7 professional support at your doorstep.",
+      "CareNest Home Health provides Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune. Call or WhatsApp for a free care consult.",
     canonical: `${SITE}/`,
-    h1: "Professional home healthcare, delivered.",
+    h1: "Care at Home in Pune",
   },
   {
     path: "/locations",
     file: "locations/index.html",
-    title: "Home Healthcare Locations Across India · CareNest Home Health",
+    title: "CareNest Locations — Pune Primary · CareNest Home Health",
     description:
-      "CareNest Home Health serves Pune, Mumbai, Bengaluru, Hyderabad, Delhi NCR, Kolkata, Goa and more. Find local home nursing, ICU-at-home and elder care in your city.",
+      "Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care & Companionship enquiries.",
     canonical: `${SITE}/locations`,
-    h1: "Home healthcare across 12 Indian cities",
-    keywords:
-      "home healthcare near me, home nursing Pune, home care Mumbai, elder care Bengaluru, CareNest locations",
+    h1: "Care at home — Pune first.",
+    keywords: "home healthcare Pune, home nursing Pune, elder care Pune, CareNest locations",
     bodyHtml: `
 <section id="seo-locations-hub" style="max-width:960px;margin:2rem auto;padding:1.5rem;font-family:system-ui,sans-serif;line-height:1.55;color:#0D3B66">
   <p><a href="/">CareNest Home Health</a> · Locations</p>
-  <h1>Home healthcare across 12 Indian cities</h1>
-  <p>CareNest Home Health provides premium home nursing, ICU-at-home, doctor visits, physiotherapy, caregivers and elder care with local care managers and same-day deployment.</p>
-  <h2>Cities we serve</h2>
+  <h1>Care at home — Pune first</h1>
+  <p>CareNest focuses on Nursing Care, Patient Care and Elder Care &amp; Companionship in Pune. Other city pages remain for enquiries.</p>
+  <h2>Cities</h2>
   <ul>
-    <li><a href="/locations/pune">Home healthcare in Pune</a></li>
+    <li><a href="/locations/pune">Home healthcare in Pune</a> (primary)</li>
     <li><a href="/locations/mumbai">Home healthcare in Mumbai</a></li>
-    <li><a href="/locations/navi-mumbai">Home healthcare in Navi Mumbai</a></li>
-    <li><a href="/locations/thane">Home healthcare in Thane</a></li>
     <li><a href="/locations/pimpri-chinchwad">Home healthcare in Pimpri-Chinchwad</a></li>
-    <li><a href="/locations/bengaluru">Home healthcare in Bengaluru</a></li>
-    <li><a href="/locations/hyderabad">Home healthcare in Hyderabad</a></li>
-    <li><a href="/locations/delhi-ncr">Home healthcare in Delhi NCR</a></li>
-    <li><a href="/locations/kolkata">Home healthcare in Kolkata</a></li>
-    <li><a href="/locations/bhubaneswar">Home healthcare in Bhubaneswar</a></li>
-    <li><a href="/locations/ranchi">Home healthcare in Ranchi</a></li>
-    <li><a href="/locations/goa">Home healthcare in Goa</a></li>
   </ul>
-  <p>Call <a href="tel:+919175724546">+91 9175724546</a> or <a href="/book-appointment">book an appointment</a>.</p>
+  <p>Call <a href="tel:+919175724546">+91 9175724546</a> or <a href="/contact">contact us</a>.</p>
 </section>`,
   },
   {
     path: "/services",
     file: "services/index.html",
-    title: "Home Healthcare Services — Nursing, ICU, Physio & More · CareNest Home Health",
+    title: "Home Healthcare Services — Nursing, Patient & Elder Care · CareNest Home Health",
     description:
-      "Explore 22 CareNest home healthcare services: home nursing, ICU-at-home, doctor visits, physiotherapy, elder care, palliative care, equipment rental and more across India.",
+      "Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune.",
     canonical: `${SITE}/services`,
-    h1: "Twenty-two services, one team.",
+    h1: "Three primary care services.",
   },
   {
     path: "/about",
     file: "about/index.html",
     title: "About CareNest Home Health · CareNest Home Health",
     description:
-      "Founded by Riya Shaikh, CareNest Home Health brings hospital-grade nursing, physicians and caregivers into Indian homes — with dignity, punctuality and a dedicated care manager per family.",
+      "Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care & Companionship into homes — with dignity and clear coordination in Pune.",
     canonical: `${SITE}/about`,
-    h1: "A promise: to bring the hospital home — humanely.",
+    h1: "CareNest brings skilled care into the home.",
   },
   {
     path: "/contact",
     file: "contact/index.html",
     title: "Contact CareNest Home Health · CareNest Home Health",
     description:
-      "Call, WhatsApp or email CareNest Home Health 24×7. Reach our care coordinators for home nursing, ICU setup, physiotherapy and elder care across India.",
+      "Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care & Companionship in Pune.",
     canonical: `${SITE}/contact`,
     h1: "A care coordinator is one call away.",
   },
   {
     path: "/faq",
     file: "faq/index.html",
-    title: "Home Healthcare FAQ — CareNest Answers · CareNest Home Health",
+    title: "Home Healthcare FAQ · CareNest Home Health",
     description:
-      "Answers to common questions about CareNest home nursing, pricing, insurance, emergencies, nurse qualifications and same-day deployment across India.",
+      "Answers about CareNest nursing, patient care, elder companionship, pricing and how care starts in Pune.",
     canonical: `${SITE}/faq`,
-    h1: "Answers, honestly.",
+    h1: "Common questions.",
   },
 ];
 

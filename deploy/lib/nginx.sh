@@ -5,8 +5,17 @@ install_nginx_site() {
   local http_tmpl="${DEPLOY_DIR}/nginx/carenesthomehealth.in.http.conf"
   local site_avail="/etc/nginx/sites-available/${DOMAIN}"
   local site_enabled="/etc/nginx/sites-enabled/${DOMAIN}"
+  local redirects_map="${DEPLOY_DIR}/nginx/redirects.map"
+  local redirects_conf="${DEPLOY_DIR}/nginx/carenest-redirects.conf"
 
   [[ -f "${http_tmpl}" ]] || fail "Missing ${http_tmpl}"
+  [[ -f "${redirects_map}" ]] || fail "Missing ${redirects_map} — run: node frontend/scripts/generate-nginx-redirects.js"
+  [[ -f "${redirects_conf}" ]] || fail "Missing ${redirects_conf}"
+
+  log "Installing SEO redirect map"
+  mkdir -p /etc/nginx/snippets /etc/nginx/conf.d
+  cp "${redirects_map}" /etc/nginx/snippets/carenest-redirects.map
+  cp "${redirects_conf}" /etc/nginx/conf.d/carenest-redirects.conf
 
   log "Installing Nginx HTTP site for ${DOMAIN}"
   sed \

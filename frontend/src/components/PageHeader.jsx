@@ -30,7 +30,13 @@ const PageHeader = ({ eyebrow, title, subtitle, image, imageAlt, crumbs = [] }) 
         {image && (
           <div className="lg:col-span-4">
             <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lux">
-              <img src={image} alt={imageAlt || (typeof title === "string" ? title : "CareNest Home Health")} className="h-full w-full object-cover" />
+              <img
+                src={image}
+                alt={imageAlt || (typeof title === "string" ? title : "CareNest Home Health")}
+                className="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </div>
         )}

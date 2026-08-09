@@ -1,6 +1,6 @@
 // JSON-LD schema helpers for SEO rich results (Home Health Care, LocalBusiness, FAQ, Services).
 import React from "react";
-import { COMPANY, SERVICES, LOCATIONS, FAQS, TESTIMONIALS } from "@/data/content";
+import { COMPANY, SERVICES, LOCATIONS, FAQS } from "@/data/content";
 
 const SITE = COMPANY.website.replace(/\/$/, "");
 
@@ -112,7 +112,7 @@ export const organizationSchema = () =>
     name: COMPANY.name,
     alternateName: COMPANY.short,
     description:
-      "Premium home healthcare across India — home nursing, doctor-at-home, ICU-at-home, physiotherapy, caregivers and elder care with 24×7 care coordination.",
+      "Home healthcare in Pune — Nursing Care, Patient Care, and Elder Care & Companionship with clear care coordination.",
     image: `${SITE}/brand-kit/social/hero-banner.jpg`,
     logo: {
       "@type": "ImageObject",
@@ -123,13 +123,7 @@ export const organizationSchema = () =>
     ...NAP,
     areaServed,
     hasOfferCatalog: offerCatalog,
-    medicalSpecialty: [
-      "Nursing",
-      "Physiotherapy",
-      "Geriatric Care",
-      "Palliative Care",
-      "Critical Care",
-    ],
+    medicalSpecialty: ["Nursing", "Geriatric Care", "Home Health Care"],
     foundingDate: "2020",
     founder: {
       "@type": "Person",
@@ -289,7 +283,7 @@ export const locationBusinessSchema = (loc) =>
     "@type": ["HomeHealthCareService", "MedicalBusiness", "LocalBusiness"],
     "@id": `${SITE}/locations/${loc.slug}#localbusiness`,
     name: `CareNest Home Health — ${loc.name}`,
-    description: `Premium home healthcare in ${loc.name}, ${loc.state}. Home nursing, ICU-at-home, doctor visits, physiotherapy, caregivers and elder care with same-day deployment.`,
+    description: `CareNest Nursing Care, Patient Care and Elder Care & Companionship in ${loc.name}, ${loc.state}. Enquire for availability.`,
     url: `${SITE}/locations/${loc.slug}`,
     image: `${SITE}/brand-kit/social/hero-banner.jpg`,
     telephone: COMPANY.phone,
@@ -310,7 +304,7 @@ export const locationBusinessSchema = (loc) =>
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: `Home Healthcare Services in ${loc.name}`,
-      itemListElement: SERVICES.slice(0, 12).map((s, i) => ({
+      itemListElement: SERVICES.map((s, i) => ({
         "@type": "Offer",
         position: i + 1,
         name: `${s.name} in ${loc.name}`,
@@ -372,27 +366,6 @@ export const locationsListSchema = () =>
       position: i + 1,
       name: l.name,
       url: `${SITE}/locations/${l.slug}`,
-    })),
-  });
-
-/** Review / testimonial schema */
-export const reviewsSchema = (reviews = TESTIMONIALS) =>
-  jsonLd({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${SITE}/#organization`,
-    name: COMPANY.name,
-    aggregateRating: NAP.aggregateRating,
-    review: reviews.map((t) => ({
-      "@type": "Review",
-      author: { "@type": "Person", name: t.name },
-      reviewBody: t.text,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: String(t.rating),
-        bestRating: "5",
-      },
-      locationCreated: { "@type": "City", name: t.city },
     })),
   });
 
