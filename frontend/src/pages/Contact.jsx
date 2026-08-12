@@ -2,12 +2,15 @@ import React from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { COMPANY } from "@/data/content";
+import { PHONE_HREF, PHONE_DISPLAY, WHATSAPP_HREF } from "@/lib/cta";
 import { createContact } from "@/lib/api";
 import { toast } from "sonner";
-import { Phone, Mail, MapPin, MessageCircle, Ambulance } from "lucide-react";
+import { Phone, Mail, MapPin, Ambulance } from "lucide-react";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
 import SEOHead from "@/components/SEOHead";
 import { PAGE_SEO } from "@/lib/seo";
 import { JsonLd, contactPageSchema, breadcrumbSchema, organizationSchema } from "@/lib/schema";
+import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const Contact = () => {
   const [f, setF] = React.useState({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -32,10 +35,10 @@ const Contact = () => {
 
       <section className="container-lux pb-24 grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-5 space-y-5">
-          <Card icon={Phone} label="Call" value={COMPANY.phone} href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} testid="contact-phone" />
-          <Card icon={MessageCircle} label="WhatsApp" value={COMPANY.phone} href={`https://wa.me/${COMPANY.whatsapp}`} testid="contact-whatsapp" />
+          <Card icon={Phone} label="Call" value={PHONE_DISPLAY} href={PHONE_HREF} testid="contact-phone" onClick={() => trackPhoneClick({ location: "contact-page" })} />
+          <Card icon={WhatsAppIcon} label="WhatsApp" value={PHONE_DISPLAY} href={WHATSAPP_HREF} testid="contact-whatsapp" external onClick={() => trackWhatsAppClick({ location: "contact-page" })} />
           <Card icon={Mail} label="Email" value={COMPANY.email} href={`mailto:${COMPANY.email}`} testid="contact-email" />
-          <Card icon={Ambulance} label="Emergency" value="24×7 escalation" href={`tel:${COMPANY.phone.replace(/\s/g,'')}`} testid="contact-emergency" />
+          <Card icon={Ambulance} label="Emergency" value="24×7 escalation" href={PHONE_HREF} testid="contact-emergency" onClick={() => trackPhoneClick({ location: "contact-emergency" })} />
           <Card icon={MapPin} label="Head office" value={COMPANY.address} testid="contact-address" />
 
           <div className="rounded-3xl overflow-hidden border border-border/70 h-[280px]">
@@ -63,15 +66,26 @@ const Contact = () => {
   );
 };
 
-const Card = ({ icon: Icon, label, value, href, testid }) => (
-  <a href={href} data-testid={testid} className="flex items-center gap-4 rounded-2xl border border-border/70 bg-card/60 p-5 hover:shadow-lux transition-shadow">
-    <div className="h-11 w-11 rounded-2xl bg-primary/10 text-primary grid place-items-center"><Icon size={18}/></div>
-    <div>
-      <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
-      <div className="font-serif text-lg mt-0.5">{value}</div>
-    </div>
-  </a>
-);
+const Card = ({ icon: Icon, label, value, href, testid, external, onClick }) => {
+  const Comp = href ? "a" : "div";
+  return (
+    <Comp
+      href={href}
+      data-testid={testid}
+      onClick={onClick}
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      className="flex items-center gap-4 rounded-2xl border border-border/70 bg-card/60 p-5 hover:shadow-lux transition-shadow"
+    >
+      <div className="h-11 w-11 rounded-2xl bg-primary/10 text-primary grid place-items-center">
+        <Icon size={18} />
+      </div>
+      <div>
+        <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
+        <div className="font-serif text-lg mt-0.5">{value}</div>
+      </div>
+    </Comp>
+  );
+};
 
 const Input = ({ value, onChange, ...rest }) => (
   <input {...rest} value={value} onChange={(e) => onChange(e.target.value)}

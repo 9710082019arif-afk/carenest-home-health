@@ -6,9 +6,12 @@ import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
 import { SERVICES, FAQS, COMPANY, IMAGES } from "@/data/content";
 import { SERVICE_REDIRECTS } from "@/data/redirects";
-import { Stethoscope, HeartPulse, Users, CheckCircle2, Phone, MessageCircle } from "lucide-react";
+import { PHONE_HREF, PHONE_DISPLAY, WHATSAPP_HREF } from "@/lib/cta";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
+import { Stethoscope, HeartPulse, Users, CheckCircle2, Phone } from "lucide-react";
 import { JsonLd, faqPageSchema, breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { serviceSeo } from "@/lib/seo";
+import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const ICONS = { Stethoscope, HeartPulse, Users };
 
@@ -125,16 +128,21 @@ const ServiceDetail = () => {
             <div className="mt-4 rounded-3xl bg-primary text-primary-foreground p-5">
               <div className="overline text-gold-light">Prefer to talk?</div>
               <div className="mt-3 flex flex-col gap-2">
-                <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="btn-gold w-full">
-                  <Phone size={15} /> {COMPANY.phone}
+                <a
+                  href={PHONE_HREF}
+                  className="btn-gold w-full"
+                  onClick={() => trackPhoneClick({ location: `service-${svc.slug}` })}
+                >
+                  <Phone size={15} /> {PHONE_DISPLAY}
                 </a>
                 <a
-                  href={`https://wa.me/${COMPANY.whatsapp}`}
+                  href={WHATSAPP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-outline w-full border-white/30 text-white hover:bg-white/10"
+                  onClick={() => trackWhatsAppClick({ location: `service-${svc.slug}` })}
                 >
-                  <MessageCircle size={15} /> WhatsApp us
+                  <WhatsAppIcon size={15} /> WhatsApp Now
                 </a>
               </div>
             </div>

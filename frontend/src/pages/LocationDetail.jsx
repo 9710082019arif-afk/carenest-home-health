@@ -36,8 +36,8 @@ const LocationDetail = () => {
         }
         subtitle={
           isPune
-            ? "Nursing Care, Patient Care, and Elder Care & Companionship — coordinated for families across Pune."
-            : `Enquire for CareNest Nursing Care, Patient Care, and Elder Care & Companionship in ${loc.name}. Pune is our primary service area.`
+            ? "Nursing Care, Patient Care, and Elder Care — coordinated for families across Pune."
+            : `Enquire for CareNest Nursing Care, Patient Care, and Elder Care in ${loc.name}. Pune is our primary service area.`
         }
         image={IMAGES.elderCare}
         imageAlt={`Home healthcare in ${loc.name} by CareNest`}

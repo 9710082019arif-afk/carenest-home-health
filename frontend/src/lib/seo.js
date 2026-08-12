@@ -71,36 +71,36 @@ export const buildPageSeo = ({
 
 export const PAGE_SEO = {
   home: buildPageSeo({
-    title: "Care at Home in Pune · CareNest Home Health",
+    title: "CareNest Home Health — Patient, Elder & Nursing Care at Home",
     description:
-      "CareNest Home Health provides Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune. Call or WhatsApp for a free care consult.",
+      "CareNest Home Health provides Patient Care, Elder Care, and Nursing Care at home. Call or WhatsApp Now for a free care consult.",
     path: "/",
-    keywords: "home nursing Pune, patient care at home Pune, elder care Pune, CareNest Home Health",
+    keywords: "patient care at home, elder care at home, nursing care at home, CareNest Home Health",
   }),
   about: buildPageSeo({
     title: "About CareNest Home Health",
     description:
-      "Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care & Companionship into homes — with dignity and clear coordination in Pune.",
+      "Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care into homes — with dignity and clear coordination in Pune.",
     path: "/about",
   }),
   services: buildPageSeo({
     title: "Home Healthcare Services — Nursing, Patient & Elder Care",
     description:
-      "Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune.",
+      "Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care at home in Pune.",
     path: "/services",
     keywords: "home nursing, patient care at home, elder care companionship, CareNest services Pune",
   }),
   locations: buildPageSeo({
     title: "CareNest Locations — Pune Primary",
     description:
-      "Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care & Companionship enquiries.",
+      "Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care enquiries.",
     path: "/locations",
     keywords: "home healthcare Pune, home nursing Pune, elder care Pune",
   }),
   contact: buildPageSeo({
     title: "Contact CareNest Home Health",
     description:
-      "Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care & Companionship in Pune.",
+      "Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care in Pune.",
     path: "/contact",
   }),
   faq: buildPageSeo({
@@ -158,7 +158,7 @@ export const serviceSeo = (svc) =>
 export const locationSeo = (loc) =>
   buildPageSeo({
     title: `Home Healthcare in ${loc.name}`,
-    description: `CareNest Nursing Care, Patient Care and Elder Care & Companionship in ${loc.name}, ${loc.state}. Enquire for availability — Pune is our primary service area.`,
+    description: `CareNest Nursing Care, Patient Care and Elder Care in ${loc.name}, ${loc.state}. Enquire for availability — Pune is our primary service area.`,
     path: `/locations/${loc.slug}`,
     keywords: `home healthcare ${loc.name}, home nursing ${loc.name}, elder care ${loc.name}`,
     imageAlt: `Home healthcare services in ${loc.name} by CareNest`,

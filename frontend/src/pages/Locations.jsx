@@ -31,7 +31,7 @@ const Locations = () => (
 
     <section className="container-lux pb-10 max-w-3xl">
       <p className="text-muted-foreground font-light leading-relaxed">
-        Looking for Nursing Care, Patient Care, or Elder Care & Companionship? Start with{" "}
+        Looking for Nursing Care, Patient Care, or Elder Care? Start with{" "}
         <Link to="/locations/pune" className="text-primary font-medium hover:underline underline-offset-4">
           Pune
         </Link>{" "}

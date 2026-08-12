@@ -7,7 +7,7 @@ const ROUTES = [
     file: "index.html",
     title: "Care at Home in Pune · CareNest Home Health",
     description:
-      "CareNest Home Health provides Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune. Call or WhatsApp for a free care consult.",
+      "CareNest Home Health provides Nursing Care, Patient Care, and Elder Care at home in Pune. Call or WhatsApp for a free care consult.",
     canonical: `${SITE}/`,
     h1: "Care at Home in Pune",
   },
@@ -16,7 +16,7 @@ const ROUTES = [
     file: "locations/index.html",
     title: "CareNest Locations — Pune Primary · CareNest Home Health",
     description:
-      "Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care & Companionship enquiries.",
+      "Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care enquiries.",
     canonical: `${SITE}/locations`,
     h1: "Care at home — Pune first.",
     keywords: "home healthcare Pune, home nursing Pune, elder care Pune, CareNest locations",
@@ -39,7 +39,7 @@ const ROUTES = [
     file: "services/index.html",
     title: "Home Healthcare Services — Nursing, Patient & Elder Care · CareNest Home Health",
     description:
-      "Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune.",
+      "Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care at home in Pune.",
     canonical: `${SITE}/services`,
     h1: "Three primary care services.",
   },
@@ -48,7 +48,7 @@ const ROUTES = [
     file: "about/index.html",
     title: "About CareNest Home Health · CareNest Home Health",
     description:
-      "Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care & Companionship into homes — with dignity and clear coordination in Pune.",
+      "Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care into homes — with dignity and clear coordination in Pune.",
     canonical: `${SITE}/about`,
     h1: "CareNest brings skilled care into the home.",
   },
@@ -57,7 +57,7 @@ const ROUTES = [
     file: "contact/index.html",
     title: "Contact CareNest Home Health · CareNest Home Health",
     description:
-      "Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care & Companionship in Pune.",
+      "Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care in Pune.",
     canonical: `${SITE}/contact`,
     h1: "A care coordinator is one call away.",
   },

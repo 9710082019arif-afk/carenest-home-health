@@ -6,9 +6,9 @@ import { Toaster } from "sonner";
 
 const Layout = ({ children }) => {
   return (
-    <div className="relative min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen bg-background text-foreground pb-mobile-cta">
       <Header />
-      <main className="pt-[96px] md:pt-[108px]">{children}</main>
+      <main className="pt-[68px] md:pt-[76px]">{children}</main>
       <Footer />
       <FloatingActions />
       <Toaster position="top-center" richColors closeButton theme="light" />

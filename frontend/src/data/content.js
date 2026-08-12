@@ -23,25 +23,12 @@ export const COMPANY = {
 /** Three primary services — only these appear in nav, homepage, and sitemap. */
 export const SERVICES = [
   {
-    slug: "home-nursing",
-    name: "Nursing Care",
-    icon: "Stethoscope",
-    tagline: "Skilled nurses, when you need them.",
-    short:
-      "Wound care, injections, vitals monitoring and clinical nursing at home by trained RNs — including 12-hour and 24×7 cover.",
-    category: "nursing",
-    rate: "₹2,800 – ₹3,000",
-    rateUnit: "per day",
-    rateNote: "24-hour skilled nursing; rate varies by patient condition",
-    image: "/brand-kit/images/nursing-care.jpg",
-  },
-  {
     slug: "patient-care",
     name: "Patient Care",
     icon: "HeartPulse",
-    tagline: "Recovery support at home.",
+    tagline: "Patient care at home.",
     short:
-      "Personalised patient support for bedridden care, post-op recovery, rehab coordination and day-to-day clinical assistance at home.",
+      "Personalised support for bedridden care, post-op recovery, rehab coordination and day-to-day clinical assistance at home.",
     category: "care",
     rate: "₹850 – ₹1,200",
     rateUnit: "per 12-hour shift",
@@ -50,9 +37,9 @@ export const SERVICES = [
   },
   {
     slug: "elder-care",
-    name: "Elder Care & Companionship",
+    name: "Elder Care",
     icon: "Users",
-    tagline: "Companionship with dignity.",
+    tagline: "Elder care at home.",
     short:
       "Senior care, daily living support and warm companionship — meals, mobility help, medication reminders and trusted presence.",
     category: "care",
@@ -60,6 +47,19 @@ export const SERVICES = [
     rateUnit: "per shift",
     rateNote: "₹850 for 12-hour shift · ₹900 for 24-hour",
     image: "/brand-kit/images/elder-care.jpg",
+  },
+  {
+    slug: "home-nursing",
+    name: "Nursing Care",
+    icon: "Stethoscope",
+    tagline: "Nursing care at home.",
+    short:
+      "Wound care, injections, vitals monitoring and clinical nursing at home by trained RNs — including 12-hour and 24×7 cover.",
+    category: "nursing",
+    rate: "₹2,800 – ₹3,000",
+    rateUnit: "per day",
+    rateNote: "24-hour skilled nursing; rate varies by patient condition",
+    image: "/brand-kit/images/nursing-care.jpg",
   },
 ];
 
@@ -90,12 +90,13 @@ export const FAQS = [
   },
   {
     q: "Which services do you offer?",
-    a: "We focus on three core services: Nursing Care, Patient Care, and Elder Care & Companionship. Tell us the patient's needs and we'll recommend the right plan.",
+    a: "We focus on three core services: Patient Care, Elder Care, and Nursing Care at home. Tell us the patient's needs and we'll recommend the right plan.",
   },
   {
     q: "How is pricing decided?",
-    a: "We share a personalised plan after a free consult. Pricing depends on skill level, hours and clinical complexity. Indicative rates are shown on each service page.",
+    a: "We share a personalised plan after a free consult. Pricing depends on skill level, hours and clinical complexity.",
   },
+
   {
     q: "Can I hire only for the night?",
     a: "Yes. 12-hour night shifts, 24-hour cover and visit-based nursing are available.",
@@ -137,8 +138,8 @@ export const WHY_CHOOSE = [
     text: "Simple updates for families — call, WhatsApp or your care manager.",
   },
   {
-    title: "One plan, three services",
-    text: "Nursing, patient support or elder companionship — matched to real need.",
+    title: "Three focused services",
+    text: "Patient Care, Elder Care, or Nursing Care — matched to what your family needs.",
   },
 ];
 
@@ -151,12 +152,12 @@ export const HOW_IT_WORKS = [
   {
     n: "02",
     t: "Matched care plan",
-    d: "We recommend Nursing Care, Patient Care or Elder Care & Companionship and confirm rates.",
+    d: "We recommend Patient Care, Elder Care or Nursing Care and confirm next steps.",
   },
   {
     n: "03",
     t: "Care at home",
-    d: "A verified professional arrives in Pune — with ongoing coordination from your care manager.",
+    d: "A verified professional arrives — with ongoing coordination from your care manager.",
   },
 ];
 

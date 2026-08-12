@@ -39,7 +39,7 @@ const About = () => (
           </p>
           <p>
             Today we focus on three services in Pune: <b className="text-foreground">Nursing Care</b>,{" "}
-            <b className="text-foreground">Patient Care</b>, and <b className="text-foreground">Elder Care & Companionship</b>.
+            <b className="text-foreground">Patient Care</b>, and <b className="text-foreground">Elder Care</b>.
           </p>
           <p>
             Call{" "}

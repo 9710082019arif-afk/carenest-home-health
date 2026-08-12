@@ -21,7 +21,7 @@ const Services = () => (
     <PageHeader
       eyebrow="Services"
       title="Three primary care services."
-      subtitle="Nursing Care, Patient Care, and Elder Care & Companionship — delivered at home in Pune with a dedicated care coordinator."
+      subtitle="Nursing Care, Patient Care, and Elder Care — delivered at home in Pune with a dedicated care coordinator."
     />
     <section className="container-lux pb-20">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

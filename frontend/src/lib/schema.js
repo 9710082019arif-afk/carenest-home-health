@@ -112,7 +112,7 @@ export const organizationSchema = () =>
     name: COMPANY.name,
     alternateName: COMPANY.short,
     description:
-      "Home healthcare in Pune — Nursing Care, Patient Care, and Elder Care & Companionship with clear care coordination.",
+      "Home healthcare in Pune — Nursing Care, Patient Care, and Elder Care with clear care coordination.",
     image: `${SITE}/brand-kit/social/hero-banner.jpg`,
     logo: {
       "@type": "ImageObject",
@@ -283,7 +283,7 @@ export const locationBusinessSchema = (loc) =>
     "@type": ["HomeHealthCareService", "MedicalBusiness", "LocalBusiness"],
     "@id": `${SITE}/locations/${loc.slug}#localbusiness`,
     name: `CareNest Home Health — ${loc.name}`,
-    description: `CareNest Nursing Care, Patient Care and Elder Care & Companionship in ${loc.name}, ${loc.state}. Enquire for availability.`,
+    description: `CareNest Nursing Care, Patient Care and Elder Care in ${loc.name}, ${loc.state}. Enquire for availability.`,
     url: `${SITE}/locations/${loc.slug}`,
     image: `${SITE}/brand-kit/social/hero-banner.jpg`,
     telephone: COMPANY.phone,

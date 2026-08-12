@@ -1,71 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { Phone, MessageCircle } from "lucide-react";
-import { Link } from "react-router-dom";
-import { COMPANY } from "@/data/content";
+import React from "react";
+import { Phone } from "lucide-react";
+import WhatsAppIcon from "@/components/WhatsAppIcon";
+import { PHONE_HREF, WHATSAPP_HREF } from "@/lib/cta";
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
+/**
+ * Desktop: floating WhatsApp with label + gentle pulse (bottom-right).
+ * Mobile: always-visible fixed bottom bar — Call Now | WhatsApp Now.
+ */
 const FloatingActions = () => {
-  const [showBar, setShowBar] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShowBar(window.scrollY > 260);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <>
-      <div className="fixed z-40 bottom-6 right-4 md:right-6 flex flex-col items-end gap-3">
+      {/* Desktop floating WhatsApp */}
+      <div className="fixed z-40 bottom-6 right-6 hidden md:block">
         <a
           data-testid="fab-whatsapp"
-          href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent("Hi CareNest, I need help with home healthcare in Pune.")}`}
+          href={WHATSAPP_HREF}
           target="_blank"
           rel="noreferrer"
           onClick={() => trackWhatsAppClick({ location: "fab" })}
-          className="h-14 w-14 grid place-items-center rounded-full bg-[#25D366] text-white shadow-lux hover:shadow-lux-hover transition-shadow"
+          className="wa-pulse inline-flex items-center gap-2.5 rounded-full bg-whatsapp text-white pl-4 pr-5 py-3.5 text-base font-bold shadow-lux hover:brightness-105 transition-[filter,transform] active:scale-[.98]"
           aria-label="Chat on WhatsApp"
         >
-          <MessageCircle size={22} />
-        </a>
-        <a
-          data-testid="fab-call"
-          href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
-          onClick={() => trackPhoneClick({ location: "fab" })}
-          className="hidden md:grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground shadow-lux hover:shadow-lux-hover transition-shadow"
-          aria-label="Call CareNest"
-        >
-          <Phone size={18} />
+          <WhatsAppIcon size={24} />
+          Chat on WhatsApp
         </a>
       </div>
 
+      {/* Mobile fixed bottom CTA bar — always visible */}
       <div
-        className={`fixed z-40 bottom-4 left-3 right-3 md:hidden transition-all duration-300 ${
-          showBar ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0 pointer-events-none"
-        }`}
+        className="fixed z-40 inset-x-0 bottom-0 md:hidden bg-white/95 backdrop-blur-md border-t border-border/80 shadow-[0_-8px_30px_rgba(11,92,62,0.12)]"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        data-testid="mobile-cta-bar"
       >
-        <div className="glass-strong rounded-full shadow-lux flex items-center gap-2 p-2">
+        <div className="grid grid-cols-2 gap-2.5 px-3 pt-2.5 pb-2.5">
           <a
-            href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
+            href={PHONE_HREF}
             data-testid="mobile-fab-call"
-            onClick={() => trackPhoneClick({ location: "mobile-fab" })}
-            className="flex-1 btn-primary py-2.5 text-xs"
+            onClick={() => trackPhoneClick({ location: "mobile-cta-bar" })}
+            className="flex items-center justify-center gap-2 rounded-2xl bg-primary text-primary-foreground min-h-[52px] text-[15px] font-bold tracking-wide active:scale-[.98] transition-transform"
           >
-            <Phone size={14} />
-            Call
+            <Phone size={20} strokeWidth={2.5} />
+            Call Now
           </a>
           <a
-            href={`https://wa.me/${COMPANY.whatsapp}`}
+            href={WHATSAPP_HREF}
             target="_blank"
             rel="noreferrer"
             data-testid="mobile-fab-whatsapp"
-            onClick={() => trackWhatsAppClick({ location: "mobile-fab" })}
-            className="flex-1 rounded-full bg-[#25D366] text-white text-xs font-semibold py-2.5 flex items-center justify-center gap-1"
+            onClick={() => trackWhatsAppClick({ location: "mobile-cta-bar" })}
+            className="flex items-center justify-center gap-2 rounded-2xl bg-whatsapp text-white min-h-[52px] text-[15px] font-bold tracking-wide active:scale-[.98] transition-transform"
           >
-            <MessageCircle size={14} />
-            WhatsApp
+            <WhatsAppIcon size={20} />
+            WhatsApp Now
           </a>
-          <Link to="/contact" data-testid="mobile-fab-enquire" className="flex-1 btn-gold py-2.5 text-xs justify-center">
-            Enquire
-          </Link>
         </div>
       </div>
     </>
