@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" role="img" aria-label="CareNest Home Health">
+  <defs>
+    <linearGradient id="tealGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#20B2AA"/><stop offset="100%" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="goldGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E5C158"/><stop offset="100%" stop-color="#B8892B"/>
+    </linearGradient>
+    <linearGradient id="royalGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D3B66"/><stop offset="100%" stop-color="#0A2E4F"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark -->
+  <g transform="translate(10 20)">
+    <path d="M 20 110 Q 90 40 160 110" fill="none" stroke="url(#tealGrad2)" stroke-width="9" stroke-linecap="round"/>
+    <path d="M 35 118 Q 90 62 145 118" fill="none" stroke="url(#royalGrad2)" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 48 124 Q 90 88 132 124" fill="none" stroke="url(#goldGrad2)" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(90 90)">
+      <circle r="18" fill="url(#goldGrad2)" opacity="0.15"/>
+      <rect x="-3" y="-14" width="6" height="28" rx="2" fill="url(#royalGrad2)"/>
+      <rect x="-14" y="-3" width="28" height="6" rx="2" fill="url(#royalGrad2)"/>
+    </g>
+  </g>
+  <!-- Wordmark -->
+  <g transform="translate(200 118)" font-family="'Cormorant Garamond', 'Georgia', serif" font-weight="500">
+    <text x="0" y="0" font-size="60" fill="#0D3B66">Care<tspan fill="url(#goldGrad2)">Nest</tspan></text>
+    <text x="2" y="34" font-size="16" letter-spacing="6" fill="#64748B" font-family="'Manrope', system-ui, sans-serif" font-weight="600">HOME HEALTH · INDIA</text>
+  </g>
+</svg>
