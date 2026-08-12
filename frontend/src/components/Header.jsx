@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown, MessageCircle } from "lucide-react";
 import { COMPANY, SERVICES } from "@/data/content";
@@ -14,13 +14,25 @@ const NAV = [
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const [mega, setMega] = useState(null);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const closeTimer = useRef(null);
   const location = useLocation();
 
   React.useEffect(() => {
     setOpen(false);
-    setMega(null);
+    setServicesOpen(false);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
   }, [location.pathname]);
+
+  const openServices = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setServicesOpen(true);
+  };
+
+  const scheduleCloseServices = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setServicesOpen(false), 120);
+  };
 
   return (
     <header className="fixed top-0 inset-x-0 z-50">
@@ -56,24 +68,81 @@ const Header = () => {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" onMouseLeave={() => setMega(null)}>
-            {NAV.map((item) => (
-              <div key={item.label} className="relative" onMouseEnter={() => setMega(item.mega || null)}>
+          <nav className="hidden lg:flex items-center gap-1">
+            {NAV.map((item) =>
+              item.mega === "services" ? (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={openServices}
+                  onMouseLeave={scheduleCloseServices}
+                  onFocus={openServices}
+                  onBlur={scheduleCloseServices}
+                >
+                  <NavLink
+                    to={item.to}
+                    data-testid="nav-services"
+                    aria-expanded={servicesOpen}
+                    aria-haspopup="true"
+                    className={({ isActive }) =>
+                      cn(
+                        "px-3.5 py-2 text-[13.5px] font-medium tracking-wide rounded-full transition-colors inline-flex items-center gap-1",
+                        isActive || servicesOpen ? "text-primary" : "text-foreground/70 hover:text-primary"
+                      )
+                    }
+                  >
+                    Services
+                    <ChevronDown size={13} className={cn("opacity-60 transition-transform", servicesOpen && "rotate-180")} />
+                  </NavLink>
+
+                  {/* pt-3 bridge removes hover gap between trigger and panel */}
+                  <div
+                    className={cn(
+                      "absolute left-0 top-full z-50 pt-3 min-w-[300px]",
+                      servicesOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
+                    )}
+                    role="menu"
+                    aria-label="Primary services"
+                  >
+                    <div className="rounded-2xl border border-border/70 bg-white shadow-lux p-2">
+                      {SERVICES.map((s) => (
+                        <Link
+                          key={s.slug}
+                          to={`/services/${s.slug}`}
+                          role="menuitem"
+                          className="block rounded-xl px-3.5 py-3 hover:bg-muted/70 transition-colors"
+                          onClick={() => setServicesOpen(false)}
+                        >
+                          <div className="text-sm font-semibold text-foreground">{s.name}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5 leading-snug">{s.tagline}</div>
+                        </Link>
+                      ))}
+                      <Link
+                        to="/services"
+                        className="block rounded-xl px-3.5 py-2.5 text-xs font-semibold text-primary hover:bg-primary/5"
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        View all services →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ) : (
                 <NavLink
+                  key={item.label}
                   to={item.to}
                   data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                   className={({ isActive }) =>
                     cn(
-                      "px-3.5 py-2 text-[13.5px] font-medium tracking-wide rounded-full transition-colors flex items-center gap-1",
+                      "px-3.5 py-2 text-[13.5px] font-medium tracking-wide rounded-full transition-colors",
                       isActive ? "text-primary" : "text-foreground/70 hover:text-primary"
                     )
                   }
                 >
                   {item.label}
-                  {item.mega && <ChevronDown size={13} className="opacity-60" />}
                 </NavLink>
-              </div>
-            ))}
+              )
+            )}
           </nav>
 
           <div className="flex items-center gap-2">
@@ -105,25 +174,6 @@ const Header = () => {
             </button>
           </div>
         </div>
-
-        {mega === "services" && (
-          <div
-            className="hidden lg:block border-t border-border/60 glass-strong"
-            onMouseEnter={() => setMega("services")}
-            onMouseLeave={() => setMega(null)}
-          >
-            <div className="container-lux py-6 grid grid-cols-3 gap-6">
-              {SERVICES.map((s) => (
-                <Link key={s.slug} to={`/services/${s.slug}`} className="group py-2">
-                  <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {s.name}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">{s.tagline}</div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {open && (
@@ -141,7 +191,7 @@ const Header = () => {
             ))}
             <div className="py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Services</div>
             {SERVICES.map((s) => (
-              <Link key={s.slug} to={`/services/${s.slug}`} className="py-2 pl-2 text-base font-medium">
+              <Link key={s.slug} to={`/services/${s.slug}`} className="py-2.5 pl-2 text-base font-medium">
                 {s.name}
               </Link>
             ))}

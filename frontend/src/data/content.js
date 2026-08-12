@@ -173,3 +173,204 @@ export const TRUST_BADGES = [
   { label: "Pune same-day deployment" },
   { label: "24×7 care manager" },
 ];
+
+/**
+ * Expanded, unique SEO copy for the 3 primary service pages.
+ * Kept in data so ServiceDetail stays lightweight.
+ */
+export const SERVICE_PAGE_CONTENT = {
+  "home-nursing": {
+    overview:
+      "CareNest Nursing Care brings qualified registered nurses into your home in Pune for clinical tasks that used to mean hospital visits or uncertain private arrangements. From wound dressing and injections to vitals monitoring and continuous shift cover, we match nurse skill to the patient's condition — with a care coordinator who stays reachable.",
+    whoNeeds: [
+      "Patients discharged after surgery who still need skilled nursing at home",
+      "Families managing IV therapy, catheter care, or complex medication schedules",
+      "Households that need reliable 12-hour or 24×7 nursing cover in Pune",
+      "Anyone who wants clinical oversight without another hospital admission",
+    ],
+    included: [
+      "GNM / B.Sc Nursing qualified, background-verified RNs",
+      "Wound care, injections, vitals and clinical charting as agreed in the plan",
+      "12-hour or 24×7 shift options with structured handover",
+      "Care coordinator for timing, replacements and family updates",
+      "Insurance-ready invoices and clear documentation",
+      "Escalation path when the patient's condition changes",
+    ],
+    howItWorks: [
+      "Share the doctor's advice, current medicines and preferred hours.",
+      "We recommend a nursing plan and indicative rate for Pune.",
+      "A verified nurse is assigned; your coordinator confirms start time.",
+      "Daily updates stay simple — call or WhatsApp when you need clarity.",
+    ],
+    benefits: [
+      "Hospital-grade nursing routines in a familiar home setting",
+      "Faster deployment across Pune neighbourhoods we already serve",
+      "One coordinator instead of juggling multiple freelancers",
+      "Plans that can step up or down as recovery progresses",
+    ],
+    puneContext:
+      "Pune is CareNest's primary service area. Whether you are in Kothrud, Baner, Hadapsar, Kharadi, Pimpri-Chinchwad or nearby localities, we prioritise clear timing and local coordination so nursing care starts without unnecessary delay.",
+    faqs: [
+      {
+        q: "Is home nursing in Pune available for night shifts?",
+        a: "Yes. We offer 12-hour night shifts and 24×7 nursing cover, subject to nurse availability and the clinical scope required.",
+      },
+      {
+        q: "Are CareNest nurses qualified and verified?",
+        a: "Yes. Our RNs are GNM or B.Sc Nursing qualified and background-verified before assignment. Skill match depends on the care plan.",
+      },
+      {
+        q: "How soon can nursing care start in Pune?",
+        a: "For many non-critical plans we aim for same-day or next-day start after confirmation. Urgent needs are prioritised — call or WhatsApp for the fastest update.",
+      },
+      {
+        q: "What clinical tasks can a home nurse handle?",
+        a: "Typical scope includes wound care, injections, vitals monitoring, catheter support and medication administration as defined in your plan. Complex ICU-level needs are assessed case by case.",
+      },
+      {
+        q: "Can the same nurse continue for long-term care?",
+        a: "We try to keep continuity where possible. If a replacement is needed, your coordinator arranges handover so the family is not left guessing.",
+      },
+      {
+        q: "How is nursing priced?",
+        a: "Indicative 24-hour skilled nursing rates start around ₹2,800–₹3,000 per day and vary by condition and scope. We confirm a written plan after a short consult.",
+      },
+      {
+        q: "Do you share updates with the family?",
+        a: "Yes. Families receive clear updates via call or WhatsApp, and we keep documentation organised for doctors and insurers when needed.",
+      },
+    ],
+  },
+  "patient-care": {
+    overview:
+      "CareNest Patient Care supports recovery at home in Pune when a loved one needs more than companionship but may not need full clinical nursing every hour. We help with bedridden care, post-operative routines, mobility assistance and day-to-day patient support — matched to real need, with trained staff and a coordinator who keeps the plan practical.",
+    whoNeeds: [
+      "Bedridden patients who need positioning, hygiene and safe handling",
+      "Families managing post-operative recovery at home",
+      "Patients who need help with feeding, mobility and daily clinical assistance",
+      "Caregivers who need reliable shift support so they can rest",
+    ],
+    included: [
+      "Trained attendant or skilled support based on clinical need",
+      "Help with hygiene, positioning, mobility and daily routines",
+      "Medication reminders and simple progress notes for the family",
+      "Coordination with Nursing Care when clinical tasks require an RN",
+      "Flexible 12-hour shifts with clear start and end times",
+      "Insurance-ready invoices where applicable",
+    ],
+    howItWorks: [
+      "Tell us about the patient's condition, mobility and home setup.",
+      "We recommend Patient Care alone or alongside Nursing Care if needed.",
+      "A verified caregiver is briefed on routines your family already follows.",
+      "Your coordinator stays available for changes, night cover or extensions.",
+    ],
+    benefits: [
+      "Safer daily support than ad-hoc local hires",
+      "Clearer boundaries between attendant care and skilled nursing",
+      "Less burnout for family caregivers in Pune households",
+      "A plan you can adjust as the patient improves or needs change",
+    ],
+    puneContext:
+      "From hospital discharge in Pune to longer recovery at home, families often need dependable patient support quickly. CareNest focuses on Pune so coordinators understand local travel times, apartment living constraints and how to set up practical shift cover.",
+    faqs: [
+      {
+        q: "How is Patient Care different from Nursing Care?",
+        a: "Patient Care focuses on daily support, mobility, hygiene and recovery routines. Nursing Care is for clinical tasks by qualified RNs. Many families use both in a combined plan.",
+      },
+      {
+        q: "Can you support bedridden patients at home in Pune?",
+        a: "Yes. We train for safe positioning, hygiene and handling protocols. If bedsore risk or clinical complexity is high, we may recommend adding nursing oversight.",
+      },
+      {
+        q: "Do you provide post-operative patient support?",
+        a: "Yes. We help with mobility, routine assistance and family updates after discharge. Wound care or injections are handled under Nursing Care when required.",
+      },
+      {
+        q: "What shift lengths are available?",
+        a: "Most Patient Care plans run as 12-hour shifts. We can discuss extended cover based on availability and the patient's needs.",
+      },
+      {
+        q: "Will the caregiver follow our doctor's instructions?",
+        a: "We brief staff on the routines and precautions you share. Clinical procedures stay with qualified nurses; attendants support the day-to-day plan.",
+      },
+      {
+        q: "How fast can Patient Care begin?",
+        a: "In Pune we often start within hours of confirmation for standard cases. Share timing constraints when you enquire so we can plan accordingly.",
+      },
+      {
+        q: "What does Patient Care cost?",
+        a: "Indicative rates are about ₹850–₹1,200 per 12-hour shift depending on skill level. Final pricing is confirmed after understanding the patient's needs.",
+      },
+      {
+        q: "Can I switch from Patient Care to Nursing Care later?",
+        a: "Yes. Your coordinator can revise the plan if the clinical need increases — without starting the whole search process again.",
+      },
+    ],
+  },
+  "elder-care": {
+    overview:
+      "CareNest Elder Care & Companionship is for seniors in Pune who need trustworthy daily support and warm presence — not necessarily intensive clinical nursing. We help with meals, mobility, medication reminders, personal care and companionship so older adults stay safer and less alone at home, while families get reliable backup.",
+    whoNeeds: [
+      "Seniors living alone or with family members who work full days",
+      "Parents who need help with meals, walks, bathing or medication reminders",
+      "Families seeking respectful companionship for an ageing parent in Pune",
+      "Households that want consistent caregivers instead of rotating strangers",
+    ],
+    included: [
+      "Background-verified caregivers trained for senior support",
+      "Assistance with daily living: meals, mobility, personal hygiene",
+      "Medication reminders and simple wellbeing check-ins",
+      "Companionship that respects dignity and familiar routines",
+      "12-hour or 24-hour shift options where available",
+      "Coordinator support for replacements and schedule changes",
+    ],
+    howItWorks: [
+      "Describe your parent's routine, mobility and what matters most at home.",
+      "We match Elder Care & Companionship — or combine with nursing if needed.",
+      "The caregiver is introduced with clear do's and don'ts from your family.",
+      "You stay updated; changes to hours or support level are easy to request.",
+    ],
+    benefits: [
+      "Peace of mind for working children in Pune and nearby cities",
+      "Seniors keep independence at home with a trusted helper nearby",
+      "Fewer last-minute scrambles when a regular attendant cancels",
+      "A respectful, structured alternative to impersonal institutional care",
+    ],
+    puneContext:
+      "Many Pune families balance careers with ageing parents at home. Elder Care & Companionship from CareNest is built for that reality — local coordination, clear communication in familiar languages where possible, and caregivers who understand everyday senior routines across the city.",
+    faqs: [
+      {
+        q: "Is Elder Care the same as a medical nurse?",
+        a: "No. Elder Care & Companionship focuses on daily living support and presence. If clinical nursing is required, we recommend Nursing Care or a combined plan.",
+      },
+      {
+        q: "Can caregivers help with bathing and meals?",
+        a: "Yes. Personal hygiene support, meal assistance and mobility help are common parts of elder-care plans, based on what the senior is comfortable with.",
+      },
+      {
+        q: "Do you offer 24-hour elder care in Pune?",
+        a: "24-hour cover is available on many plans. Indicative pricing is shared upfront; final confirmation depends on caregiver availability.",
+      },
+      {
+        q: "How do you choose the right caregiver?",
+        a: "We consider temperament, language comfort, mobility needs and household preferences — not only shift timing — so the match feels workable day to day.",
+      },
+      {
+        q: "What if my parent has dementia or memory concerns?",
+        a: "Tell us during enquiry. We can plan for structured routines and closer supervision, and advise when skilled nursing should be added.",
+      },
+      {
+        q: "Can family still stay involved?",
+        a: "Absolutely. CareNest support is meant to assist the family, not replace it. You set preferences; we keep communication open.",
+      },
+      {
+        q: "How much does Elder Care & Companionship cost?",
+        a: "Indicative rates are about ₹850 for a 12-hour shift and ₹900 for 24-hour cover. We confirm the plan after understanding routines and hours needed.",
+      },
+      {
+        q: "How do I start elder care in Pune?",
+        a: "Call, WhatsApp or use the enquiry form on this page. A coordinator will respond with availability and next steps — usually the same day.",
+      },
+    ],
+  },
+};
