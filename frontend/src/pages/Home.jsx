@@ -141,7 +141,7 @@ const Home = () => {
       </section>
 
       {/* WHY CHOOSE */}
-      <section id="why" className="bg-muted/50 border-y border-border/50 py-14 md:py-18">
+      <section id="why" className="bg-muted/50 border-y border-border/50 py-14 md:py-16">
         <div className="container-lux">
           <div className="max-w-2xl mb-9">
             <h2 className="font-serif text-3xl md:text-4xl tracking-tight text-primary">
@@ -200,7 +200,7 @@ const Home = () => {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="bg-primary text-primary-foreground py-14 md:py-18">
+      <section id="contact" className="bg-primary text-primary-foreground py-14 md:py-16">
         <div className="container-lux">
           <h2 className="font-serif text-3xl md:text-4xl tracking-tight">Contact CareNest</h2>
           <p className="mt-3 text-white/80 font-light max-w-xl">

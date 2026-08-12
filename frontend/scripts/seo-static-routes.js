@@ -5,11 +5,11 @@ const ROUTES = [
   {
     path: "/",
     file: "index.html",
-    title: "Care at Home in Pune · CareNest Home Health",
+    title: "CareNest Home Health — Patient, Elder & Nursing Care at Home",
     description:
-      "CareNest Home Health provides Nursing Care, Patient Care, and Elder Care at home in Pune. Call or WhatsApp for a free care consult.",
+      "CareNest Home Health provides Patient Care, Elder Care, and Nursing Care at home. Call or WhatsApp Now for a free care consult.",
     canonical: `${SITE}/`,
-    h1: "Care at Home in Pune",
+    h1: "CareNest Home Health",
   },
   {
     path: "/locations",
@@ -24,7 +24,7 @@ const ROUTES = [
 <section id="seo-locations-hub" style="max-width:960px;margin:2rem auto;padding:1.5rem;font-family:system-ui,sans-serif;line-height:1.55;color:#0D3B66">
   <p><a href="/">CareNest Home Health</a> · Locations</p>
   <h1>Care at home — Pune first</h1>
-  <p>CareNest focuses on Nursing Care, Patient Care and Elder Care &amp; Companionship in Pune. Other city pages remain for enquiries.</p>
+  <p>CareNest focuses on Nursing Care, Patient Care and Elder Care in Pune. Other city pages remain for enquiries.</p>
   <h2>Cities</h2>
   <ul>
     <li><a href="/locations/pune">Home healthcare in Pune</a> (primary)</li>
