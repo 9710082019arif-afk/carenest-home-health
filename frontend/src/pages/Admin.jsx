@@ -78,7 +78,10 @@ export const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const authFetch = (path) => fetch(`${API_BASE}${path}`, { headers: { "X-Admin-Token": token } });
+  const authFetch = React.useCallback(
+    (path) => fetch(`${API_BASE}${path}`, { headers: { "X-Admin-Token": token } }),
+    [token]
+  );
 
   const load = React.useCallback(async () => {
     if (!token) return;
@@ -92,7 +95,7 @@ export const AdminDashboard = () => {
       setRows(data || []); setStats(s);
     } catch { toast.error("Failed to load"); }
     finally { setLoading(false); }
-  }, [tab, token]);
+  }, [tab, token, authFetch]);
 
   useEffect(() => { load(); }, [load]);
 
