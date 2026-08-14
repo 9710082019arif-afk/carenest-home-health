@@ -1,5 +1,5 @@
 // Central SEO metadata helpers for CareNest Home Health.
-import { COMPANY, SERVICES, LOCATIONS } from "@/data/content";
+import { COMPANY, SERVICES, LOCATIONS, SERVICE_PAGE_CONTENT } from "@/data/content";
 
 export const SITE_URL = COMPANY.website.replace(/\/$/, "");
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/brand-kit/social/hero-banner.jpg`;
@@ -146,14 +146,18 @@ export const PAGE_SEO = {
   }),
 };
 
-export const serviceSeo = (svc) =>
-  buildPageSeo({
+export const serviceSeo = (svc) => {
+  const long = SERVICE_PAGE_CONTENT?.[svc.slug]?.overview;
+  return buildPageSeo({
     title: `${svc.name} at Home in Pune`,
-    description: `${svc.name} at home by CareNest — ${svc.short} ${svc.rate ? `From ${svc.rate} ${svc.rateUnit}.` : ""}`,
+    description:
+      long ||
+      `${svc.name} at home by CareNest — ${svc.short} ${svc.rate ? `From ${svc.rate} ${svc.rateUnit}.` : ""}`,
     path: `/services/${svc.slug}`,
     keywords: `${svc.name}, ${svc.name} Pune, home healthcare ${svc.name}, CareNest`,
     imageAlt: `${svc.name} at home by CareNest Home Health`,
   });
+};
 
 export const locationSeo = (loc) =>
   buildPageSeo({
