@@ -11,7 +11,14 @@ import { JsonLd, contactPageSchema, breadcrumbSchema, organizationSchema } from 
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const Contact = () => {
-  const [f, setF] = React.useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [f, setF] = React.useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+    company_website: "",
+  });
   const [loading, setLoading] = React.useState(false);
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
 
@@ -21,7 +28,7 @@ const Contact = () => {
     try {
       await createContact(f);
       toast.success("Message sent. We'll reply shortly.");
-      setF({ name: "", email: "", phone: "", subject: "", message: "" });
+      setF({ name: "", email: "", phone: "", subject: "", message: "", company_website: "" });
     } catch {
       toast.error("Could not send. Try WhatsApp or call.");
     } finally {
@@ -95,6 +102,17 @@ const Contact = () => {
         >
           <div className="overline text-accent">Send us a message</div>
           <h2 className="font-serif text-3xl text-foreground">Tell us how we can help.</h2>
+          {/* Honeypot — leave empty; bots that fill it are ignored server-side */}
+          <input
+            type="text"
+            name="company_website"
+            value={f.company_website}
+            onChange={(e) => set("company_website", e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", height: 0, width: 0, opacity: 0 }}
+          />
           <div className="grid sm:grid-cols-2 gap-4">
             <Input data-testid="contact-form-name" value={f.name} onChange={(v) => set("name", v)} placeholder="Full name" />
             <Input

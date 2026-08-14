@@ -25,18 +25,20 @@ const AnalyticsLoader = () => {
       let gtmId = BUILD_GTM_ID;
       let metaPixelId = BUILD_META_PIXEL_ID;
 
-      try {
-        const r = await fetch(`${API_BASE}/config/public`);
-        if (r.ok) {
-          const c = await r.json();
-          gaId = (c.ga_id || gaId || "").trim();
-          gtmId = (c.gtm_id || gtmId || "").trim();
-          metaPixelId = (c.meta_pixel_id || metaPixelId || "").trim();
+      // Optional FastAPI config — skip when no backend (Vercel-only public site).
+      if (API_BASE) {
+        try {
+          const r = await fetch(`${API_BASE}/config/public`);
+          if (r.ok) {
+            const c = await r.json();
+            gaId = (c.ga_id || gaId || "").trim();
+            gtmId = (c.gtm_id || gtmId || "").trim();
+            metaPixelId = (c.meta_pixel_id || metaPixelId || "").trim();
+          }
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error("AnalyticsLoader: failed to load config", err);
         }
-      } catch (err) {
-        // Silent-in-production, but log for developer visibility so analytics failures aren't invisible.
-        // eslint-disable-next-line no-console
-        console.error("AnalyticsLoader: failed to load config", err);
       }
 
       if (gaId) {
