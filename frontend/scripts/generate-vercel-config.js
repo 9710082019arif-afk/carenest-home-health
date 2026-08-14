@@ -6,15 +6,16 @@ const { SERVICES, LOCATIONS, SERVICE_REDIRECTS, PAGE_REDIRECTS } = require("./se
 
 const redirects = [];
 
+// Use statusCode 301 (not permanent:true → 308) to match nginx SEO 301s.
 Object.entries(PAGE_REDIRECTS).forEach(([from, to]) => {
-  redirects.push({ source: from, destination: to, permanent: true });
+  redirects.push({ source: from, destination: to, statusCode: 301 });
 });
 
 Object.entries(SERVICE_REDIRECTS).forEach(([fromSlug, toSlug]) => {
   redirects.push({
     source: `/services/${fromSlug}`,
     destination: `/services/${toSlug}`,
-    permanent: true,
+    statusCode: 301,
   });
 });
 
@@ -23,7 +24,7 @@ LOCATIONS.forEach((city) => {
     redirects.push({
       source: `/locations/${city}/${fromSlug}`,
       destination: `/locations/${city}/${toSlug}`,
-      permanent: true,
+      statusCode: 301,
     });
   });
 });

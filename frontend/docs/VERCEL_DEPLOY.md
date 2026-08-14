@@ -43,9 +43,20 @@ Without `RESEND_API_KEY`, preview/non-production accepts forms and logs them (`F
 - `POST /api/contact` — contact page
 - Implementation: `api/*.js` + `lib/server-form.js` (Resend)
 
-## Cutover checklist (manual; not automatic)
+## Preview without a linked project
 
-1. Preview QA on `*.vercel.app` (home, 3 services, contact, forms, mobile, sample 301s, GA4).
-2. User approval.
-3. Attach `carenesthomehealth.in` (+ www) to this **new** project only.
-4. DNS cutover when ready — do not shut down Emergent/AWS until apex serves correctly.
+You can ship a temporary anonymous preview with:
+
+```bash
+cd frontend
+npx vercel deploy --yes -e FORM_DEV_ACCEPT=true
+```
+
+Claim the deployment into a **new** Vercel project (not `carenest-home-health-landing-page`). Do not attach `carenesthomehealth.in` until QA is approved.
+
+### Important: keep landing-page project separate
+
+The existing project `carenest-home-health-landing-page` serves `care.carenesthomehealth.in` (Google Ads). Do not point it at this main-site branch, and do not claim main-site previews into that project. Prefer a dedicated project (e.g. `carenest-home-health-main`) with Root Directory `frontend`.
+
+If GitHub auto-deploys this repo into the landing-page project, restrict that project to the `landing-page` branch only (or add an Ignored Build Step for other branches).
+

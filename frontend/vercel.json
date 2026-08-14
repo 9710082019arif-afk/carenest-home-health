@@ -7,1332 +7,1332 @@
     {
       "source": "/pricing",
       "destination": "/services",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/book-appointment",
       "destination": "/contact",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/gallery",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/testimonials",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/blog",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/careers",
       "destination": "/about",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/24x7-nursing-care",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/injection-dressing",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/post-operative-care",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/tracheostomy-care",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/ventilator-support",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/icu-at-home",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/critical-care",
       "destination": "/services/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/bedridden-patient-care",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/cancer-patient-care",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/palliative-care",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/stroke-rehabilitation",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/paralysis-care",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/physiotherapy-at-home",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/doctor-at-home",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/medical-equipment-rental",
       "destination": "/services/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/caregiver-services",
       "destination": "/services/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/attendant-services",
       "destination": "/services/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/dementia-care",
       "destination": "/services/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/alzheimer-care",
       "destination": "/services/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/services/mother-baby-care",
       "destination": "/services/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/24x7-nursing-care",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/injection-dressing",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/post-operative-care",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/tracheostomy-care",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/ventilator-support",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/icu-at-home",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/critical-care",
       "destination": "/locations/pune/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/bedridden-patient-care",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/cancer-patient-care",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/palliative-care",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/stroke-rehabilitation",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/paralysis-care",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/physiotherapy-at-home",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/doctor-at-home",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/medical-equipment-rental",
       "destination": "/locations/pune/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/caregiver-services",
       "destination": "/locations/pune/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/attendant-services",
       "destination": "/locations/pune/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/dementia-care",
       "destination": "/locations/pune/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/alzheimer-care",
       "destination": "/locations/pune/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pune/mother-baby-care",
       "destination": "/locations/pune/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/24x7-nursing-care",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/injection-dressing",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/post-operative-care",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/tracheostomy-care",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/ventilator-support",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/icu-at-home",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/critical-care",
       "destination": "/locations/pimpri-chinchwad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/bedridden-patient-care",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/cancer-patient-care",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/palliative-care",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/stroke-rehabilitation",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/paralysis-care",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/physiotherapy-at-home",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/doctor-at-home",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/medical-equipment-rental",
       "destination": "/locations/pimpri-chinchwad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/caregiver-services",
       "destination": "/locations/pimpri-chinchwad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/attendant-services",
       "destination": "/locations/pimpri-chinchwad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/dementia-care",
       "destination": "/locations/pimpri-chinchwad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/alzheimer-care",
       "destination": "/locations/pimpri-chinchwad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/pimpri-chinchwad/mother-baby-care",
       "destination": "/locations/pimpri-chinchwad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/24x7-nursing-care",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/injection-dressing",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/post-operative-care",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/tracheostomy-care",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/ventilator-support",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/icu-at-home",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/critical-care",
       "destination": "/locations/mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/bedridden-patient-care",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/cancer-patient-care",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/palliative-care",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/stroke-rehabilitation",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/paralysis-care",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/physiotherapy-at-home",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/doctor-at-home",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/medical-equipment-rental",
       "destination": "/locations/mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/caregiver-services",
       "destination": "/locations/mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/attendant-services",
       "destination": "/locations/mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/dementia-care",
       "destination": "/locations/mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/alzheimer-care",
       "destination": "/locations/mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/mumbai/mother-baby-care",
       "destination": "/locations/mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/24x7-nursing-care",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/injection-dressing",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/post-operative-care",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/tracheostomy-care",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/ventilator-support",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/icu-at-home",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/critical-care",
       "destination": "/locations/navi-mumbai/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/bedridden-patient-care",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/cancer-patient-care",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/palliative-care",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/stroke-rehabilitation",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/paralysis-care",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/physiotherapy-at-home",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/doctor-at-home",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/medical-equipment-rental",
       "destination": "/locations/navi-mumbai/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/caregiver-services",
       "destination": "/locations/navi-mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/attendant-services",
       "destination": "/locations/navi-mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/dementia-care",
       "destination": "/locations/navi-mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/alzheimer-care",
       "destination": "/locations/navi-mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/navi-mumbai/mother-baby-care",
       "destination": "/locations/navi-mumbai/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/24x7-nursing-care",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/injection-dressing",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/post-operative-care",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/tracheostomy-care",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/ventilator-support",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/icu-at-home",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/critical-care",
       "destination": "/locations/thane/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/bedridden-patient-care",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/cancer-patient-care",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/palliative-care",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/stroke-rehabilitation",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/paralysis-care",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/physiotherapy-at-home",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/doctor-at-home",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/medical-equipment-rental",
       "destination": "/locations/thane/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/caregiver-services",
       "destination": "/locations/thane/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/attendant-services",
       "destination": "/locations/thane/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/dementia-care",
       "destination": "/locations/thane/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/alzheimer-care",
       "destination": "/locations/thane/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/thane/mother-baby-care",
       "destination": "/locations/thane/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/24x7-nursing-care",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/injection-dressing",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/post-operative-care",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/tracheostomy-care",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/ventilator-support",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/icu-at-home",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/critical-care",
       "destination": "/locations/bengaluru/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/bedridden-patient-care",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/cancer-patient-care",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/palliative-care",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/stroke-rehabilitation",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/paralysis-care",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/physiotherapy-at-home",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/doctor-at-home",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/medical-equipment-rental",
       "destination": "/locations/bengaluru/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/caregiver-services",
       "destination": "/locations/bengaluru/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/attendant-services",
       "destination": "/locations/bengaluru/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/dementia-care",
       "destination": "/locations/bengaluru/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/alzheimer-care",
       "destination": "/locations/bengaluru/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bengaluru/mother-baby-care",
       "destination": "/locations/bengaluru/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/24x7-nursing-care",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/injection-dressing",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/post-operative-care",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/tracheostomy-care",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/ventilator-support",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/icu-at-home",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/critical-care",
       "destination": "/locations/hyderabad/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/bedridden-patient-care",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/cancer-patient-care",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/palliative-care",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/stroke-rehabilitation",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/paralysis-care",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/physiotherapy-at-home",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/doctor-at-home",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/medical-equipment-rental",
       "destination": "/locations/hyderabad/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/caregiver-services",
       "destination": "/locations/hyderabad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/attendant-services",
       "destination": "/locations/hyderabad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/dementia-care",
       "destination": "/locations/hyderabad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/alzheimer-care",
       "destination": "/locations/hyderabad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/hyderabad/mother-baby-care",
       "destination": "/locations/hyderabad/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/24x7-nursing-care",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/injection-dressing",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/post-operative-care",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/tracheostomy-care",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/ventilator-support",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/icu-at-home",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/critical-care",
       "destination": "/locations/delhi-ncr/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/bedridden-patient-care",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/cancer-patient-care",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/palliative-care",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/stroke-rehabilitation",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/paralysis-care",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/physiotherapy-at-home",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/doctor-at-home",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/medical-equipment-rental",
       "destination": "/locations/delhi-ncr/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/caregiver-services",
       "destination": "/locations/delhi-ncr/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/attendant-services",
       "destination": "/locations/delhi-ncr/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/dementia-care",
       "destination": "/locations/delhi-ncr/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/alzheimer-care",
       "destination": "/locations/delhi-ncr/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/delhi-ncr/mother-baby-care",
       "destination": "/locations/delhi-ncr/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/24x7-nursing-care",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/injection-dressing",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/post-operative-care",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/tracheostomy-care",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/ventilator-support",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/icu-at-home",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/critical-care",
       "destination": "/locations/ranchi/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/bedridden-patient-care",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/cancer-patient-care",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/palliative-care",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/stroke-rehabilitation",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/paralysis-care",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/physiotherapy-at-home",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/doctor-at-home",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/medical-equipment-rental",
       "destination": "/locations/ranchi/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/caregiver-services",
       "destination": "/locations/ranchi/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/attendant-services",
       "destination": "/locations/ranchi/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/dementia-care",
       "destination": "/locations/ranchi/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/alzheimer-care",
       "destination": "/locations/ranchi/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/ranchi/mother-baby-care",
       "destination": "/locations/ranchi/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/24x7-nursing-care",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/injection-dressing",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/post-operative-care",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/tracheostomy-care",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/ventilator-support",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/icu-at-home",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/critical-care",
       "destination": "/locations/bhubaneswar/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/bedridden-patient-care",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/cancer-patient-care",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/palliative-care",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/stroke-rehabilitation",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/paralysis-care",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/physiotherapy-at-home",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/doctor-at-home",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/medical-equipment-rental",
       "destination": "/locations/bhubaneswar/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/caregiver-services",
       "destination": "/locations/bhubaneswar/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/attendant-services",
       "destination": "/locations/bhubaneswar/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/dementia-care",
       "destination": "/locations/bhubaneswar/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/alzheimer-care",
       "destination": "/locations/bhubaneswar/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/bhubaneswar/mother-baby-care",
       "destination": "/locations/bhubaneswar/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/24x7-nursing-care",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/injection-dressing",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/post-operative-care",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/tracheostomy-care",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/ventilator-support",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/icu-at-home",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/critical-care",
       "destination": "/locations/kolkata/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/bedridden-patient-care",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/cancer-patient-care",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/palliative-care",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/stroke-rehabilitation",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/paralysis-care",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/physiotherapy-at-home",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/doctor-at-home",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/medical-equipment-rental",
       "destination": "/locations/kolkata/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/caregiver-services",
       "destination": "/locations/kolkata/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/attendant-services",
       "destination": "/locations/kolkata/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/dementia-care",
       "destination": "/locations/kolkata/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/alzheimer-care",
       "destination": "/locations/kolkata/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/kolkata/mother-baby-care",
       "destination": "/locations/kolkata/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/24x7-nursing-care",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/injection-dressing",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/post-operative-care",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/tracheostomy-care",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/ventilator-support",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/icu-at-home",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/critical-care",
       "destination": "/locations/goa/home-nursing",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/bedridden-patient-care",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/cancer-patient-care",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/palliative-care",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/stroke-rehabilitation",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/paralysis-care",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/physiotherapy-at-home",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/doctor-at-home",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/medical-equipment-rental",
       "destination": "/locations/goa/patient-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/caregiver-services",
       "destination": "/locations/goa/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/attendant-services",
       "destination": "/locations/goa/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/dementia-care",
       "destination": "/locations/goa/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/alzheimer-care",
       "destination": "/locations/goa/elder-care",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/locations/goa/mother-baby-care",
       "destination": "/locations/goa/elder-care",
-      "permanent": true
+      "statusCode": 301
     }
   ],
   "rewrites": [
