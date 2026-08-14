@@ -20,19 +20,20 @@ Do **not** modify the existing Google Ads landing project (`carenest-home-health
 
 **Build (Production + Preview):**
 
-- `REACT_APP_GA_MEASUREMENT_ID` = `G-2YMJF3VYZ2`
+- `REACT_APP_GA_MEASUREMENT_ID` = `G-2YMJF3VYZ2` (also in committed `.env.production`)
 
 **Runtime (serverless forms):**
 
 - `RESEND_API_KEY` — required for real email delivery
 - `LEAD_NOTIFY_EMAIL` — default `info@carenesthomehealth.in`
 - `LEAD_FROM_EMAIL` — optional (Resend-verified sender)
+- `FORM_DEV_ACCEPT=true` — optional on temporary previews without Resend
 
-Without `RESEND_API_KEY`, preview/non-production accepts forms and logs them (`FORM_DEV_ACCEPT` / `VERCEL_ENV !== production`).
+Without `RESEND_API_KEY`, non-production accepts forms and logs them. Anonymous “production” previews need `FORM_DEV_ACCEPT=true` until Resend is configured.
 
 ## SEO
 
-- `vercel.json` is generated from `scripts/seo-data.js` (~269 permanent redirects).
+- `vercel.json` is generated from `scripts/seo-data.js` (~266 redirects with `statusCode: 301`).
 - Regenerate: `yarn redirects` or `yarn vercel-config`.
 - Preview hosts (`*.vercel.app`) get `X-Robots-Tag: noindex, nofollow`.
 - Do not attach the apex domain until preview QA is approved.
@@ -45,7 +46,13 @@ Without `RESEND_API_KEY`, preview/non-production accepts forms and logs them (`F
 
 ## Preview without a linked project
 
-You can ship a temporary anonymous preview with:
+```bash
+cd frontend
+npx vercel build --yes --target=production
+npx vercel deploy --prebuilt --yes -e FORM_DEV_ACCEPT=true
+```
+
+Or source deploy:
 
 ```bash
 cd frontend
@@ -60,3 +67,9 @@ The existing project `carenest-home-health-landing-page` serves `care.carenestho
 
 If GitHub auto-deploys this repo into the landing-page project, restrict that project to the `landing-page` branch only (or add an Ignored Build Step for other branches).
 
+## Cutover checklist (manual; not automatic)
+
+1. Preview QA on `*.vercel.app` (home, 3 services, contact, forms, mobile, sample 301s, GA4).
+2. User approval.
+3. Attach `carenesthomehealth.in` (+ www) to this **new** project only.
+4. DNS cutover when ready — do not shut down Emergent/AWS until apex serves correctly.
