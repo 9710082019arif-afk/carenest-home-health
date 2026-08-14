@@ -45,14 +45,24 @@ const AnalyticsLoader = () => {
           `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','${gaId}');`);
       }
       if (gtmId) {
-        // GTM-… = classic container snippet; GT-… = Google tag via gtag.js (not gtm.js)
-        if (/^GT-/i.test(gtmId)) {
-          injectScript("gtag-gt-lib", `https://www.googletagmanager.com/gtag/js?id=${gtmId}`);
-          injectScript("gtag-gt-init", null,
-            `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','${gtmId}');`);
-        } else {
-          injectScript("gtm", null,
-            `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`);
+        // Skip if this exact container is already installed (official index.html snippet)
+        const headSnippet = document.getElementById("gtm-head");
+        const alreadyInstalled =
+          !!document.querySelector(`iframe[src*="googletagmanager.com/ns.html?id=${gtmId}"]`) ||
+          !!document.querySelector(`script[src*="googletagmanager.com/gtm.js?id=${gtmId}"]`) ||
+          !!(headSnippet && headSnippet.textContent && headSnippet.textContent.includes(`'${gtmId}'`)) ||
+          !!document.getElementById("gtm");
+
+        if (!alreadyInstalled) {
+          // GTM-… = classic container snippet; GT-… = Google tag via gtag.js (not gtm.js)
+          if (/^GT-/i.test(gtmId)) {
+            injectScript("gtag-gt-lib", `https://www.googletagmanager.com/gtag/js?id=${gtmId}`);
+            injectScript("gtag-gt-init", null,
+              `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config','${gtmId}');`);
+          } else {
+            injectScript("gtm", null,
+              `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`);
+          }
         }
       }
       if (metaPixelId) {
