@@ -7,14 +7,13 @@ import { Link } from "react-router-dom";
 import { Phone, MessageCircle, ArrowRight, ShieldCheck } from "lucide-react";
 import { COMPANY, SERVICES, WHY_CHOOSE, HOW_IT_WORKS, TRUST_BADGES, IMAGES } from "@/data/content";
 import { PAGE_SEO } from "@/lib/seo";
-import { JsonLd, offerCatalogSchema, websiteSchema } from "@/lib/schema";
+import { JsonLd, offerCatalogSchema } from "@/lib/schema";
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const Home = () => {
   return (
     <Layout>
       <SEOHead seo={PAGE_SEO.home} />
-      <JsonLd data={websiteSchema()} />
       <JsonLd data={offerCatalogSchema()} />
 
       {/* HERO */}
