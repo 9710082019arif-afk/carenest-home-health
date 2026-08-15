@@ -17,11 +17,12 @@
   },
   "scripts": {
     "start": "craco start",
-    "prebuild": "node scripts/generate-sitemap.js && node scripts/generate-nginx-redirects.js",
+    "prebuild": "node scripts/generate-sitemap.js && node scripts/generate-nginx-redirects.js && node scripts/generate-vercel-config.js",
     "build": "craco build && node scripts/prerender-seo.js",
     "test": "craco test",
     "sitemap": "node scripts/generate-sitemap.js",
-    "redirects": "node scripts/generate-nginx-redirects.js",
+    "redirects": "node scripts/generate-nginx-redirects.js && node scripts/generate-vercel-config.js",
+    "vercel-config": "node scripts/generate-vercel-config.js",
     "prerender": "node scripts/prerender-seo.js",
     "verify-redirects": "node scripts/verify-redirects.js"
   },
