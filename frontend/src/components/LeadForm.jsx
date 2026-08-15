@@ -19,6 +19,7 @@ const LeadForm = ({
     service: defaultService,
     message: "",
     urgency: "standard",
+    company_website: "",
   });
   const [loading, setLoading] = useState(false);
   const setField = (k, v) => setForm((f) => ({ ...f, [k]: v }));
@@ -47,6 +48,7 @@ const LeadForm = ({
         service: defaultService,
         message: "",
         urgency: "standard",
+        company_website: "",
       });
     } catch {
       toast.error("Could not submit — please call +91 9175724546.");
@@ -63,6 +65,18 @@ const LeadForm = ({
           <h3 className="font-serif text-2xl md:text-[26px] mt-1.5 leading-tight">{title}</h3>
         </div>
       )}
+
+      {/* Honeypot — leave empty; bots that fill it are ignored server-side */}
+      <input
+        type="text"
+        name="company_website"
+        value={form.company_website}
+        onChange={(e) => setField("company_website", e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", height: 0, width: 0, opacity: 0 }}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Field
