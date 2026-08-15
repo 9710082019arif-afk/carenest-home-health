@@ -26,7 +26,7 @@ const Header = () => {
     <header className="fixed top-0 inset-x-0 z-50">
       <div className="bg-royal text-white text-[11px] md:text-xs">
         <div className="container-lux flex items-center justify-between py-1.5 gap-4">
-          <span className="opacity-90">Care at home in Pune · 24×7 coordination</span>
+          <span className="opacity-90">Care at home in Pune &amp; PCMC · 24×7 coordination</span>
           <a
             href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
             data-testid="header-emergency-call"

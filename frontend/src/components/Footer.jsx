@@ -27,7 +27,8 @@ const Footer = () => {
               </div>
             </div>
             <p className="mt-5 text-white/80 leading-relaxed max-w-md font-light text-sm">
-              Nursing Care, Patient Care, and Elder Care & Companionship — coordinated with care for families in Pune.
+              Nursing Care at Home, Patient Care at Home, and Elder Care at Home — including 24 Hour Home Care options —
+              coordinated for families in Pune and PCMC.
             </p>
             <div className="mt-6 flex items-center gap-3">
               {[

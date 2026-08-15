@@ -4,10 +4,10 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
-import { SERVICES, LOCATIONS, COMPANY, FAQS } from "@/data/content";
+import { SERVICES, LOCATIONS, COMPANY } from "@/data/content";
 import { resolvePrimaryServiceSlug } from "@/data/redirects";
 import { Stethoscope, HeartPulse, Users, Phone, MessageCircle, CheckCircle2 } from "lucide-react";
-import { JsonLd, cityServiceSchema, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
+import { JsonLd, cityServiceSchema, breadcrumbSchema } from "@/lib/schema";
 import { cityServiceSeo } from "@/lib/seo";
 
 const ICONS = { Stethoscope, HeartPulse, Users };
@@ -33,13 +33,13 @@ const CityService = () => {
     "Insurance-ready invoices",
     "Call / WhatsApp updates for family",
     "Enquire for same-day or next-day start",
+    "Continuous care/support when a 24-hour plan is agreed",
   ];
 
   return (
     <Layout>
       <SEOHead seo={cityServiceSeo(svc, loc)} />
       <JsonLd data={cityServiceSchema({ svc, loc })} />
-      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
       <JsonLd
         data={breadcrumbSchema([
           { label: "Home", to: "/" },
@@ -72,9 +72,9 @@ const CityService = () => {
             </h2>
             <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
               {svc.short}{" "}
-              {loc.slug === "pune"
-                ? "Pune is our primary service area — we prioritise fast, local coordination."
-                : `CareNest’s primary focus is Pune; enquire for availability and timing in ${loc.name}.`}
+              {loc.slug === "pune" || loc.slug === "pimpri-chinchwad"
+                ? "Pune and Pimpri-Chinchwad (PCMC) are our primary service areas — we prioritise clear, local coordination."
+                : `CareNest’s primary focus is Pune and PCMC; enquire for availability and timing in ${loc.name}.`}
             </p>
             <div className="mt-4 flex flex-wrap gap-3 text-sm">
               <Link to={`/services/${svc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">
@@ -82,6 +82,9 @@ const CityService = () => {
               </Link>
               <Link to={`/locations/${loc.slug}`} className="text-primary font-medium hover:underline underline-offset-4">
                 Care in {loc.name} →
+              </Link>
+              <Link to="/contact" className="text-primary font-medium hover:underline underline-offset-4">
+                Contact CareNest →
               </Link>
             </div>
           </div>

@@ -25,17 +25,25 @@ const Locations = () => (
           Care at home — <span className="text-gold italic">Pune first.</span>
         </>
       }
-      subtitle="Pune is our primary service area. Other city pages remain available for enquiries and search visitors."
+      subtitle="Pune and Pimpri-Chinchwad (PCMC) are our primary service areas. Other city pages remain available for enquiries and search visitors."
       crumbs={[{ label: "Locations" }]}
     />
 
     <section className="container-lux pb-10 max-w-3xl">
       <p className="text-muted-foreground font-light leading-relaxed">
-        Looking for Nursing Care, Patient Care, or Elder Care & Companionship? Start with{" "}
+        Looking for Patient Care at Home, Elder Care at Home, or Nursing Care at Home? Start with{" "}
         <Link to="/locations/pune" className="text-primary font-medium hover:underline underline-offset-4">
           Pune
+        </Link>
+        ,{" "}
+        <Link to="/locations/pimpri-chinchwad" className="text-primary font-medium hover:underline underline-offset-4">
+          Pimpri-Chinchwad (PCMC)
+        </Link>
+        , or{" "}
+        <Link to="/contact" className="text-primary font-medium hover:underline underline-offset-4">
+          contact CareNest
         </Link>{" "}
-        or call{" "}
+        / call{" "}
         <a className="text-primary font-medium hover:underline underline-offset-4" href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}>
           {COMPANY.phone}
         </a>

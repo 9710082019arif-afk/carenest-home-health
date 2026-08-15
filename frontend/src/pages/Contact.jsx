@@ -28,7 +28,7 @@ const Contact = () => {
       <JsonLd data={organizationSchema()} />
       <JsonLd data={contactPageSchema()} />
       <JsonLd data={breadcrumbSchema([{ label: "Home", to: "/" }, { label: "Contact", to: "/contact" }])} />
-      <PageHeader eyebrow="Contact Us" title="A care coordinator is one call away." subtitle="Call, WhatsApp or send a message — CareNest helps families across Pune." crumbs={[{ label: "Contact" }]} />
+      <PageHeader eyebrow="Contact Us" title="A care coordinator is one call away." subtitle="Call, WhatsApp or send a message — CareNest helps families across Pune and Pimpri-Chinchwad (PCMC)." crumbs={[{ label: "Contact" }]} />
 
       <section className="container-lux pb-24 grid lg:grid-cols-12 gap-10">
         <div className="lg:col-span-5 space-y-5">

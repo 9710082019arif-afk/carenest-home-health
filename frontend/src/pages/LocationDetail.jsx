@@ -4,9 +4,9 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
-import { LOCATIONS, SERVICES, COMPANY, FAQS, IMAGES } from "@/data/content";
+import { LOCATIONS, SERVICES, COMPANY, IMAGES } from "@/data/content";
 import { Phone, MessageCircle, MapPin, CheckCircle2 } from "lucide-react";
-import { JsonLd, faqPageSchema, breadcrumbSchema, locationBusinessSchema } from "@/lib/schema";
+import { JsonLd, breadcrumbSchema, locationBusinessSchema } from "@/lib/schema";
 import { locationSeo } from "@/lib/seo";
 
 const LocationDetail = () => {
@@ -19,7 +19,6 @@ const LocationDetail = () => {
     <Layout>
       <SEOHead seo={locationSeo(loc)} />
       <JsonLd data={locationBusinessSchema(loc)} />
-      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
       <JsonLd
         data={breadcrumbSchema([
           { label: "Home", to: "/" },
@@ -36,8 +35,10 @@ const LocationDetail = () => {
         }
         subtitle={
           isPune
-            ? "Nursing Care, Patient Care, and Elder Care & Companionship — coordinated for families across Pune."
-            : `Enquire for CareNest Nursing Care, Patient Care, and Elder Care & Companionship in ${loc.name}. Pune is our primary service area.`
+            ? "Patient Care at Home, Elder Care at Home, and Nursing Care at Home — including 24 Hour Home Care options — coordinated for families across Pune and nearby PCMC."
+            : loc.slug === "pimpri-chinchwad"
+              ? "Patient Care at Home, Elder Care at Home, and Nursing Care at Home for families in Pimpri-Chinchwad (PCMC). Pune and PCMC are our primary service areas."
+              : `Enquire for CareNest Patient Care at Home, Elder Care at Home, and Nursing Care at Home in ${loc.name}. Pune and PCMC are our primary service areas.`
         }
         image={IMAGES.elderCare}
         imageAlt={`Home healthcare in ${loc.name} by CareNest`}
@@ -48,16 +49,22 @@ const LocationDetail = () => {
         <div className="lg:col-span-8 space-y-8">
           <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-8">
             <h2 className="font-serif text-3xl tracking-tight">
-              {isPune ? "Why families in Pune choose CareNest" : `Home care enquiries for ${loc.name}`}
+              {isPune
+                ? "Why families in Pune & PCMC choose CareNest"
+                : loc.slug === "pimpri-chinchwad"
+                  ? "Home care for families in Pimpri-Chinchwad (PCMC)"
+                  : `Home care enquiries for ${loc.name}`}
             </h2>
             <div className="mt-6 grid md:grid-cols-2 gap-3">
               {[
-                isPune ? "Local Pune care coordination" : `Availability check for ${loc.name}`,
+                isPune || loc.slug === "pimpri-chinchwad"
+                  ? "Local Pune & PCMC care coordination"
+                  : `Availability check for ${loc.name}`,
                 "Verified nurses and caregivers",
                 "Clear plans and indicative rates",
                 "Call / WhatsApp family updates",
                 "Insurance-ready invoices",
-                "Three focused services — not a bloated catalogue",
+                "24 Hour Home Care options when continuous support is needed",
               ].map((it) => (
                 <div key={it} className="flex items-start gap-3 rounded-2xl border border-border/60 p-4 bg-background/50">
                   <CheckCircle2 size={18} className="text-secondary mt-0.5 shrink-0" />
@@ -82,6 +89,16 @@ const LocationDetail = () => {
                 </Link>
               ))}
             </div>
+            {(isPune || loc.slug === "pimpri-chinchwad") && (
+              <div className="mt-5 flex flex-wrap gap-3 text-sm">
+                <Link to="/contact" className="text-primary font-semibold hover:underline underline-offset-4">
+                  Contact CareNest →
+                </Link>
+                <Link to="/services" className="text-primary font-semibold hover:underline underline-offset-4">
+                  View all services →
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 

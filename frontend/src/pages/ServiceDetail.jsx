@@ -4,10 +4,10 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
-import { SERVICES, FAQS, COMPANY, IMAGES } from "@/data/content";
+import { SERVICES, COMPANY, IMAGES } from "@/data/content";
 import { SERVICE_REDIRECTS } from "@/data/redirects";
-import { Stethoscope, HeartPulse, Users, CheckCircle2, Phone, MessageCircle } from "lucide-react";
-import { JsonLd, faqPageSchema, breadcrumbSchema, serviceSchema } from "@/lib/schema";
+import { Stethoscope, HeartPulse, Users, CheckCircle2, Phone, MessageCircle, ArrowRight } from "lucide-react";
+import { JsonLd, breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { serviceSeo } from "@/lib/seo";
 
 const ICONS = { Stethoscope, HeartPulse, Users };
@@ -25,10 +25,11 @@ const ServiceDetail = () => {
   const includes = [
     "Verified & background-checked professional",
     "Care coordinator on call",
-    "Clear plan and timing for Pune deployments",
+    "Clear plan and timing for Pune & PCMC deployments",
     "Insurance-ready invoices & documentation",
     "Family updates via call or WhatsApp",
     "Same-day / next-day deployment when available",
+    "Continuous care/support when a 24-hour plan is agreed",
   ];
 
   return (
@@ -43,7 +44,6 @@ const ServiceDetail = () => {
           rateUnit: svc.rateUnit,
         })}
       />
-      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
       <JsonLd
         data={breadcrumbSchema([
           { label: "Home", to: "/" },
@@ -56,7 +56,7 @@ const ServiceDetail = () => {
         title={svc.name}
         subtitle={svc.tagline}
         image={image}
-        imageAlt={`${svc.name} at home in Pune by CareNest Home Health`}
+        imageAlt={`${svc.name} in Pune by CareNest Home Health`}
         crumbs={[{ label: "Services", to: "/services" }, { label: svc.name }]}
       />
 
@@ -66,10 +66,26 @@ const ServiceDetail = () => {
             <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary grid place-items-center">
               <Icon size={22} />
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">What this looks like at home</h2>
+            <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">What this service is</h2>
             <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
-              {svc.short} Our Pune team designs a plan around your loved one — hours, scope and family preferences — with a
-              care coordinator to keep everything clear.
+              {svc.short}
+            </p>
+            {svc.suitability && (
+              <>
+                <h3 className="font-serif text-2xl mt-8 tracking-tight">Who it is suitable for</h3>
+                <p className="mt-3 text-muted-foreground text-[17px] leading-relaxed font-light">{svc.suitability}</p>
+              </>
+            )}
+            {svc.includes && (
+              <>
+                <h3 className="font-serif text-2xl mt-8 tracking-tight">What support may include</h3>
+                <p className="mt-3 text-muted-foreground text-[17px] leading-relaxed font-light">{svc.includes}</p>
+              </>
+            )}
+            <p className="mt-6 text-muted-foreground text-[17px] leading-relaxed font-light">
+              Our team designs a plan for families in Pune and Pimpri-Chinchwad (PCMC) — scope, timing and preferences —
+              with a care coordinator to keep everything clear. Plans can include 24 Hour Home Care when continuous
+              support is needed.
             </p>
           </div>
 
@@ -86,19 +102,31 @@ const ServiceDetail = () => {
           </div>
 
           <div>
-            <h3 className="font-serif text-2xl tracking-tight">Also available in Pune</h3>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <h3 className="font-serif text-2xl tracking-tight">Continue in Pune or contact us</h3>
+            <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 to={`/locations/pune/${svc.slug}`}
-                className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-primary hover:text-primary-foreground transition-colors"
+                className="inline-flex items-center gap-1 rounded-full border border-primary/25 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                {svc.name} in Pune
+                {svc.name} in Pune <ArrowRight size={14} />
+              </Link>
+              <Link
+                to="/locations/pune"
+                className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+              >
+                Home care in Pune
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+              >
+                Contact CareNest
               </Link>
               {SERVICES.filter((s) => s.slug !== svc.slug).map((s) => (
                 <Link
                   key={s.slug}
                   to={`/services/${s.slug}`}
-                  className="rounded-full border border-border px-4 py-1.5 text-xs hover:bg-muted transition-colors"
+                  className="rounded-full border border-border px-4 py-2 text-sm hover:bg-muted transition-colors"
                 >
                   {s.name}
                 </Link>

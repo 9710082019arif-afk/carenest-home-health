@@ -11,7 +11,7 @@ const values = [
   { icon: HeartHandshake, t: "Care with dignity", d: "Every patient is treated the way we'd want our own parents treated." },
   { icon: ShieldCheck, t: "Verified excellence", d: "Background-verified staff and clear home-care protocols." },
   { icon: Clock, t: "Responsive coordination", d: "Call or WhatsApp — a care coordinator helps you plan quickly." },
-  { icon: MapPin, t: "Pune-first", d: "Our primary focus is reliable care at home across Pune." },
+  { icon: MapPin, t: "Pune & PCMC first", d: "Our primary focus is reliable care at home across Pune and Pimpri-Chinchwad." },
 ];
 
 const About = () => (
@@ -23,7 +23,7 @@ const About = () => (
     <PageHeader
       eyebrow="About us"
       title="CareNest brings skilled care into the home."
-      subtitle="Founded to make nursing, patient support and elder companionship available with dignity — starting in Pune."
+      subtitle="Founded to make Patient Care at Home, Elder Care at Home and Nursing Care at Home available with dignity — starting in Pune and PCMC."
       image={IMAGES.elderCare}
       crumbs={[{ label: "About" }]}
     />
@@ -38,8 +38,11 @@ const About = () => (
             at home — without confusion, delay or cold institutional feel.
           </p>
           <p>
-            Today we focus on three services in Pune: <b className="text-foreground">Nursing Care</b>,{" "}
-            <b className="text-foreground">Patient Care</b>, and <b className="text-foreground">Elder Care & Companionship</b>.
+            Today we focus on three services in Pune and Pimpri-Chinchwad (PCMC):{" "}
+            <b className="text-foreground">Patient Care at Home</b>,{" "}
+            <b className="text-foreground">Elder Care at Home</b>, and{" "}
+            <b className="text-foreground">Nursing Care at Home</b> — including 24 Hour Home Care when continuous
+            support is needed.
           </p>
           <p>
             Call{" "}

@@ -52,13 +52,6 @@ const NAP = {
     opens: "00:00",
     closes: "23:59",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    bestRating: "5",
-    worstRating: "1",
-    reviewCount: "612",
-  },
 };
 
 const areaServed = LOCATIONS.map((l) => ({
@@ -112,7 +105,7 @@ export const organizationSchema = () =>
     name: COMPANY.name,
     alternateName: COMPANY.short,
     description:
-      "Home healthcare in Pune — Nursing Care, Patient Care, and Elder Care & Companionship with clear care coordination.",
+      "Home healthcare in Pune and Pimpri-Chinchwad (PCMC) — Patient Care at Home, Elder Care at Home, and Nursing Care at Home with clear care coordination, including 24 Hour Home Care options.",
     image: `${SITE}/brand-kit/social/hero-banner.jpg`,
     logo: {
       "@type": "ImageObject",
@@ -244,7 +237,7 @@ export const breadcrumbSchema = (crumbs) =>
   });
 
 /** Individual service page — Service + MedicalTherapy */
-export const serviceSchema = ({ name, description, path, rate, rateUnit, rating = 4.9, reviewCount = 612 }) =>
+export const serviceSchema = ({ name, description, path, rate, rateUnit }) =>
   jsonLd({
     "@context": "https://schema.org",
     "@type": ["Service", "MedicalTherapy"],
@@ -267,13 +260,6 @@ export const serviceSchema = ({ name, description, path, rate, rateUnit, rating 
           },
         }
       : {}),
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: String(rating),
-      bestRating: "5",
-      worstRating: "1",
-      reviewCount: String(reviewCount),
-    },
   });
 
 /** City hub — LocalBusiness serving that city */
@@ -283,7 +269,7 @@ export const locationBusinessSchema = (loc) =>
     "@type": ["HomeHealthCareService", "MedicalBusiness", "LocalBusiness"],
     "@id": `${SITE}/locations/${loc.slug}#localbusiness`,
     name: `CareNest Home Health — ${loc.name}`,
-    description: `CareNest Nursing Care, Patient Care and Elder Care & Companionship in ${loc.name}, ${loc.state}. Enquire for availability.`,
+    description: `CareNest Patient Care at Home, Elder Care at Home and Nursing Care at Home in ${loc.name}, ${loc.state}. Enquire for availability.`,
     url: `${SITE}/locations/${loc.slug}`,
     image: `${SITE}/brand-kit/social/hero-banner.jpg`,
     telephone: COMPANY.phone,
@@ -317,7 +303,6 @@ export const locationBusinessSchema = (loc) =>
       })),
     },
     openingHoursSpecification: NAP.openingHoursSpecification,
-    aggregateRating: NAP.aggregateRating,
     sameAs: NAP.sameAs,
   });
 
@@ -350,7 +335,6 @@ export const cityServiceSchema = ({ svc, loc }) =>
           },
         }
       : {}),
-    aggregateRating: NAP.aggregateRating,
   });
 
 /** Locations index ItemList */

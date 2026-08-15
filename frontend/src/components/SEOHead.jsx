@@ -99,7 +99,7 @@ const SEOHead = ({ seo }) => {
       <meta name="twitter:image:alt" content={twitter.imageAlt || ogImageAlt} />
 
       {/* Geo / business hints for local SEO */}
-      <meta name="geo.region" content="IN" />
+      <meta name="geo.region" content="IN-MH" />
       <meta name="geo.placename" content="Pune" />
       <meta name="author" content={SITE_NAME} />
       {canonical && <link rel="alternate" hrefLang="en-IN" href={canonical} />}
