@@ -5,7 +5,7 @@
  * Primary services:
  *   /services/home-nursing          → Nursing Care
  *   /services/patient-care          → Patient Care (new canonical)
- *   /services/elder-care            → Elder Care & Companionship
+ *   /services/elder-care            → Elder Care at Home
  */
 
 /** Old service slug → primary service slug */
@@ -29,7 +29,7 @@ export const SERVICE_REDIRECTS = {
   "doctor-at-home": "patient-care",
   "medical-equipment-rental": "patient-care",
 
-  // → Elder Care & Companionship
+  // → Elder Care at Home
   "caregiver-services": "elder-care",
   "attendant-services": "elder-care",
   "dementia-care": "elder-care",

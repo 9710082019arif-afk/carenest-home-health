@@ -8,8 +8,8 @@ export const COMPANY = {
   whatsapp: "919175724546",
   email: "info@carenesthomehealth.in",
   website: "https://carenesthomehealth.in",
-  tagline: "Care at home in Pune.",
-  address: "Serving families in Pune · Head office · Pune",
+  tagline: "24 Hour Home Care in Pune & PCMC.",
+  address: "Serving families in Pune and Pimpri-Chinchwad (PCMC)",
   socials: {
     instagram: "https://www.instagram.com/carenesthomehealth",
     facebook: "https://www.facebook.com/carenesthomehealth",
@@ -24,11 +24,15 @@ export const COMPANY = {
 export const SERVICES = [
   {
     slug: "home-nursing",
-    name: "Nursing Care",
+    name: "Nursing Care at Home",
     icon: "Stethoscope",
-    tagline: "Skilled nurses, when you need them.",
+    tagline: "Skilled nursing with continuous support when needed.",
     short:
-      "Wound care, injections, vitals monitoring and clinical nursing at home by trained RNs — including 12-hour and 24×7 cover.",
+      "Wound care, injections, vitals monitoring and clinical nursing at home by trained RNs — including 24 Hour Home Care cover when continuous nursing support is required.",
+    suitability:
+      "Suitable for post-hospital recovery, wound care, injections, vitals monitoring, and families who need trained nursing support at home in Pune or PCMC.",
+    includes:
+      "Clinical nursing tasks, medication support as advised, vitals checks, and coordination with your care manager for continuous or day-based plans.",
     category: "nursing",
     rate: "₹2,800 – ₹3,000",
     rateUnit: "per day",
@@ -37,28 +41,36 @@ export const SERVICES = [
   },
   {
     slug: "patient-care",
-    name: "Patient Care",
+    name: "Patient Care at Home",
     icon: "HeartPulse",
-    tagline: "Recovery support at home.",
+    tagline: "Recovery support with continuous care options.",
     short:
-      "Personalised patient support for bedridden care, post-op recovery, rehab coordination and day-to-day clinical assistance at home.",
+      "Personalised 24 Hour Patient Care for bedridden support, post-op recovery, rehab coordination and day-to-day clinical assistance at home.",
+    suitability:
+      "Suitable for bedridden patients, post-operative recovery, and families who need reliable patient support at home in Pune or Pimpri-Chinchwad (PCMC).",
+    includes:
+      "Personal care assistance, mobility help, medication reminders, recovery support, and continuous care/support when a 24-hour plan is agreed.",
     category: "care",
     rate: "₹850 – ₹1,200",
-    rateUnit: "per 12-hour shift",
-    rateNote: "Trained attendant or skilled nurse depending on clinical need",
+    rateUnit: "per day",
+    rateNote: "Trained attendant or skilled nurse depending on clinical need; 24-hour plans available",
     image: "/brand-kit/images/patient-care.jpg",
   },
   {
     slug: "elder-care",
-    name: "Elder Care & Companionship",
+    name: "Elder Care at Home",
     icon: "Users",
-    tagline: "Companionship with dignity.",
+    tagline: "Companionship and continuous senior support.",
     short:
-      "Senior care, daily living support and warm companionship — meals, mobility help, medication reminders and trusted presence.",
+      "24 Hour Elder Care with daily living support and warm companionship — meals, mobility help, medication reminders and trusted presence at home.",
+    suitability:
+      "Suitable for seniors who need companionship, daily living help, medication reminders, or continuous overnight support in Pune and PCMC.",
+    includes:
+      "Daily living assistance, companionship, medication reminders, mobility support, and continuous care/support for families who need round-the-clock presence.",
     category: "care",
     rate: "₹850 – ₹900",
-    rateUnit: "per shift",
-    rateNote: "₹850 for 12-hour shift · ₹900 for 24-hour",
+    rateUnit: "per day",
+    rateNote: "24 Hour Elder Care plans; rate varies by support level",
     image: "/brand-kit/images/elder-care.jpg",
   },
 ];
@@ -82,7 +94,7 @@ export const LOCATIONS = [
 export const FAQS = [
   {
     q: "How quickly can care begin in Pune?",
-    a: "For most services we deploy within 4–8 hours of confirmation in Pune. Urgent cases are prioritised — call or WhatsApp us and a care coordinator will respond quickly.",
+    a: "For most services we deploy within 4–8 hours of confirmation in Pune and Pimpri-Chinchwad (PCMC). Urgent cases are prioritised — call or WhatsApp us and a care coordinator will respond quickly.",
   },
   {
     q: "Are your nurses qualified?",
@@ -90,15 +102,15 @@ export const FAQS = [
   },
   {
     q: "Which services do you offer?",
-    a: "We focus on three core services: Nursing Care, Patient Care, and Elder Care & Companionship. Tell us the patient's needs and we'll recommend the right plan.",
+    a: "We focus on Patient Care at Home, Elder Care at Home, and Nursing Care at Home — including 24 Hour Home Care when continuous support is needed. Tell us the patient's needs and we'll recommend the right plan.",
   },
   {
     q: "How is pricing decided?",
     a: "We share a personalised plan after a free consult. Pricing depends on skill level, hours and clinical complexity. Indicative rates are shown on each service page.",
   },
   {
-    q: "Can I hire only for the night?",
-    a: "Yes. 12-hour night shifts, 24-hour cover and visit-based nursing are available.",
+    q: "Do you provide overnight or continuous care?",
+    a: "Yes. CareNest provides 24 Hour Home Care and continuous overnight support for patients and elders in Pune and PCMC, coordinated around the family's needs.",
   },
   {
     q: "Do you work with insurance?",
@@ -108,9 +120,8 @@ export const FAQS = [
 
 export const STATS = [
   { value: "12,400+", label: "Families cared for" },
-  { value: "4.9/5", label: "Google rating" },
   { value: "24×7", label: "Care coordination" },
-  { value: "Pune", label: "Primary service area" },
+  { value: "Pune & PCMC", label: "Primary service area" },
 ];
 
 export const TEAM = [
@@ -129,16 +140,16 @@ export const WHY_CHOOSE = [
     text: "Background-checked nurses and caregivers trained for home settings.",
   },
   {
-    title: "Pune-focused coordination",
-    text: "Local care managers who know Pune neighbourhoods and can deploy quickly.",
+    title: "Pune & PCMC focus",
+    text: "Local care managers who know Pune and Pimpri-Chinchwad neighbourhoods and can deploy quickly.",
   },
   {
     title: "Clear communication",
     text: "Simple updates for families — call, WhatsApp or your care manager.",
   },
   {
-    title: "One plan, three services",
-    text: "Nursing, patient support or elder companionship — matched to real need.",
+    title: "24 Hour Home Care options",
+    text: "Patient Care, Elder Care, or Nursing Care — including continuous care/support when your family needs it.",
   },
 ];
 
@@ -151,12 +162,12 @@ export const HOW_IT_WORKS = [
   {
     n: "02",
     t: "Matched care plan",
-    d: "We recommend Nursing Care, Patient Care or Elder Care & Companionship and confirm rates.",
+    d: "We recommend Patient Care at Home, Elder Care at Home or Nursing Care at Home — including 24 Hour Home Care when continuous support is needed.",
   },
   {
     n: "03",
     t: "Care at home",
-    d: "A verified professional arrives in Pune — with ongoing coordination from your care manager.",
+    d: "A verified professional arrives in Pune or PCMC — with ongoing coordination from your care manager.",
   },
 ];
 
@@ -170,6 +181,6 @@ export const IMAGES = {
 
 export const TRUST_BADGES = [
   { label: "Background-verified staff" },
-  { label: "Pune same-day deployment" },
-  { label: "24×7 care manager" },
+  { label: "Pune & PCMC deployment" },
+  { label: "24 Hour Home Care options" },
 ];

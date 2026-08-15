@@ -5,9 +5,9 @@ import ServiceCard from "@/components/ServiceCard";
 import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { Phone, MessageCircle, ArrowRight, ShieldCheck } from "lucide-react";
-import { COMPANY, SERVICES, WHY_CHOOSE, HOW_IT_WORKS, TRUST_BADGES, IMAGES, FAQS } from "@/data/content";
+import { COMPANY, SERVICES, WHY_CHOOSE, HOW_IT_WORKS, TRUST_BADGES, IMAGES } from "@/data/content";
 import { PAGE_SEO } from "@/lib/seo";
-import { JsonLd, offerCatalogSchema, faqPageSchema } from "@/lib/schema";
+import { JsonLd, offerCatalogSchema } from "@/lib/schema";
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const Home = () => {
@@ -15,7 +15,6 @@ const Home = () => {
     <Layout>
       <SEOHead seo={PAGE_SEO.home} />
       <JsonLd data={offerCatalogSchema()} />
-      <JsonLd data={faqPageSchema(FAQS.slice(0, 5))} />
 
       {/* HERO */}
       <section className="relative overflow-hidden">
@@ -33,13 +32,14 @@ const Home = () => {
 
         <div className="container-lux pt-10 md:pt-16 pb-16 md:pb-20 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-[11px] font-semibold tracking-wide text-primary">
-            CareNest Home Health · Pune
+            CareNest Home Health · Pune &amp; PCMC
           </div>
           <h1 className="mt-6 font-serif font-medium tracking-tight leading-[1.05] text-4xl md:text-5xl lg:text-[56px]">
             Care at Home in <span className="text-gold italic">Pune</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted-foreground font-light leading-relaxed">
-            Professional nursing, patient support and elder companionship — coordinated for families across Pune.
+            Patient Care at Home, Elder Care at Home and Nursing Care at Home — including 24 Hour Home Care options —
+            coordinated for families across Pune and Pimpri-Chinchwad (PCMC).
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -85,7 +85,8 @@ const Home = () => {
             Three ways we care for your family.
           </h2>
           <p className="mt-3 text-muted-foreground font-light">
-            Focused home healthcare in Pune — choose the support that fits.
+            Focused home healthcare in Pune and PCMC — choose Patient Care, Elder Care or Nursing Care, with continuous
+            care/support when needed.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -93,9 +94,15 @@ const Home = () => {
             <ServiceCard key={s.slug} service={s} />
           ))}
         </div>
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2">
           <Link to="/services" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
             View all services <ArrowRight size={14} />
+          </Link>
+          <Link to="/locations/pune" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+            Home care in Pune <ArrowRight size={14} />
+          </Link>
+          <Link to="/contact" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+            Contact CareNest <ArrowRight size={14} />
           </Link>
         </div>
       </section>
@@ -151,7 +158,7 @@ const Home = () => {
               Tell us what your family needs.
             </h2>
             <p className="mt-4 text-muted-foreground font-light leading-relaxed">
-              A CareNest coordinator in Pune will call you back with a clear plan — usually the same day.
+              A CareNest coordinator in Pune or PCMC will call you back with a clear plan — usually the same day.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <a
