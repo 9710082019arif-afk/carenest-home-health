@@ -8,6 +8,7 @@ import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 const NAV = [
   { label: "Home", to: "/" },
   { label: "Services", to: "/services", mega: "services" },
+  { label: "Locations", to: "/locations", mega: "locations" },
   { label: "About Us", to: "/about" },
   { label: "Contact Us", to: "/contact" },
 ];
@@ -124,12 +125,41 @@ const Header = () => {
             </div>
           </div>
         )}
+
+        {mega === "locations" && (
+          <div
+            className="hidden lg:block border-t border-border/60 glass-strong"
+            onMouseEnter={() => setMega("locations")}
+            onMouseLeave={() => setMega(null)}
+          >
+            <div className="container-lux py-6 grid grid-cols-3 gap-6">
+              <Link to="/locations" className="group py-2">
+                <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                  All locations
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">Browse CareNest city pages</div>
+              </Link>
+              <Link to="/locations/pune" className="group py-2">
+                <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                  Pune
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">Primary service area</div>
+              </Link>
+              <Link to="/locations/pimpri-chinchwad" className="group py-2">
+                <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                  Pimpri-Chinchwad (PCMC)
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">Primary service area</div>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
 
       {open && (
         <div className="lg:hidden glass-strong border-t border-border/60">
           <div className="container-lux py-5 flex flex-col gap-1">
-            {NAV.filter((n) => n.label !== "Services").map((item) => (
+            {NAV.filter((n) => n.label !== "Services" && n.label !== "Locations").map((item) => (
               <Link
                 key={item.label}
                 to={item.to}
@@ -145,6 +175,16 @@ const Header = () => {
                 {s.name}
               </Link>
             ))}
+            <div className="py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Locations</div>
+            <Link to="/locations" className="py-2 pl-2 text-base font-medium">
+              All locations
+            </Link>
+            <Link to="/locations/pune" className="py-2 pl-2 text-base font-medium">
+              Pune
+            </Link>
+            <Link to="/locations/pimpri-chinchwad" className="py-2 pl-2 text-base font-medium">
+              Pimpri-Chinchwad (PCMC)
+            </Link>
             <div className="divider-gold my-3" />
             <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className="btn-gold">
               Call {COMPANY.phone}

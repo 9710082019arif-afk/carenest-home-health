@@ -6,11 +6,12 @@ const ROUTES = [
   {
     path: "/",
     file: "index.html",
-    title: "Care at Home in Pune · CareNest Home Health",
+    title: "24 Hour Home Care in Pune & PCMC · CareNest Home Health",
     description:
-      "CareNest Home Health provides Patient Care at Home, Elder Care at Home, and Nursing Care at Home in Pune and PCMC — including 24 Hour Home Care options. Call or WhatsApp for a free care consult.",
+      "What is 24 Hour Home Care? Continuous care at home in Pune and PCMC, arranged with Patient Care, Elder Care or Nursing Care. Call or WhatsApp CareNest for a free consult.",
     canonical: `${SITE}/`,
-    h1: "Care at Home in Pune",
+    h1: "24 Hour Home Care in Pune",
+    keywords: "24 hour home care Pune, 24 hour home care PCMC, patient care at home Pune, elder care at home Pune, nursing care at home Pune, CareNest Home Health",
   },
   {
     path: "/locations",

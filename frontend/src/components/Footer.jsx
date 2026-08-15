@@ -70,21 +70,36 @@ const Footer = () => {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="overline text-gold-light">Company</div>
+            <div className="overline text-gold-light">Locations</div>
             <ul className="mt-4 space-y-2.5 text-sm text-white/80">
+              <li>
+                <Link to="/locations" className="hover:text-white">
+                  All locations
+                </Link>
+              </li>
+              <li>
+                <Link to="/locations/pune" className="hover:text-white">
+                  Pune
+                </Link>
+              </li>
+              <li>
+                <Link to="/locations/pimpri-chinchwad" className="hover:text-white">
+                  Pimpri-Chinchwad (PCMC)
+                </Link>
+              </li>
               <li>
                 <Link to="/about" className="hover:text-white">
                   About us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-white">
-                  Contact us
+                <Link to="/faq" className="hover:text-white">
+                  FAQ
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="hover:text-white">
-                  FAQ
+                <Link to="/contact" className="hover:text-white">
+                  Contact us
                 </Link>
               </li>
               <li>

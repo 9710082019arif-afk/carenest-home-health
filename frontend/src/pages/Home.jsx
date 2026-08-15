@@ -7,13 +7,14 @@ import { Link } from "react-router-dom";
 import { Phone, MessageCircle, ArrowRight, ShieldCheck } from "lucide-react";
 import { COMPANY, SERVICES, WHY_CHOOSE, HOW_IT_WORKS, TRUST_BADGES, IMAGES } from "@/data/content";
 import { PAGE_SEO } from "@/lib/seo";
-import { JsonLd, offerCatalogSchema } from "@/lib/schema";
+import { JsonLd, offerCatalogSchema, websiteSchema } from "@/lib/schema";
 import { trackPhoneClick, trackWhatsAppClick } from "@/lib/analytics";
 
 const Home = () => {
   return (
     <Layout>
       <SEOHead seo={PAGE_SEO.home} />
+      <JsonLd data={websiteSchema()} />
       <JsonLd data={offerCatalogSchema()} />
 
       {/* HERO */}
@@ -35,11 +36,11 @@ const Home = () => {
             CareNest Home Health · Pune &amp; PCMC
           </div>
           <h1 className="mt-6 font-serif font-medium tracking-tight leading-[1.05] text-4xl md:text-5xl lg:text-[56px]">
-            Care at Home in <span className="text-gold italic">Pune</span>
+            24 Hour Home Care in <span className="text-gold italic">Pune</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted-foreground font-light leading-relaxed">
-            Patient Care at Home, Elder Care at Home and Nursing Care at Home — including 24 Hour Home Care options —
-            coordinated for families across Pune and Pimpri-Chinchwad (PCMC).
+            Continuous home care coordinated with Patient Care at Home, Elder Care at Home and Nursing Care at Home —
+            for families across Pune and Pimpri-Chinchwad (PCMC).
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -101,9 +102,60 @@ const Home = () => {
           <Link to="/locations/pune" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
             Home care in Pune <ArrowRight size={14} />
           </Link>
+          <Link to="/locations/pimpri-chinchwad" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+            Home care in PCMC <ArrowRight size={14} />
+          </Link>
+          <Link to="/locations" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+            All locations <ArrowRight size={14} />
+          </Link>
           <Link to="/contact" className="text-sm font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
             Contact CareNest <ArrowRight size={14} />
           </Link>
+        </div>
+      </section>
+
+      {/* 24 HOUR HOME CARE — answer-first */}
+      <section id="24-hour-home-care" className="container-lux py-16 md:py-20" aria-labelledby="what-is-24h-heading">
+        <div className="max-w-3xl">
+          <div className="overline text-accent">24 Hour Home Care</div>
+          <h2 id="what-is-24h-heading" className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">
+            What is 24 Hour Home Care?
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground font-light leading-relaxed">
+            24 Hour Home Care means continuous care or support at home around the clock — day and night — so someone is
+            present when your family needs ongoing help. At CareNest, it is arranged as part of{" "}
+            <Link to="/services/patient-care" className="text-primary font-medium hover:underline underline-offset-4">
+              Patient Care at Home
+            </Link>
+            ,{" "}
+            <Link to="/services/elder-care" className="text-primary font-medium hover:underline underline-offset-4">
+              Elder Care at Home
+            </Link>
+            , or{" "}
+            <Link to="/services/home-nursing" className="text-primary font-medium hover:underline underline-offset-4">
+              Nursing Care at Home
+            </Link>
+            , depending on whether the need is recovery support, senior caregiving, or clinical nursing.
+          </p>
+          <p className="mt-4 text-muted-foreground font-light leading-relaxed">
+            Families in Pune and Pimpri-Chinchwad (PCMC) typically choose 24 Hour Home Care after hospital discharge,
+            for bedridden patients, or when elders need overnight presence. A CareNest coordinator helps match the
+            right service and confirms timing after a short consult.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <Link to="/services" className="font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+              Compare services <ArrowRight size={14} />
+            </Link>
+            <Link to="/locations/pune" className="font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+              Care in Pune <ArrowRight size={14} />
+            </Link>
+            <Link to="/locations/pimpri-chinchwad" className="font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+              Care in PCMC <ArrowRight size={14} />
+            </Link>
+            <Link to="/contact" className="font-semibold text-primary hover:underline underline-offset-4 inline-flex items-center gap-1">
+              Request a care plan <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
       </section>
 

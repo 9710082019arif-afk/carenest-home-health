@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { TEAM, IMAGES, COMPANY } from "@/data/content";
@@ -49,8 +50,29 @@ const About = () => (
             <a className="text-primary font-medium" href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}>
               {COMPANY.phone}
             </a>{" "}
-            to speak with a coordinator.
+            to speak with a coordinator, or{" "}
+            <Link to="/contact" className="text-primary font-medium hover:underline underline-offset-4">
+              contact CareNest
+            </Link>{" "}
+            online.
           </p>
+          <div className="pt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <Link to="/services" className="font-semibold text-primary hover:underline underline-offset-4">
+              View our services →
+            </Link>
+            <Link to="/services/elder-care" className="font-semibold text-primary hover:underline underline-offset-4">
+              Elder Care &amp; caregivers →
+            </Link>
+            <Link to="/locations/pune" className="font-semibold text-primary hover:underline underline-offset-4">
+              Care in Pune →
+            </Link>
+            <Link to="/locations/pimpri-chinchwad" className="font-semibold text-primary hover:underline underline-offset-4">
+              Care in PCMC →
+            </Link>
+            <Link to="/contact" className="font-semibold text-primary hover:underline underline-offset-4">
+              Contact us →
+            </Link>
+          </div>
         </div>
       </div>
       <div className="lg:col-span-5">
