@@ -6,8 +6,8 @@ import LeadForm from "@/components/LeadForm";
 import SEOHead from "@/components/SEOHead";
 import { SERVICES, COMPANY, IMAGES } from "@/data/content";
 import { SERVICE_REDIRECTS } from "@/data/redirects";
-import { Stethoscope, HeartPulse, Users, CheckCircle2, Phone, MessageCircle, ArrowRight } from "lucide-react";
-import { JsonLd, breadcrumbSchema, serviceSchema } from "@/lib/schema";
+import { Stethoscope, HeartPulse, Users, CheckCircle2, XCircle, Phone, MessageCircle, ArrowRight } from "lucide-react";
+import { JsonLd, breadcrumbSchema, serviceSchema, faqPageSchema } from "@/lib/schema";
 import { serviceSeo } from "@/lib/seo";
 
 const ICONS = { Stethoscope, HeartPulse, Users };
@@ -21,8 +21,7 @@ const ServiceDetail = () => {
   if (!svc) return <Navigate to="/services" replace />;
   const Icon = ICONS[svc.icon] || HeartPulse;
   const image = svc.image || IMAGES.nurseCare;
-
-  const includes = [
+  const planIncludes = [
     "Verified & background-checked professional",
     "Care coordinator on call",
     "Clear plan and timing for Pune & PCMC deployments",
@@ -51,6 +50,7 @@ const ServiceDetail = () => {
           { label: svc.name, to: `/services/${svc.slug}` },
         ])}
       />
+      {svc.faqs?.length > 0 && <JsonLd data={faqPageSchema(svc.faqs)} />}
       <PageHeader
         eyebrow="Service"
         title={svc.name}
@@ -67,19 +67,17 @@ const ServiceDetail = () => {
               <Icon size={22} />
             </div>
             <h2 className="font-serif text-3xl md:text-4xl mt-5 tracking-tight">What this service is</h2>
-            <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">
-              {svc.short}
-            </p>
+            <p className="mt-4 text-muted-foreground text-[17px] leading-relaxed font-light">{svc.short}</p>
+            {svc.differentiation && (
+              <>
+                <h3 className="font-serif text-2xl mt-8 tracking-tight">How it differs from our other services</h3>
+                <p className="mt-3 text-muted-foreground text-[17px] leading-relaxed font-light">{svc.differentiation}</p>
+              </>
+            )}
             {svc.suitability && (
               <>
                 <h3 className="font-serif text-2xl mt-8 tracking-tight">Who it is suitable for</h3>
                 <p className="mt-3 text-muted-foreground text-[17px] leading-relaxed font-light">{svc.suitability}</p>
-              </>
-            )}
-            {svc.includes && (
-              <>
-                <h3 className="font-serif text-2xl mt-8 tracking-tight">What support may include</h3>
-                <p className="mt-3 text-muted-foreground text-[17px] leading-relaxed font-light">{svc.includes}</p>
               </>
             )}
             <p className="mt-6 text-muted-foreground text-[17px] leading-relaxed font-light">
@@ -89,10 +87,38 @@ const ServiceDetail = () => {
             </p>
           </div>
 
+          {svc.includesList?.length > 0 && (
+            <div>
+              <h3 className="font-serif text-2xl md:text-3xl tracking-tight">What is included</h3>
+              <div className="mt-5 grid sm:grid-cols-2 gap-3">
+                {svc.includesList.map((it) => (
+                  <div key={it} className="flex items-start gap-3 rounded-2xl border border-border/70 bg-card/50 p-4">
+                    <CheckCircle2 size={18} className="text-secondary mt-0.5 shrink-0" />
+                    <div className="text-sm">{it}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {svc.excludesList?.length > 0 && (
+            <div>
+              <h3 className="font-serif text-2xl md:text-3xl tracking-tight">What is not included</h3>
+              <div className="mt-5 grid sm:grid-cols-2 gap-3">
+                {svc.excludesList.map((it) => (
+                  <div key={it} className="flex items-start gap-3 rounded-2xl border border-border/70 bg-card/50 p-4">
+                    <XCircle size={18} className="text-muted-foreground/70 mt-0.5 shrink-0" />
+                    <div className="text-sm text-muted-foreground">{it}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div>
             <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Every {svc.name.toLowerCase()} plan includes</h3>
             <div className="mt-5 grid sm:grid-cols-2 gap-3">
-              {includes.map((it) => (
+              {planIncludes.map((it) => (
                 <div key={it} className="flex items-start gap-3 rounded-2xl border border-border/70 bg-card/50 p-4">
                   <CheckCircle2 size={18} className="text-secondary mt-0.5 shrink-0" />
                   <div className="text-sm">{it}</div>
@@ -101,8 +127,29 @@ const ServiceDetail = () => {
             </div>
           </div>
 
+          {svc.faqs?.length > 0 && (
+            <div>
+              <h3 className="font-serif text-2xl md:text-3xl tracking-tight">Frequently asked questions</h3>
+              <div className="mt-5 space-y-3">
+                {svc.faqs.map((faq, i) => (
+                  <details
+                    key={faq.q}
+                    className="group rounded-2xl border border-border/70 bg-card/60 p-5"
+                    data-testid={`service-faq-${svc.slug}-${i}`}
+                  >
+                    <summary className="cursor-pointer font-serif text-xl font-medium">{faq.q}</summary>
+                    <p className="mt-3 text-muted-foreground font-light leading-relaxed">{faq.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div>
-            <h3 className="font-serif text-2xl tracking-tight">Continue in Pune or contact us</h3>
+            <h3 className="font-serif text-2xl tracking-tight">Available in Pune &amp; PCMC</h3>
+            <p className="mt-3 text-muted-foreground text-[15px] leading-relaxed font-light">
+              Explore local pages for {svc.name}, or contact us to discuss a care plan for your family.
+            </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 to={`/locations/pune/${svc.slug}`}
@@ -111,10 +158,28 @@ const ServiceDetail = () => {
                 {svc.name} in Pune <ArrowRight size={14} />
               </Link>
               <Link
+                to={`/locations/pimpri-chinchwad/${svc.slug}`}
+                className="inline-flex items-center gap-1 rounded-full border border-primary/25 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                {svc.name} in PCMC <ArrowRight size={14} />
+              </Link>
+              <Link
                 to="/locations/pune"
                 className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
               >
                 Home care in Pune
+              </Link>
+              <Link
+                to="/locations/pimpri-chinchwad"
+                className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+              >
+                Home care in PCMC
+              </Link>
+              <Link
+                to="/locations"
+                className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors"
+              >
+                All locations
               </Link>
               <Link
                 to="/contact"
