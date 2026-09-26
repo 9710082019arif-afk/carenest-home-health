@@ -198,11 +198,11 @@ export const STATS = [
 
 export const TEAM = [
   {
-    name: "Riya Shaikh",
+    name: "Rupesh More",
     role: "Founder & Managing Director",
     city: "Pune",
-    img: "/brand-kit/team/riya-shaikh.svg",
-    bio: "Riya founded CareNest Home Health so families in Pune and PCMC can arrange dependable home care with clear coordination — Patient Care, Elder Care and Nursing Care, including continuous support when needed.",
+    img: "/brand-kit/team/Rupesh-More.svg",
+    bio: "Rupesh founded CareNest Home Health so families in Pune and PCMC can arrange dependable home care with clear coordination — Patient Care, Elder Care and Nursing Care, including continuous support when needed.",
   },
 ];
 
