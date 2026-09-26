@@ -35,7 +35,7 @@ const About = () => (
         <h2 className="font-serif text-3xl md:text-4xl mt-3 tracking-tight">Home is where healing begins.</h2>
         <div className="mt-6 space-y-4 text-muted-foreground text-lg font-light leading-relaxed">
           <p>
-            <b className="text-foreground">Riya Shaikh</b> founded CareNest Home Health so families could get dependable care
+            <b className="text-foreground">Rupesh More </b> founded CareNest Home Health so families could get dependable care
             at home — without confusion, delay or cold institutional feel.
           </p>
           <p>
