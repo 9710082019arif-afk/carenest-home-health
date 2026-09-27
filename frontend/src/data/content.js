@@ -3,9 +3,9 @@
 export const COMPANY = {
   name: "CareNest Home Health",
   short: "CareNest",
-  phone: "+91 9175724546",
-  phoneDigits: "919175724546",
-  whatsapp: "919175724546",
+  phone: "+91 9325702704",
+  phoneDigits: "919325702704",
+  whatsapp: "919325702704",
   email: "info@carenesthomehealth.in",
   website: "https://carenesthomehealth.in",
   tagline: "24 Hour Home Care in Pune & PCMC.",
