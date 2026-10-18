@@ -8,6 +8,11 @@ export const TWITTER_HANDLE = "@carenesthomehealth";
 export const SITE_NAME = COMPANY.name;
 export const DEFAULT_ROBOTS = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
 
+/** Cities that should be indexed. All others get noindex,follow. */
+export const PRIMARY_CITY_SLUGS = ["pune", "pimpri-chinchwad"];
+
+export const isPrimaryCity = (slug) => PRIMARY_CITY_SLUGS.includes(slug);
+
 const truncate = (str, max = 155) => {
   if (!str) return "";
   const clean = str.replace(/\s+/g, " ").trim();
@@ -47,7 +52,7 @@ export const buildPageSeo = ({
     description: desc,
     canonical: url,
     keywords: keywords || undefined,
-    robots: noindex ? "noindex,nofollow" : DEFAULT_ROBOTS,
+    robots: noindex ? "noindex,follow" : DEFAULT_ROBOTS,
     og: {
       type,
       siteName: SITE_NAME,
@@ -73,18 +78,18 @@ export const PAGE_SEO = {
   home: buildPageSeo({
     title: "24 Hour Home Care in Pune & PCMC · CareNest Home Health",
     description:
-      "What is 24 Hour Home Care? Continuous care at home in Pune and PCMC, arranged with Patient Care, Elder Care or Nursing Care. Call or WhatsApp CareNest for a free consult.",
+      "24 Hour Home Care in Pune and PCMC with Patient Care, Elder Care and Nursing Care at home. Call or WhatsApp CareNest for a free consult.",
     path: "/",
     keywords: "24 hour home care Pune, 24 hour home care PCMC, patient care at home Pune, elder care at home Pune, nursing care at home Pune, CareNest Home Health",
   }),
   about: buildPageSeo({
-    title: "About CareNest Home Health",
+    title: "About CareNest – Home Nursing Care in Pune",
     description:
       "Founded by Riya Shaikh, CareNest brings Patient Care at Home, Elder Care at Home and Nursing Care at Home to families in Pune and PCMC — with dignity and clear coordination.",
     path: "/about",
   }),
   services: buildPageSeo({
-    title: "Home Healthcare Services — Nursing, Patient & Elder Care",
+    title: "Home Healthcare Services in Pune",
     description:
       "Explore CareNest’s three primary services: Patient Care at Home, Elder Care at Home, and Nursing Care at Home in Pune and PCMC, including 24 Hour Home Care options.",
     path: "/services",
@@ -98,7 +103,7 @@ export const PAGE_SEO = {
     keywords: "home healthcare Pune, home nursing Pune, elder care Pune, PCMC home care",
   }),
   contact: buildPageSeo({
-    title: "Contact CareNest Home Health",
+    title: "Contact CareNest – Home Care in Pune",
     description:
       "Call, WhatsApp or message CareNest for Patient Care at Home, Elder Care at Home and Nursing Care at Home in Pune and PCMC.",
     path: "/contact",
@@ -149,7 +154,7 @@ export const PAGE_SEO = {
 export const serviceSeo = (svc) =>
   buildPageSeo({
     title: `${svc.name} in Pune`,
-    description: `${svc.name} by CareNest — ${svc.short} Serving families in Pune and Pimpri-Chinchwad (PCMC).`,
+    description: `${svc.name} by CareNest — ${svc.short} Serving families in Pune and Pimpri-Chinchwad (PCMC). Call or WhatsApp CareNest for a free consult.`,
     path: `/services/${svc.slug}`,
     keywords: `${svc.name}, ${svc.name} Pune, 24 hour home care Pune, CareNest`,
     imageAlt: `${svc.name} by CareNest Home Health in Pune`,
@@ -158,19 +163,21 @@ export const serviceSeo = (svc) =>
 export const locationSeo = (loc) =>
   buildPageSeo({
     title: `Home Healthcare in ${loc.name}`,
-    description: `CareNest Patient Care at Home, Elder Care at Home and Nursing Care at Home in ${loc.name}, ${loc.state}. Enquire for availability — Pune and PCMC are our primary service areas.`,
+    description: `CareNest Patient Care at Home, Elder Care at Home and Nursing Care at Home in ${loc.name}, ${loc.state}. Call or WhatsApp CareNest for a free consult.`,
     path: `/locations/${loc.slug}`,
     keywords: `home healthcare ${loc.name}, patient care at home ${loc.name}, elder care at home ${loc.name}`,
     imageAlt: `Home healthcare services in ${loc.name} by CareNest`,
+    noindex: !isPrimaryCity(loc.slug),
   });
 
 export const cityServiceSeo = (svc, loc) =>
   buildPageSeo({
     title: `${svc.name} in ${loc.name}`,
-    description: `${svc.name} at home in ${loc.name}, ${loc.state}. ${svc.short}`,
+    description: `${svc.name} at home in ${loc.name}, ${loc.state}. ${svc.short} Call or WhatsApp CareNest for a free consult.`,
     path: `/locations/${loc.slug}/${svc.slug}`,
     keywords: `${svc.name} ${loc.name}, ${svc.name} at home ${loc.name}`,
     imageAlt: `${svc.name} at home in ${loc.name} — CareNest Home Health`,
+    noindex: !isPrimaryCity(loc.slug),
   });
 
 export const LEGAL_SEO = {
@@ -180,7 +187,7 @@ export const LEGAL_SEO = {
   "cancellation-policy": PAGE_SEO.cancellation,
 };
 
-/** Indexable paths for sitemap (primaries only; redirected URLs omitted). */
+/** Indexable paths for sitemap (primaries only; non-primary cities omitted). */
 export const getAllPublicPaths = () => {
   const staticPaths = [
     { path: "/", priority: "1.0", changefreq: "weekly" },
@@ -199,15 +206,16 @@ export const getAllPublicPaths = () => {
     priority: "0.9",
     changefreq: "weekly",
   }));
-  const locationPaths = LOCATIONS.map((l) => ({
+  const primaryLocations = LOCATIONS.filter((l) => isPrimaryCity(l.slug));
+  const locationPaths = primaryLocations.map((l) => ({
     path: `/locations/${l.slug}`,
-    priority: l.slug === "pune" ? "0.9" : "0.6",
+    priority: l.slug === "pune" ? "0.9" : "0.7",
     changefreq: "monthly",
   }));
-  const cityServicePaths = LOCATIONS.flatMap((l) =>
+  const cityServicePaths = primaryLocations.flatMap((l) =>
     SERVICES.map((s) => ({
       path: `/locations/${l.slug}/${s.slug}`,
-      priority: l.slug === "pune" ? "0.8" : "0.5",
+      priority: l.slug === "pune" ? "0.8" : "0.6",
       changefreq: "monthly",
     }))
   );
