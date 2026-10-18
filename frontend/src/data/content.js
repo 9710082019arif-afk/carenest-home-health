@@ -7,7 +7,7 @@ export const COMPANY = {
   phoneDigits: "919325702704",
   whatsapp: "919325702704",
   email: "info@carenesthomehealth.in",
-  website: "https://carenesthomehealth.in",
+  website: "https://www.carenesthomehealth.in",
   tagline: "24 Hour Home Care in Pune & PCMC.",
   address: "Serving families in Pune and Pimpri-Chinchwad (PCMC)",
   socials: {
