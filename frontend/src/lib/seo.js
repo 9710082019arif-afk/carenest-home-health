@@ -91,14 +91,14 @@ export const PAGE_SEO = {
   services: buildPageSeo({
     title: "Home Healthcare Services in Pune",
     description:
-      "Explore CareNest’s three primary services: Patient Care at Home, Elder Care at Home, and Nursing Care at Home in Pune and PCMC, including 24 Hour Home Care options.",
+      "Nursing Care, Patient Care and Elder Care at home in Pune and PCMC, including 24 Hour Home Care. Call or WhatsApp CareNest for a free consult.",
     path: "/services",
     keywords: "patient care at home, elder care at home, nursing care at home, 24 hour home care, CareNest services Pune",
   }),
   locations: buildPageSeo({
     title: "CareNest Locations — Pune Primary",
     description:
-      "Pune and Pimpri-Chinchwad (PCMC) are CareNest’s primary service areas. Browse city pages for Patient Care at Home, Elder Care at Home and Nursing Care at Home enquiries.",
+      "Pune and Pimpri-Chinchwad (PCMC) are CareNest’s primary service areas. Browse city pages for Patient Care, Elder Care and Nursing Care enquiries.",
     path: "/locations",
     keywords: "home healthcare Pune, home nursing Pune, elder care Pune, PCMC home care",
   }),
@@ -154,7 +154,7 @@ export const PAGE_SEO = {
 export const serviceSeo = (svc) =>
   buildPageSeo({
     title: `${svc.name} in Pune`,
-    description: `${svc.name} by CareNest — ${svc.short} Serving families in Pune and Pimpri-Chinchwad (PCMC). Call or WhatsApp CareNest for a free consult.`,
+    description: `${svc.name} in Pune and PCMC by CareNest. ${svc.tagline} Call or WhatsApp for a free consult.`,
     path: `/services/${svc.slug}`,
     keywords: `${svc.name}, ${svc.name} Pune, 24 hour home care Pune, CareNest`,
     imageAlt: `${svc.name} by CareNest Home Health in Pune`,
@@ -163,7 +163,7 @@ export const serviceSeo = (svc) =>
 export const locationSeo = (loc) =>
   buildPageSeo({
     title: `Home Healthcare in ${loc.name}`,
-    description: `CareNest Patient Care at Home, Elder Care at Home and Nursing Care at Home in ${loc.name}, ${loc.state}. Call or WhatsApp CareNest for a free consult.`,
+    description: `CareNest Patient Care, Elder Care and Nursing Care at home in ${loc.name}. Call or WhatsApp CareNest for a free consult.`,
     path: `/locations/${loc.slug}`,
     keywords: `home healthcare ${loc.name}, patient care at home ${loc.name}, elder care at home ${loc.name}`,
     imageAlt: `Home healthcare services in ${loc.name} by CareNest`,
@@ -173,7 +173,7 @@ export const locationSeo = (loc) =>
 export const cityServiceSeo = (svc, loc) =>
   buildPageSeo({
     title: `${svc.name} in ${loc.name}`,
-    description: `${svc.name} at home in ${loc.name}, ${loc.state}. ${svc.short} Call or WhatsApp CareNest for a free consult.`,
+    description: `${svc.name} at home in ${loc.name}. ${svc.tagline} Call or WhatsApp CareNest for a free consult.`,
     path: `/locations/${loc.slug}/${svc.slug}`,
     keywords: `${svc.name} ${loc.name}, ${svc.name} at home ${loc.name}`,
     imageAlt: `${svc.name} at home in ${loc.name} — CareNest Home Health`,
