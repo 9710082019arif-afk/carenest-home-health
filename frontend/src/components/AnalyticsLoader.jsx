@@ -41,6 +41,17 @@ const AnalyticsLoader = () => {
         }
       }
 
+      // Hostname-aware: load Ads landing GTM container ONLY on care. subdomain.
+      // Main domains (apex + www) keep existing GA4-only behavior.
+      const isCareLanding =
+        typeof window !== "undefined" &&
+        window.location.hostname === "care.carenesthomehealth.in";
+      if (isCareLanding) {
+        gtmId = "GTM-KZH5PCBS";
+      } else {
+        gtmId = ""; // never inject GTM on main site
+      }
+
       if (gaId) {
         injectScript("ga4-lib", `https://www.googletagmanager.com/gtag/js?id=${gaId}`);
         injectScript("ga4-init", null,
