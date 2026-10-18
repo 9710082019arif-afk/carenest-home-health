@@ -44,7 +44,7 @@ const PAGE_REDIRECTS = {
   "/careers": "/about",
 };
 
-const SITE = "https://carenesthomehealth.in";
+const SITE = "https://www.carenesthomehealth.in";
 
 module.exports = {
   SERVICES,
