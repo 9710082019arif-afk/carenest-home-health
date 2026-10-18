@@ -3,20 +3,13 @@
 
 const SERVICES = ["home-nursing", "patient-care", "elder-care"];
 
+// Indexable cities only (Pune + PCMC). Other cities remain reachable by URL but are noindexed.
 const LOCATIONS = [
   "pune",
   "pimpri-chinchwad",
-  "mumbai",
-  "navi-mumbai",
-  "thane",
-  "bengaluru",
-  "hyderabad",
-  "delhi-ncr",
-  "ranchi",
-  "bhubaneswar",
-  "kolkata",
-  "goa",
 ];
+
+const PRIMARY_CITIES = ["pune", "pimpri-chinchwad"];
 
 /** old service slug → primary slug */
 const SERVICE_REDIRECTS = {
@@ -56,6 +49,7 @@ const SITE = "https://carenesthomehealth.in";
 module.exports = {
   SERVICES,
   LOCATIONS,
+  PRIMARY_CITIES,
   SERVICE_REDIRECTS,
   PAGE_REDIRECTS,
   SITE,

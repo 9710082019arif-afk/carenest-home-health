@@ -5,9 +5,41 @@
 (function(){
   try {
     var SITE="https://carenesthomehealth.in";
-    var MAP={"/":{"title":"Care at Home in Pune · CareNest Home Health","description":"CareNest Home Health provides Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune. Call or WhatsApp for a free care consult.","canonical":"https://carenesthomehealth.in/"},"/locations":{"title":"CareNest Locations — Pune Primary · CareNest Home Health","description":"Pune is CareNest’s primary service area. Browse city pages for Nursing Care, Patient Care and Elder Care & Companionship enquiries.","canonical":"https://carenesthomehealth.in/locations","keywords":"home healthcare Pune, home nursing Pune, elder care Pune, CareNest locations"},"/services":{"title":"Home Healthcare Services — Nursing, Patient & Elder Care · CareNest Home Health","description":"Explore CareNest’s three primary services: Nursing Care, Patient Care, and Elder Care & Companionship at home in Pune.","canonical":"https://carenesthomehealth.in/services"},"/about":{"title":"About CareNest Home Health · CareNest Home Health","description":"Founded by Riya Shaikh, CareNest brings Nursing Care, Patient Care and Elder Care & Companionship into homes — with dignity and clear coordination in Pune.","canonical":"https://carenesthomehealth.in/about"},"/contact":{"title":"Contact CareNest Home Health · CareNest Home Health","description":"Call, WhatsApp or message CareNest for Nursing Care, Patient Care and Elder Care & Companionship in Pune.","canonical":"https://carenesthomehealth.in/contact"},"/faq":{"title":"Home Healthcare FAQ · CareNest Home Health","description":"Answers about CareNest nursing, patient care, elder companionship, pricing and how care starts in Pune.","canonical":"https://carenesthomehealth.in/faq"}};
+    var PRIMARY={"pune":1,"pimpri-chinchwad":1};
+    var SERVICES={"home-nursing":"Nursing Care at Home","patient-care":"Patient Care at Home","elder-care":"Elder Care at Home"};
+    var CITIES={"pune":"Pune","pimpri-chinchwad":"Pimpri-Chinchwad","mumbai":"Mumbai","navi-mumbai":"Navi Mumbai","thane":"Thane","bengaluru":"Bengaluru","hyderabad":"Hyderabad","delhi-ncr":"Delhi NCR","ranchi":"Ranchi","bhubaneswar":"Bhubaneswar","kolkata":"Kolkata","goa":"Goa"};
+    var MAP={
+      "/":{"title":"24 Hour Home Care in Pune & PCMC · CareNest","description":"24 Hour Home Care in Pune and PCMC with Patient Care, Elder Care and Nursing Care at home. Call or WhatsApp CareNest for a free consult.","canonical":SITE+"/","robots":"index,follow"},
+      "/locations":{"title":"CareNest Locations — Pune Primary","description":"Pune and Pimpri-Chinchwad (PCMC) are CareNest’s primary service areas. Browse city pages for home healthcare enquiries.","canonical":SITE+"/locations","robots":"index,follow"},
+      "/services":{"title":"Home Healthcare Services in Pune","description":"Explore CareNest’s three primary services: Patient Care at Home, Elder Care at Home, and Nursing Care at Home in Pune and PCMC.","canonical":SITE+"/services","robots":"index,follow"},
+      "/about":{"title":"About CareNest – Home Nursing Care in Pune","description":"Founded by Riya Shaikh, CareNest brings Patient Care at Home, Elder Care at Home and Nursing Care at Home to families in Pune and PCMC.","canonical":SITE+"/about","robots":"index,follow"},
+      "/contact":{"title":"Contact CareNest – Home Care in Pune","description":"Call, WhatsApp or message CareNest for Patient Care at Home, Elder Care at Home and Nursing Care at Home in Pune and PCMC.","canonical":SITE+"/contact","robots":"index,follow"},
+      "/faq":{"title":"Home Healthcare FAQ","description":"Answers about CareNest nursing, patient care, elder care, 24 Hour Home Care and how care starts in Pune and PCMC.","canonical":SITE+"/faq","robots":"index,follow"},
+      "/privacy-policy":{"title":"Privacy Policy","description":"How CareNest Home Health collects, uses and protects your personal and care-related information.","canonical":SITE+"/privacy-policy","robots":"index,follow"},
+      "/terms":{"title":"Terms & Conditions","description":"Terms governing CareNest Home Health services, payments, limitations and governing law in India.","canonical":SITE+"/terms","robots":"index,follow"},
+      "/refund-policy":{"title":"Refund Policy","description":"CareNest Home Health refund rules for deposits and deployments.","canonical":SITE+"/refund-policy","robots":"index,follow"},
+      "/cancellation-policy":{"title":"Cancellation Policy","description":"How to cancel a CareNest booking and timing rules for shift cancellations.","canonical":SITE+"/cancellation-policy","robots":"index,follow"}
+    };
     var path=(location.pathname||"/").replace(/\/+$/,"")||"/";
     var seo=MAP[path];
+    var robots="index,follow";
+    if(!seo){
+      var parts=path.split("/").filter(Boolean);
+      if(parts[0]==="services" && parts[1] && SERVICES[parts[1]]){
+        var sn=SERVICES[parts[1]];
+        seo={title:sn+" at Home in Pune · CareNest",description:sn+" at home in Pune and PCMC. Call or WhatsApp CareNest for a free consult.",canonical:SITE+path,robots:"index,follow"};
+      } else if(parts[0]==="locations" && parts[1] && CITIES[parts[1]]){
+        var city=CITIES[parts[1]];
+        var isPri=!!PRIMARY[parts[1]];
+        robots=isPri?"index,follow":"noindex,follow";
+        if(parts[2] && SERVICES[parts[2]]){
+          var svc=SERVICES[parts[2]];
+          seo={title:svc+" at Home in "+city+" · CareNest",description:svc+" at home in "+city+". Call or WhatsApp CareNest for a free consult.",canonical:SITE+path,robots:robots};
+        } else if(!parts[2]){
+          seo={title:"Home Healthcare in "+city+" · CareNest",description:"Home healthcare in "+city+" — Patient Care, Elder Care and Nursing Care at home. Call or WhatsApp CareNest for a free consult.",canonical:SITE+path,robots:robots};
+        }
+      }
+    }
     function setMeta(attr,key,val){
       if(!val) return;
       var el=document.head.querySelector("meta["+attr+"=\""+key+"\"]");
@@ -23,13 +55,16 @@
     if(seo){
       if(seo.title) document.title=seo.title;
       setMeta("name","description",seo.description);
-      if(seo.keywords) setMeta("name","keywords",seo.keywords);
       setCanonical(seo.canonical);
       setMeta("property","og:url",seo.canonical);
       setMeta("property","og:title",seo.title);
       setMeta("property","og:description",seo.description);
       setMeta("name","twitter:title",seo.title);
       setMeta("name","twitter:description",seo.description);
+      if(seo.robots){
+        setMeta("name","robots",seo.robots);
+        setMeta("name","googlebot",seo.robots);
+      }
     } else if(path!=="/"){
       var url=SITE+path;
       setCanonical(url);
@@ -45,7 +80,7 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0D3B66" />
-    <meta name="description" content="What is 24 Hour Home Care? Continuous care at home in Pune and PCMC, arranged with Patient Care, Elder Care or Nursing Care. Call or WhatsApp CareNest for a free consult." />
+    <meta name="description" content="24 Hour Home Care in Pune and PCMC with Patient Care, Elder Care and Nursing Care at home. Call or WhatsApp CareNest for a free consult." />
     <meta name="keywords" content="24 hour home care Pune, 24 hour home care PCMC, patient care at home Pune, elder care at home Pune, nursing care at home Pune, CareNest Home Health" />
     <meta name="author" content="CareNest Home Health" />
     <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
@@ -59,7 +94,7 @@
     <meta property="og:site_name" content="CareNest Home Health" />
     <meta property="og:locale" content="en_IN" />
     <meta property="og:title" content="24 Hour Home Care in Pune & PCMC · CareNest Home Health" />
-    <meta property="og:description" content="What is 24 Hour Home Care? Continuous care at home in Pune and PCMC, arranged with Patient Care, Elder Care or Nursing Care." />
+    <meta property="og:description" content="24 Hour Home Care in Pune and PCMC with Patient Care, Elder Care and Nursing Care at home." />
     <meta property="og:image" content="https://carenesthomehealth.in/brand-kit/social/hero-banner.jpg" />
     <meta property="og:image:secure_url" content="https://carenesthomehealth.in/brand-kit/social/hero-banner.jpg" />
     <meta property="og:image:alt" content="CareNest Home Health — nursing, patient and elder care at home in Pune" />
@@ -104,7 +139,7 @@
           "height": 512
         },
         "url": "https://carenesthomehealth.in",
-        "telephone": "+91 9175724546",
+        "telephone": "+91 9325702704",
         "email": "info@carenesthomehealth.in",
         "priceRange": "₹₹",
         "address": {
@@ -122,17 +157,7 @@
         },
         "areaServed": [
           {"@type":"City","name":"Pune"},
-          {"@type":"City","name":"Pimpri-Chinchwad"},
-          {"@type":"City","name":"Mumbai"},
-          {"@type":"City","name":"Navi Mumbai"},
-          {"@type":"City","name":"Thane"},
-          {"@type":"City","name":"Bengaluru"},
-          {"@type":"City","name":"Hyderabad"},
-          {"@type":"City","name":"Delhi NCR"},
-          {"@type":"City","name":"Ranchi"},
-          {"@type":"City","name":"Bhubaneswar"},
-          {"@type":"City","name":"Kolkata"},
-          {"@type":"City","name":"Goa"}
+          {"@type":"City","name":"Pimpri-Chinchwad"}
         ],
         "sameAs": [
           "https://www.instagram.com/carenesthomehealth",
@@ -149,14 +174,14 @@
         "contactPoint": [
           {
             "@type": "ContactPoint",
-            "telephone": "+91 9175724546",
+            "telephone": "+91 9325702704",
             "contactType": "customer service",
             "areaServed": "IN",
             "availableLanguage": ["English","Hindi","Marathi"]
           },
           {
             "@type": "ContactPoint",
-            "telephone": "+91 9175724546",
+            "telephone": "+91 9325702704",
             "contactType": "emergency",
             "areaServed": "IN",
             "availableLanguage": ["English","Hindi"]
@@ -189,7 +214,7 @@
   </head>
   <body>
     <noscript>
-      <p>CareNest Home Health provides 24 Hour Home Care in Pune and PCMC with Patient Care at Home, Elder Care at Home, and Nursing Care at Home. Call +91 9175724546 or visit <a href="https://carenesthomehealth.in/">carenesthomehealth.in</a>. Please enable JavaScript for the full site experience.</p>
+      <p>CareNest Home Health provides 24 Hour Home Care in Pune and PCMC with Patient Care at Home, Elder Care at Home, and Nursing Care at Home. Call +91 9325702704 or visit <a href="https://carenesthomehealth.in/">carenesthomehealth.in</a>. Please enable JavaScript for the full site experience.</p>
     </noscript>
     <div id="root"></div>
   </body>

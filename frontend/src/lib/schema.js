@@ -1,6 +1,7 @@
 // JSON-LD schema helpers for SEO rich results (Home Health Care, LocalBusiness, FAQ, Services).
 import React from "react";
 import { COMPANY, SERVICES, LOCATIONS, FAQS } from "@/data/content";
+import { isPrimaryCity } from "@/lib/seo";
 
 const SITE = COMPANY.website.replace(/\/$/, "");
 
@@ -54,7 +55,9 @@ const NAP = {
   },
 };
 
-const areaServed = LOCATIONS.map((l) => ({
+const PRIMARY_LOCATIONS = LOCATIONS.filter((l) => isPrimaryCity(l.slug));
+
+const areaServed = PRIMARY_LOCATIONS.map((l) => ({
   "@type": "City",
   name: l.name,
   containedInPlace: {
@@ -337,15 +340,15 @@ export const cityServiceSchema = ({ svc, loc }) =>
       : {}),
   });
 
-/** Locations index ItemList */
+/** Locations index ItemList — primary cities only */
 export const locationsListSchema = () =>
   jsonLd({
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "CareNest Home Health Service Locations",
-    description: "Cities across India where CareNest provides home healthcare.",
-    numberOfItems: LOCATIONS.length,
-    itemListElement: LOCATIONS.map((l, i) => ({
+    description: "Pune and Pimpri-Chinchwad (PCMC) where CareNest provides home healthcare.",
+    numberOfItems: PRIMARY_LOCATIONS.length,
+    itemListElement: PRIMARY_LOCATIONS.map((l, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: l.name,
