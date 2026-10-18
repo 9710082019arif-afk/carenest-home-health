@@ -146,10 +146,10 @@ function applyHead(html, route) {
 }
 
 function escapeHtml(s) {
-  return String(s).replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+  return String(s).replace(/&/g, "&" + "amp;").replace(/</g, "&" + "lt;").replace(/>/g, "&" + "gt;");
 }
 function escapeAttr(s) {
-  return String(s).replace(/&/g, "&").replace(/"/g, """).replace(/</g, "<");
+  return String(s).replace(/&/g, "&" + "amp;").replace(/"/g, "&" + "quot;").replace(/</g, "&" + "lt;");
 }
 
 function injectBootstrap(html) {
