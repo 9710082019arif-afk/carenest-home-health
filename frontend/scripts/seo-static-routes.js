@@ -1,6 +1,7 @@
 // Shared static SEO route metadata for bootstrap + prerender.
 // Titles must match PAGE_SEO / buildPageSeo output (brand already included where needed).
-const SITE = "https://carenesthomehealth.in";
+// Preferred host is www (matches Vercel apex→www redirect, canonicals, sitemap, schema).
+const SITE = "https://www.carenesthomehealth.in";
 
 const ROUTES = [
   {
@@ -8,7 +9,7 @@ const ROUTES = [
     file: "index.html",
     title: "24 Hour Home Care in Pune & PCMC · CareNest Home Health",
     description:
-      "What is 24 Hour Home Care? Continuous care at home in Pune and PCMC, arranged with Patient Care, Elder Care or Nursing Care. Call or WhatsApp CareNest for a free consult.",
+      "24 Hour Home Care in Pune and PCMC with Patient Care, Elder Care and Nursing Care at home. Call or WhatsApp CareNest for a free consult.",
     canonical: `${SITE}/`,
     h1: "24 Hour Home Care in Pune",
     keywords: "24 hour home care Pune, 24 hour home care PCMC, patient care at home Pune, elder care at home Pune, nursing care at home Pune, CareNest Home Health",
@@ -33,7 +34,7 @@ const ROUTES = [
     <li><a href="/locations/pimpri-chinchwad">Home healthcare in Pimpri-Chinchwad (PCMC)</a></li>
     <li><a href="/locations/mumbai">Home healthcare in Mumbai</a></li>
   </ul>
-  <p>Call <a href="tel:+919175724546">+91 9175724546</a> or <a href="/contact">contact us</a>.</p>
+  <p>Call <a href="tel:+919325702704">+91 9325702704</a> or <a href="/contact">contact us</a>.</p>
 </section>`,
   },
   {
