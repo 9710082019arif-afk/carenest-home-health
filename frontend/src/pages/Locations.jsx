@@ -4,9 +4,11 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SEOHead from "@/components/SEOHead";
 import { LOCATIONS, COMPANY } from "@/data/content";
-import { PAGE_SEO } from "@/lib/seo";
+import { PAGE_SEO, isPrimaryCity } from "@/lib/seo";
 import { JsonLd, locationsListSchema, breadcrumbSchema } from "@/lib/schema";
 import { MapPin, Phone } from "lucide-react";
+
+const PRIMARY_LOCATIONS = LOCATIONS.filter((l) => isPrimaryCity(l.slug));
 
 const Locations = () => (
   <Layout>
@@ -25,7 +27,7 @@ const Locations = () => (
           Care at home — <span className="text-gold italic">Pune first.</span>
         </>
       }
-      subtitle="Pune and Pimpri-Chinchwad (PCMC) are our primary service areas. Other city pages remain available for enquiries and search visitors."
+      subtitle="Pune and Pimpri-Chinchwad (PCMC) are our primary service areas."
       crumbs={[{ label: "Locations" }]}
     />
 
@@ -56,7 +58,7 @@ const Locations = () => (
         City pages
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {LOCATIONS.map((l) => (
+        {PRIMARY_LOCATIONS.map((l) => (
           <Link
             key={l.slug}
             to={`/locations/${l.slug}`}
