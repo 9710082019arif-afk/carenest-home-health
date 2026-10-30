@@ -18,6 +18,14 @@ const injectScript = (id, src, inline) => {
   document.head.appendChild(s);
 };
 
+const gtmAlreadyInstalled = (containerId) => {
+  if (!containerId) return false;
+  if (document.getElementById("gtm")) return true;
+  if (document.querySelector(`script[src*="gtm.js?id=${containerId}"]`)) return true;
+  if (document.querySelector(`iframe[src*="ns.html?id=${containerId}"]`)) return true;
+  return document.documentElement.innerHTML.includes(containerId);
+};
+
 const AnalyticsLoader = () => {
   useEffect(() => {
     (async () => {
@@ -41,15 +49,10 @@ const AnalyticsLoader = () => {
         }
       }
 
-      // Hostname-aware: load Ads landing GTM container ONLY on care. subdomain.
-      // Main domains (apex + www) keep existing GA4-only behavior.
-      const isCareLanding =
-        typeof window !== "undefined" &&
-        window.location.hostname === "care.carenesthomehealth.in";
-      if (isCareLanding) {
-        gtmId = "GTM-KZH5PCBS";
-      } else {
-        gtmId = ""; // never inject GTM on main site
+      // Official GTM-KZH5PCBS is installed in public/index.html (head + noscript).
+      // Do not inject a second copy. Keep GA4 injection below.
+      if (gtmAlreadyInstalled("GTM-KZH5PCBS") || gtmAlreadyInstalled(gtmId)) {
+        gtmId = "";
       }
 
       if (gaId) {
